@@ -26,7 +26,8 @@ module.exports = {
       'container': resolve('src/container'),
       'components': resolve('src/components'),
       'static': resolve('src/static'),
-      'container': resolve('src/container')
+      'container': resolve('src/container'),
+      'assets': resolve('src/assets')
     }
   },
   module: {

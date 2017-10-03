@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style lang="stylus">
+@import "./assets/stylus/index.styl"
 html, body
   height 100%
   #app

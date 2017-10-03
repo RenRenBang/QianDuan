@@ -8,7 +8,7 @@
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="icon-btn add-btn">
+          <div class="icon-btn add-btn" @click.prevent="toggleAddLayer()">
             <i class="icon icon-plus add"></i>
           </div>
         </el-col>
@@ -19,6 +19,27 @@
         </el-col>
       </el-row>
     </div>
+    <transition name="fade">
+      <div v-show="addLayerActive" class="add-layer">
+        <div class="add-layer-content">
+          <el-row>
+            <el-col :span="6" :offset="3">
+              <div class="btn service-btn">
+                <i class="icon el-icon-close"></i>
+              </div>
+            </el-col>
+            <el-col :span="6" :offset="6">
+              <div class="btn need-btn">
+                <i class="icon el-icon-close"></i>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="add-layer-close">
+          <i class="icon el-icon-close" @click="toggleAddLayer()"></i>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -27,12 +48,16 @@ export default {
   name: 'tab-bar',
   data() {
     return {
-      activeBtn: 'list'
+      activeBtn: 'list',
+      addLayerActive: false
     }
   },
   methods: {
     changeActiveBtn(v) {
       this.activeBtn = v
+    },
+    toggleAddLayer() {
+      this.addLayerActive = !this.addLayerActive
     }
   }
 }
@@ -75,4 +100,21 @@ export default {
       width 40px
       background #20A0FF
       border-radius 50%
+  .add-layer
+    position fixed
+    top 0
+    left 0
+    z-index 100
+    width 100%
+    height 100%
+    background-color rgba(7, 17, 27, 0.8)
+    overflow auto
+    .add-layer-close
+      position absolute
+      bottom 20px
+      width 100%
+      text-align center
+      .icon
+        color white
+        font-size 22px
 </style>
