@@ -25,13 +25,15 @@
           <el-row>
             <el-col :span="6" :offset="3">
               <div class="btn service-btn">
-                <i class="icon el-icon-close"></i>
+                <i class="icon icon-briefcase"></i>
               </div>
+              <div class="tag">发布服务</div>
             </el-col>
             <el-col :span="6" :offset="6">
               <div class="btn need-btn">
-                <i class="icon el-icon-close"></i>
+                <i class="icon icon-clipboard"></i>
               </div>
+              <div class="tag">发布需求</div>
             </el-col>
           </el-row>
         </div>
@@ -109,6 +111,32 @@ export default {
     height 100%
     background-color rgba(7, 17, 27, 0.8)
     overflow auto
+    .add-layer-content
+      position relative
+      top 45%
+      text-align center
+      .btn
+        display inline-block
+        width 100px
+        height 100px
+        background #eee
+        border-radius 50%
+        .icon
+          position relative
+          color #fff
+          font-size 48px
+        &.service-btn
+          background #13CE66
+          .icon
+            top 31px
+        &.need-btn
+          background #20A0FF
+          .icon
+            top 25px
+      .tag
+        margin 12px 0 0 0
+        color #fff
+        font-size 18px
     .add-layer-close
       position absolute
       bottom 20px
