@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <headBar></headBar>
-    <router-view></router-view>
+    <transition name="fade">
+      <router-view style="position:absolute;width:100%"></router-view>
+    </transition>
     <div class="tab-bar-wrapper">
       <tabBar></tabBar>
     </div>
@@ -9,8 +10,7 @@
 </template>
 
 <script>
-import headBar from 'components/HeadBar'
-import tabBar from 'components/TabBar'
+import tabBar from './TabBar'
 import router from '@/router'
 export default {
   name: 'home',
@@ -21,7 +21,6 @@ export default {
   methods: {
   },
   components: {
-    headBar,
     tabBar
   },
   created() {
