@@ -1,6 +1,6 @@
 <template>
   <div class="tab-bar-wrapper">
-    <div class="tab-bar">
+    <div class="tab-bar shadow">
       <el-row>
         <el-col :span="8">
           <div class="icon-btn" @click="changeActiveBtn('list')">
@@ -75,6 +75,7 @@ export default {
     top 12px
     box-sizing border-box
     height 48px
+    width 100%
     font-size 0
     text-align center
     background #F9FAFC

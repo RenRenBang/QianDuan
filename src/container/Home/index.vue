@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <headBar></headBar>
     <h1>HOME</h1>
     <div class="tab-bar-wrapper">
       <tabBar></tabBar>
@@ -30,7 +31,6 @@ export default {
 .home
   position relative
   box-sizing border-box
-  padding 70px 12px 0 12px
   height 100%
   .tab-bar-wrapper
     position absolute
