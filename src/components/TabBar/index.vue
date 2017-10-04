@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import router from '@/router'
 export default {
   name: 'tab-bar',
   data() {
@@ -57,6 +58,7 @@ export default {
   methods: {
     changeActiveBtn(v) {
       this.activeBtn = v
+      v === 'list' ? router.push(v) : router.push('me')
     },
     toggleAddLayer() {
       this.addLayerActive = !this.addLayerActive

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <headBar></headBar>
-    <h1>HOME</h1>
+    <router-view></router-view>
     <div class="tab-bar-wrapper">
       <tabBar></tabBar>
     </div>
@@ -11,6 +11,7 @@
 <script>
 import headBar from 'components/HeadBar'
 import tabBar from 'components/TabBar'
+import router from '@/router'
 export default {
   name: 'home',
   data() {
@@ -22,6 +23,9 @@ export default {
   components: {
     headBar,
     tabBar
+  },
+  created() {
+    router.push('list')
   }
 }
 </script>
