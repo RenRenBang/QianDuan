@@ -15,6 +15,48 @@
         </el-col>
       </el-row>
     </div>
+    <div class="order">
+      <el-row>
+        <el-col :span="12">
+          <div class="service-order">
+            <i class="icon icon-briefcase"></i>
+            <span class="tag">服务订单</span>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="need-order">
+            <i class="icon icon-clipboard"></i>
+            <span class="tag">需求订单</span>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <ul class="optional">
+      <li>
+        <i class="icon icon-cogs"></i>
+        <span class="name">修改个人信息</span>
+      </li>
+      <li>
+        <i class="icon icon-cogs"></i>
+        <span class="name">修改个人信息</span>
+      </li>
+      <li>
+        <i class="icon icon-cogs"></i>
+        <span class="name">修改个人信息</span>
+      </li>
+      <li>
+        <i class="icon icon-cogs"></i>
+        <span class="name">修改个人信息</span>
+      </li>
+      <li>
+        <i class="icon icon-user-times"></i>
+        <span class="name">注销</span>
+      </li>
+      <li>
+        <i class="icon icon-group"></i>
+        <span class="name">关于我们</span>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -55,4 +97,56 @@ export default {
         font-size 20px
       .other
         font-size 14px
+  .order
+    font-size 0
+    color #475669
+    text-align center
+    line-height 80px
+    background #fff
+    .service-order
+      border-right 1px solid #ededed
+      height 100%
+      .icon
+        margin-right 10px
+        font-size 40px
+        color #13CE66
+        vertical-align middle
+      .tag
+        font-size 16px
+        vertical-align middle
+    .need-order
+      border-left 1px solid #ededed
+      height 100%
+      .icon
+        margin-right 10px
+        font-size 40px
+        color #20A0FF
+        vertical-align middle
+      .tag
+        font-size 16px
+        vertical-align middle
+  .optional
+    margin-top 10px
+    background #fff
+    li
+      box-sizing border-box
+      padding 0 20px
+      border-top 1px solid #ededed
+      border-bottom 1px solid #ededed
+      height 60px
+      line-height 60px
+      .icon
+        margin-right 10px
+        font-size 30px
+        vertical-align middle
+        &.icon-cogs
+          color #9E9E9E
+        &.icon-user-times
+          color #EF5350
+        &.icon-group
+          color #2196F3
+      .name
+        color #475669
+        font-size 18px
+        vertical-align middle
 </style>
