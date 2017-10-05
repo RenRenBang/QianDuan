@@ -1,5 +1,6 @@
 <template>
   <div class="signin">
+    <i class="back-btn el-icon-arrow-left" @click="goBack"></i>  
     <h1 class="title">用户注册</h1>
     <el-form :model="ruleForm" class="form" :label-position="'left'" :rules="rules" ref="ruleForm" label-width="80px">
       <el-form-item label="昵称" prop="nickName">
@@ -20,13 +21,13 @@
       <el-form-item class="upload" label="身份证" prop="idCard">
         <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
         <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
-        <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="idcard">
+          <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp;在这里添加身份证正面照片</i>
         </el-upload>
-        <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="idcard">
+          <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp;在这里添加身份证背面照片</i>
         </el-upload>
       </el-form-item>
       <div class="btn-group">
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+import router from '@/router'
 export default {
   name: 'signin',
   data() {
@@ -103,6 +105,9 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+    },
+    goBack() {
+      router.go(-1)
     }
   }
 }
@@ -111,9 +116,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .signin
-  padding 20px 12px 0 12px
+  padding 10px 12px 0 12px
+  .back-btn
+    display inline-block
+    padding 10px
+    font-size 20px
   .title
-    line-height 120px
+    line-height 110px
     font-size 40px
     text-align center
   .form
@@ -122,28 +131,26 @@ export default {
       .signin-btn
         margin 5px 0
         width 100%
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  width: 100%;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #20a0ff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 100%;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 100%;
-  height: 178px;
-  display: block;
-}
+    .upload
+      .idcard-uploader
+        .el-upload
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          width: 100%;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          &:hover
+            border-color: #20a0ff;
+        .idcard-uploader-icon
+          font-size: 18px;
+          color: #8c939d;
+          width: 100%;
+          height: 178px;
+          line-height: 178px;
+          text-align: center;
+        .idcard
+          width: 100%;
+          height: 178px;
+          display: block;
 </style>

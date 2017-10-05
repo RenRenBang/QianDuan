@@ -24,7 +24,7 @@ export default {
     tabBar
   },
   created() {
-    router.push('list')
+    router.push('home/list')
   }
 }
 </script>

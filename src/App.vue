@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition name="el-fade-in">
+      <router-view style="position:absolute;left:0;right:0"></router-view>
+    </transition>
   </div>
 </template>
 
@@ -14,6 +16,7 @@ export default {
 @import "./assets/stylus/index.styl"
 html, body
   height 100%
+  position absolute
   #app
     height 100%
 </style>

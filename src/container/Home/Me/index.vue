@@ -16,20 +16,14 @@
       </el-row>
     </div>
     <div class="order">
-      <el-row>
-        <el-col :span="12">
-          <div class="service-order">
-            <i class="icon icon-briefcase"></i>
-            <span class="tag">服务订单</span>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="need-order">
-            <i class="icon icon-clipboard"></i>
-            <span class="tag">需求订单</span>
-          </div>
-        </el-col>
-      </el-row>
+      <div class="service-order">
+        <i class="icon icon-briefcase"></i>
+        <span class="tag">服务订单</span>
+      </div>
+      <div class="need-order">
+        <i class="icon icon-clipboard"></i>
+        <span class="tag">需求订单</span>
+      </div>
     </div>
     <ul class="optional">
       <li>
@@ -48,10 +42,12 @@
         <i class="icon icon-cogs"></i>
         <span class="name">修改个人信息</span>
       </li>
-      <li>
-        <i class="icon icon-user-times"></i>
-        <span class="name">注销</span>
-      </li>
+      <router-link to="/login">
+        <li>
+          <i class="icon icon-user-times"></i>
+          <span class="name">注销</span>
+        </li>
+      </router-link>
       <li>
         <i class="icon icon-group"></i>
         <span class="name">关于我们</span>
@@ -104,8 +100,11 @@ export default {
     line-height 80px
     background #fff
     .service-order
+      display inline-block
+      box-sizing border-box
       border-right 1px solid #ededed
       height 100%
+      width 50%
       .icon
         margin-right 10px
         font-size 40px
@@ -115,8 +114,11 @@ export default {
         font-size 16px
         vertical-align middle
     .need-order
+      display inline-block
+      box-sizing border-box
       border-left 1px solid #ededed
       height 100%
+      width 50%
       .icon
         margin-right 10px
         font-size 40px

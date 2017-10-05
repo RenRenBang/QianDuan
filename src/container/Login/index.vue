@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import router from '@/router'
 export default {
   name: 'login',
   data() {
@@ -40,6 +41,7 @@ export default {
   methods: {
     onSubmit() {
       console.log(this.formInline)
+      router.push('/home')
     }
   }
 }
