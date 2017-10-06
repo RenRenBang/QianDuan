@@ -13,8 +13,8 @@
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="icon-btn" @click="changeActiveBtn('user')">
-            <i class="icon icon-user-o" :class="{'active' : activeBtn === 'user'}"></i>
+          <div class="icon-btn" @click="changeActiveBtn('me')">
+            <i class="icon icon-user-o" :class="{'active' : activeBtn === 'me'}"></i>
           </div>
         </el-col>
       </el-row>
@@ -24,15 +24,19 @@
         <div class="add-layer-content">
           <el-row>
             <el-col :span="6" :offset="3">
-              <div class="btn service-btn">
-                <i class="icon icon-briefcase"></i>
-              </div>
+              <router-link to="/serviceForm">
+                <div class="btn service-btn" @click="toggleAddLayer()">
+                  <i class="icon icon-briefcase"></i>
+                </div>
+              </router-link>
               <div class="tag">发布服务</div>
             </el-col>
             <el-col :span="6" :offset="6">
-              <div class="btn need-btn">
+              <router-link to="/needForm">
+              <div class="btn need-btn" @click="toggleAddLayer()">
                 <i class="icon icon-clipboard"></i>
               </div>
+              </router-link>
               <div class="tag">发布需求</div>
             </el-col>
           </el-row>
@@ -63,6 +67,9 @@ export default {
     toggleAddLayer() {
       this.addLayerActive = !this.addLayerActive
     }
+  },
+  created() {
+    this.activeBtn = document.URL.match(/\/\w+?$/g)[0].slice(1)
   }
 }
 </script>

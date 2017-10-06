@@ -135,6 +135,7 @@ export default {
       font-size 20px
     .title
       display inline-block
+      margin-left -30px
       font-size 20px
       line-height 50px
       vertical-align top

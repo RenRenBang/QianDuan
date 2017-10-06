@@ -5,6 +5,8 @@ import home from 'container/Home'
 import list from 'container/Home/List'
 import me from 'container/Home/Me'
 
+import needForm from 'container/NeedForm'
+import serviceForm from 'container/ServiceForm'
 import login from 'container/Login'
 import signin from 'container/SignIn'
 Vue.use(Router)
@@ -37,6 +39,16 @@ export default new Router({
       path: '/signin',
       name: 'signin',
       component: signin
+    },
+    {
+      path: '/needForm',
+      name: 'needForm',
+      component: needForm
+    },
+    {
+      path: '/serviceForm',
+      name: 'serviceForm',
+      component: serviceForm
     }
   ]
 })
