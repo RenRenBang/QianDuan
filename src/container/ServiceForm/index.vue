@@ -1,36 +1,34 @@
 <template>
   <div class="service-form">
-    <div class="top-bar">
-      <i class="back-btn el-icon-arrow-left" @click="goBack"></i>
-      <span class="title">发布服务</span>
-    </div>
-
-    <el-form :model="ruleForm" class="form" label-position="top" :rules="rules" ref="ruleForm">
-      <el-form-item label="服务名称" prop="serviceName">
-        <el-input size="large" v-model="ruleForm.serviceName" placeholder="一句话描述你出售的服务"></el-input>
-      </el-form-item>
-      <el-form-item label="服务详情" prop="serviceDetail">
-        <el-input type="textarea" :autosize="{ minRows: 3}" v-model.trim.number="ruleForm.serviceDetail" placeholder="希望服务的目标人群 + 服务的范围点"></el-input>
-      </el-form-item>
-      <el-form-item label="我的位置" prop="position">
-        <el-autocomplete size="large" v-model="ruleForm.position" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect" style="width:100%"></el-autocomplete>
-      </el-form-item>
-      <el-form-item label="出价" prop="money">
-        <el-input-number v-model="ruleForm.money" @change="handleChange" :min="1" :max="999" style="width:100%"></el-input-number>
-      </el-form-item>
-      <div class="btn-group">
-        <el-button size="large" class="btn" type="primary" @click="submitForm('ruleForm')">发布</el-button>
-        <br>
-        <el-button size="large" class="btn" @click="resetForm('ruleForm')">重置</el-button>
-      </div>
-    </el-form>
+    <headerPage title="发布服务">
+      <el-form :model="ruleForm" class="form" label-position="top" :rules="rules" ref="ruleForm">
+        <el-form-item label="服务名称" prop="serviceName">
+          <el-input size="large" v-model="ruleForm.serviceName" placeholder="一句话描述你出售的服务"></el-input>
+        </el-form-item>
+        <el-form-item label="服务详情" prop="serviceDetail">
+          <el-input type="textarea" :autosize="{ minRows: 3}" v-model.trim.number="ruleForm.serviceDetail" placeholder="希望服务的目标人群 + 服务的范围点"></el-input>
+        </el-form-item>
+        <el-form-item label="我的位置" prop="position">
+          <el-autocomplete size="large" v-model="ruleForm.position" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect" style="width:100%"></el-autocomplete>
+        </el-form-item>
+        <el-form-item label="出价" prop="money">
+          <el-input-number v-model="ruleForm.money" @change="handleChange" :min="1" :max="999" style="width:100%"></el-input-number>
+        </el-form-item>
+        <div class="btn-group">
+          <el-button size="large" class="btn" type="primary" @click="submitForm('ruleForm')">发布</el-button>
+          <br>
+          <el-button size="large" class="btn" @click="resetForm('ruleForm')">重置</el-button>
+        </div>
+      </el-form>
+    </headerPage>
   </div>
 </template>
 
 <script>
 import router from '@/router'
+import headerPage from 'components/HeaderPage'
 export default {
-  name: 'signin',
+  name: 'serviceForm',
   data() {
     return {
       ruleForm: {
@@ -142,6 +140,9 @@ export default {
   },
   mounted() {
     this.restaurants = this.loadAll()
+  },
+  components: {
+    headerPage
   }
 }
 </script>
@@ -150,25 +151,6 @@ export default {
 <style lang="stylus">
 .service-form
   padding 70px 12px 0 12px
-  .top-bar
-    position fixed
-    top 0
-    left 0
-    right 0
-    z-index 2000
-    text-align center
-    background #F9FAFC
-    .back-btn
-      display inline-block
-      padding 15px
-      float left
-      font-size 20px
-    .title
-      display inline-block
-      margin-left -30px
-      font-size 20px
-      line-height 50px
-      vertical-align top
   .form
     .btn-group
       font-size 0

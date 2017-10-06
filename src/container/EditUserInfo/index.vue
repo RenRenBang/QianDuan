@@ -1,6 +1,6 @@
 <template>
-  <div class="need-form">
-    <headerPage title="发布需求">
+  <div class="edit-userinfo">
+    <headerPage title="修改个人信息">
       <el-form :model="ruleForm" class="form" label-position="top" :rules="rules" ref="ruleForm">
         <el-form-item label="需求名称" prop="needName">
           <el-input size="large" v-model="ruleForm.needName" placeholder="我需要别人帮我做什么"></el-input>
@@ -31,7 +31,7 @@
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
 export default {
-  name: 'needForm',
+  name: 'editUserInfo',
   data() {
     return {
       ruleForm: {
@@ -153,7 +153,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
-.need-form
+.edit-userinfo
   padding 70px 12px 0 12px
   .form
     .btn-group

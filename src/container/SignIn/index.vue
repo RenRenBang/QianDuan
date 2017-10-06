@@ -1,49 +1,47 @@
 <template>
   <div class="signin">
-    <div class="top-bar">
-      <i class="back-btn el-icon-arrow-left" @click="goBack"></i>
-      <span class="title">用户注册</span>
-    </div>
-
-    <el-form :model="ruleForm" class="form" :label-position="'left'" :rules="rules" ref="ruleForm" label-width="80px">
-      <el-form-item label="昵称" prop="nickName">
-        <el-input size="large" v-model="ruleForm.nickName"></el-input>
-      </el-form-item>
-      <el-form-item label="手机号" prop="telNum">
-        <el-input size="large" v-model.trim.number="ruleForm.telNum"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="pass">
-        <el-input size="large" v-model="ruleForm.pass"></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
-        <el-input size="large" v-model="ruleForm.checkPass"></el-input>
-      </el-form-item>
-      <el-form-item label="真实姓名" prop="realName">
-        <el-input size="large" v-model="ruleForm.realName"></el-input>
-      </el-form-item>
-      <el-form-item class="upload" label="身份证" prop="idCard">
-        <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
-        <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
-        <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="idcard">
-          <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp;在这里添加身份证正面照片</i>
-        </el-upload>
-        <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="idcard">
-          <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp;在这里添加身份证背面照片</i>
-        </el-upload>
-      </el-form-item>
-      <div class="btn-group">
-        <el-button size="large" class="signin-btn" type="primary" @click="submitForm('ruleForm')">注册</el-button>
-        <br>
-        <el-button size="large" class="signin-btn" @click="resetForm('ruleForm')">重置</el-button>
-      </div>
-    </el-form>
+    <headerPage title="用户注册">
+      <el-form :model="ruleForm" class="form" :label-position="'left'" :rules="rules" ref="ruleForm" label-width="80px">
+        <el-form-item label="昵称" prop="nickName">
+          <el-input size="large" v-model="ruleForm.nickName"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="telNum">
+          <el-input size="large" v-model.trim.number="ruleForm.telNum"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="pass">
+          <el-input size="large" v-model="ruleForm.pass"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPass">
+          <el-input size="large" v-model="ruleForm.checkPass"></el-input>
+        </el-form-item>
+        <el-form-item label="真实姓名" prop="realName">
+          <el-input size="large" v-model="ruleForm.realName"></el-input>
+        </el-form-item>
+        <el-form-item class="upload" label="身份证" prop="idCard">
+          <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
+          <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
+          <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="idcard">
+            <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp;在这里添加身份证正面照片</i>
+          </el-upload>
+          <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="idcard">
+            <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp;在这里添加身份证背面照片</i>
+          </el-upload>
+        </el-form-item>
+        <div class="btn-group">
+          <el-button size="large" class="signin-btn" type="primary" @click="submitForm('ruleForm')">注册</el-button>
+          <br>
+          <el-button size="large" class="signin-btn" @click="resetForm('ruleForm')">重置</el-button>
+        </div>
+      </el-form>
+    </headerPage>
   </div>
 </template>
 
 <script>
 import router from '@/router'
+import headerPage from 'components/HeaderPage'
 export default {
   name: 'signin',
   data() {
@@ -112,6 +110,9 @@ export default {
     goBack() {
       router.go(-1)
     }
+  },
+  components: {
+    headerPage
   }
 }
 </script>

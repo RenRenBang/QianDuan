@@ -39,8 +39,10 @@
         <span class="name">修改个人信息</span>
       </li>
       <li>
-        <i class="icon icon-cogs"></i>
-        <span class="name">修改个人信息</span>
+        <router-link to="/editUserInfo">
+          <i class="icon icon-cogs"></i>
+          <span class="name">修改个人信息</span>
+        </router-link>
       </li>
       <router-link to="/login">
         <li>
@@ -48,10 +50,12 @@
           <span class="name">注销</span>
         </li>
       </router-link>
-      <li>
-        <i class="icon icon-group"></i>
-        <span class="name">关于我们</span>
-      </li>
+      <router-link to="/aboutUs">
+        <li>
+          <i class="icon icon-group"></i>
+          <span class="name">关于我们</span>
+        </li>
+      </router-link>
     </ul>
   </div>
 </template>
