@@ -11,7 +11,7 @@
 
 <script>
 import tabBar from './TabBar'
-import router from '@/router'
+// import router from '@/router'
 export default {
   name: 'home',
   data() {
@@ -22,9 +22,6 @@ export default {
   },
   components: {
     tabBar
-  },
-  created() {
-    router.push('home/list')
   }
 }
 </script>

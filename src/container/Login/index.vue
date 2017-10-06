@@ -41,7 +41,7 @@ export default {
   methods: {
     onSubmit() {
       console.log(this.formInline)
-      router.push('/home')
+      router.push('/home/list')
     }
   }
 }
