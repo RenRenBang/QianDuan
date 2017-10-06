@@ -149,6 +149,6 @@ export default {
           color #2196F3
       .name
         color #475669
-        font-size 18px
+        font-size 16px
         vertical-align middle
 </style>

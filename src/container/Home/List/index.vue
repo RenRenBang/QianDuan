@@ -74,23 +74,30 @@ export default {
 <style lang="stylus" scoped>
 .list
   width 100%
+  height 100%
+  background #ededed
   .wrapper
     width 100%
     overflow hidden
-    background #f9fafc
+    background #F9FAFC
     .sort-box
-      width 510px
+      width 490px
+      font-size 0
       white-space nowrap
       .sort-item
         display inline-block
         box-sizing border-box
-        margin-top 6px
-        border-left 2px solid #ededed
-        height 60px
+        margin-top 4px
+        padding-top 10px
+        border-right 2px solid #ededed
+        height 70px
         width 70px
         font-size 0
         text-align center
+        color #475669
+        font-weight 200
         white-space normal
+        transition .3s
         .icon
           display inline-block
           font-size 30px
@@ -100,6 +107,6 @@ export default {
           margin-top 5px
           font-size 14px
         &.active
-          color #fff
+          color #F9FAFC
           background #20A0FF
 </style>
