@@ -1,7 +1,10 @@
 <template>
   <div class="signin">
-    <i class="back-btn el-icon-arrow-left" @click="goBack"></i>  
-    <h1 class="title">用户注册</h1>
+    <div class="top-bar">
+      <i class="back-btn el-icon-arrow-left" @click="goBack"></i>
+      <span class="title">用户注册</span>
+    </div>
+
     <el-form :model="ruleForm" class="form" :label-position="'left'" :rules="rules" ref="ruleForm" label-width="80px">
       <el-form-item label="昵称" prop="nickName">
         <el-input size="large" v-model="ruleForm.nickName"></el-input>
@@ -116,15 +119,25 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .signin
-  padding 10px 12px 0 12px
-  .back-btn
-    display inline-block
-    padding 10px
-    font-size 20px
-  .title
-    line-height 110px
-    font-size 40px
+  padding 70px 12px 0 12px
+  .top-bar
+    position fixed
+    top 0
+    left 0
+    right 0
+    z-index 2000
     text-align center
+    background #F9FAFC
+    .back-btn
+      display inline-block
+      padding 15px
+      float left
+      font-size 20px
+    .title
+      display inline-block
+      font-size 20px
+      line-height 50px
+      vertical-align top
   .form
     .btn-group
       font-size 0
