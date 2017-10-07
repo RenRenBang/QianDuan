@@ -1,7 +1,7 @@
 <template>
   <div class="signin">
     <headerPage title="用户注册">
-      <el-form :model="ruleForm" class="form" :label-position="'left'" :rules="rules" ref="ruleForm" label-width="80px">
+      <el-form :model="ruleForm" class="form" label-position="top" :rules="rules" ref="ruleForm">
         <el-form-item label="昵称" prop="nickName">
           <el-input size="large" v-model="ruleForm.nickName"></el-input>
         </el-form-item>
@@ -17,16 +17,19 @@
         <el-form-item label="真实姓名" prop="realName">
           <el-input size="large" v-model="ruleForm.realName"></el-input>
         </el-form-item>
-        <el-form-item class="upload" label="身份证" prop="idCard">
+        <el-form-item label="身份证号" prop="idNum">
+          <el-input size="large" v-model.trim="ruleForm.idNum"></el-input>
+        </el-form-item>
+        <el-form-item class="upload" label="身份证照" prop="idCard">
           <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
           <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
           <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="imageUrl" :src="imageUrl" class="idcard">
-            <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp;在这里添加身份证正面照片</i>
+            <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp在这里添加身份证正面照片</i>
           </el-upload>
           <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="imageUrl" :src="imageUrl" class="idcard">
-            <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp;在这里添加身份证背面照片</i>
+            <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp在这里添加身份证背面照片</i>
           </el-upload>
         </el-form-item>
         <div class="btn-group">
@@ -64,6 +67,17 @@ export default {
         callback()
       }
     }
+    var IdentityCodeValid = (rule, code, callback) => {
+      code += ''
+      var city = { 11: '北京', 12: '天津', 13: '河北', 14: '山西', 15: '内蒙古', 21: '辽宁', 22: '吉林', 23: '黑龙江 ', 31: '上海', 32: '江苏', 33: '浙江', 34: '安徽', 35: '福建', 36: '江西', 37: '山东', 41: '河南', 42: '湖北 ', 43: '湖南', 44: '广东', 45: '广西', 46: '海南', 50: '重庆', 51: '四川', 52: '贵州', 53: '云南', 54: '西藏 ', 61: '陕西', 62: '甘肃', 63: '青海', 64: '宁夏', 65: '新疆', 71: '台湾', 81: '香港', 82: '澳门', 91: '国外 ' }
+      if (!code || !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(code)) {
+        callback(new Error('身份证号格式错误'))
+      } else if (!city[code.substr(0, 2)]) {
+        callback(new Error('地址编码错误'))
+      } else {
+        callback()
+      }
+    }
     return {
       ruleForm: {
         nickName: '',
@@ -71,7 +85,8 @@ export default {
         pass: '',
         checkPass: '',
         realName: '',
-        idCard: ''
+        idNum: null,
+        idCard: null
       },
       rules: {
         nickName: [
@@ -89,6 +104,10 @@ export default {
         ],
         realName: [
           { required: true, message: '请输入您的真实姓名', trigger: 'change' }
+        ],
+        idNum: [
+          { required: true, message: '请输入身份证号', trigger: 'change' },
+          { validator: IdentityCodeValid, trigger: 'change' }
         ]
       }
     }
@@ -98,6 +117,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           alert('submit!')
+          router.go(-1)
         } else {
           console.log('error submit!!')
           return false
@@ -106,9 +126,6 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
-    },
-    goBack() {
-      router.go(-1)
     }
   },
   components: {
@@ -117,7 +134,7 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Add 'scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .signin
   padding 70px 12px 0 12px
@@ -149,23 +166,23 @@ export default {
     .upload
       .idcard-uploader
         .el-upload
-          border: 1px dashed #d9d9d9;
-          border-radius: 6px;
-          width: 100%;
-          cursor: pointer;
-          position: relative;
-          overflow: hidden;
+          border: 1px dashed #d9d9d9
+          border-radius: 6px
+          width: 100%
+          cursor: pointer
+          position: relative
+          overflow: hidden
           &:hover
-            border-color: #20a0ff;
+            border-color: #20a0ff
         .idcard-uploader-icon
-          font-size: 18px;
-          color: #8c939d;
-          width: 100%;
-          height: 178px;
-          line-height: 178px;
-          text-align: center;
+          font-size: 18px
+          color: #8c939d
+          width: 100%
+          height: 178px
+          line-height: 178px
+          text-align: center
         .idcard
-          width: 100%;
-          height: 178px;
-          display: block;
+          width: 100%
+          height: 178px
+          display: block
 </style>

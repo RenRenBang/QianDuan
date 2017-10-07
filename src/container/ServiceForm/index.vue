@@ -43,7 +43,7 @@ export default {
           { min: 3, message: '不能短于3个字符哦', trigger: 'blur' }
         ],
         serviceDetail: [
-          { required: true, message: '这里是必填项', trigger: 'change' }
+          { required: true, message: '请填写正确的信息', trigger: 'change' }
         ],
         position: [
           { required: true, message: '请填写正确的位置', trigger: 'change' }
@@ -56,6 +56,12 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm)
+          this.$notify({
+            title: '成功',
+            message: '您的服务已发布',
+            type: 'success'
+          })
+          router.go(-1)
         } else {
           console.log('error submit!!')
           return false
@@ -64,9 +70,6 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
-    },
-    goBack() {
-      router.go(-1)
     },
     loadAll() {
       return [

@@ -60,6 +60,12 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm)
+          this.$notify({
+            title: '成功',
+            message: '您的需求已发布',
+            type: 'success'
+          })
+          router.go(-1)
         } else {
           console.log('error submit!!')
           return false
@@ -68,9 +74,6 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
-    },
-    goBack() {
-      router.go(-1)
     },
     loadAll() {
       return [
