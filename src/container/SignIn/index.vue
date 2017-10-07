@@ -138,25 +138,6 @@ export default {
 <style lang="stylus">
 .signin
   padding 70px 12px 0 12px
-  .top-bar
-    position fixed
-    top 0
-    left 0
-    right 0
-    z-index 2000
-    text-align center
-    background #F9FAFC
-    .back-btn
-      display inline-block
-      padding 15px
-      float left
-      font-size 20px
-    .title
-      display inline-block
-      margin-left -30px
-      font-size 20px
-      line-height 50px
-      vertical-align top
   .form
     .btn-group
       font-size 0
