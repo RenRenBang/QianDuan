@@ -27,16 +27,8 @@
     </div>
     <ul class="optional">
       <li>
-        <i class="icon icon-cogs"></i>
-        <span class="name">修改个人信息</span>
-      </li>
-      <li>
-        <i class="icon icon-cogs"></i>
-        <span class="name">修改个人信息</span>
-      </li>
-      <li>
-        <i class="icon icon-cogs"></i>
-        <span class="name">修改个人信息</span>
+        <i class="icon icon-bookmark"></i>
+        <span class="name">收藏的服务</span>
       </li>
       <li>
         <router-link to="/editUserInfo">
@@ -145,6 +137,8 @@ export default {
         margin-right 10px
         font-size 30px
         vertical-align middle
+        &.icon-bookmark
+          color #FF6F00
         &.icon-cogs
           color #9E9E9E
         &.icon-user-times
