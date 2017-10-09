@@ -30,10 +30,9 @@ export default {
 <style lang="stylus" scoped>
 .home
   position relative
-  box-sizing border-box
   height 100%
   .tab-bar-wrapper
-    position absolute
+    position fixed
     left 0
     right 0
     bottom 0

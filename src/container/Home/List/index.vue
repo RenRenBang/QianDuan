@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <headBar></headBar>
-    <div ref="wrapper" class="wrapper">
+    <div ref="sort-wrapper" class="sort-wrapper">
       <ul class="sort-box">
         <li class="sort-item" :class="{'active' : activeSort === 'all'}" @click="sortActive('all')">
           <i class="icon icon-list-ul"></i><br>
@@ -33,17 +33,32 @@
         </li>
       </ul>
     </div>
+    <div class="list-card">
+      <serviceListCard v-for="i in 10" :key="i" :data="data"></serviceListCard>
+    </div>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
 import headBar from './HeadBar'
+import serviceListCard from 'components/ServiceListCard'
 export default {
   name: 'list',
   data() {
     return {
-      activeSort: 'all'
+      activeSort: 'all',
+      data: {
+        title: 'test title',
+        buyNum: 4,
+        likeNum: 103,
+        location: '全国',
+        price: 998,
+        provider: {
+          name: 'Tom',
+          avatar: 'https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg'
+        }
+      }
     }
   },
   methods: {
@@ -52,7 +67,7 @@ export default {
     },
     _initScroll() {
       if (!this.scroll) {
-        this.scroll = new BScroll(this.$refs['wrapper'], {scrollX: true, click: true})
+        this.scroll = new BScroll(this.$refs['sort-wrapper'], {scrollX: true, click: true})
         console.log(this.scroll)
       } else {
         this.scroll.refresh()
@@ -65,7 +80,8 @@ export default {
     })
   },
   components: {
-    headBar
+    headBar,
+    serviceListCard
   }
 }
 </script>
@@ -73,10 +89,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
 .list
+  padding-bottom 115px
   width 100%
-  height 100%
+  min-height 100%
   background #ededed
-  .wrapper
+  .sort-wrapper
     width 100%
     overflow hidden
     background #F9FAFC
