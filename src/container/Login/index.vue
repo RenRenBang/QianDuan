@@ -1,12 +1,12 @@
 <template>
   <div class="login">
     <h1 class="title">人人帮</h1>
-    <el-form :model="formInline" class="form">
+    <el-form :model="loginForm" class="form">
       <el-form-item label="用户名">
-        <el-input size="large" v-model="formInline.userName"></el-input>
+        <el-input size="large" v-model="loginForm.uphone"></el-input>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input type="password" size="large" v-model="formInline.password"></el-input>
+        <el-input type="password" size="large" v-model="loginForm.upassword"></el-input>
       </el-form-item>
       <el-form-item width="100%">
         <el-button class="login-btn" type="primary" size="large" @click="onSubmit">登录</el-button>
@@ -27,21 +27,34 @@
 </template>
 
 <script>
+import qs from 'qs'
 import router from '@/router'
 export default {
   name: 'login',
   data() {
     return {
-      formInline: {
-        userName: '',
-        password: ''
+      loginForm: {
+        uphone: '',
+        upassword: ''
       }
     }
   },
   methods: {
     onSubmit() {
-      console.log(this.formInline)
+      console.log(this.loginForm)
+      this.logIn()
       router.push('/home/list')
+    },
+    logIn() {
+      this.$http.post('http://localhost:8080/api/to_login', qs.stringify(this.loginForm), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then((response) => {
+        console.log(response.data)
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }
 }

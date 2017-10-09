@@ -1,6 +1,6 @@
 <template>
   <div class="service-list-card">
-    <el-card v-if="data">
+    <el-card v-if="data" :body-style="{'padding': '10px 20px'}">
       <h1 class="title" slot="header">{{data.title}}</h1>
       <div class="provider">
         <img :src="data.provider.avatar" alt="avatar" class="avatar">
@@ -46,21 +46,23 @@ export default {
   padding 0 10px
   margin 10px 0
   .title
-    font-size 20px
+    font-size 24px
     text-align left
   .provider
-    margin 10px 0
     font-size 0
     .avatar
-      width 70px
+      width 50px
+      height 50px
       border-radius 50%
     .name
       margin-left 10px
-      font-size 14px
-      line-height 70px
+      font-size 18px
+      font-weight 200
+      line-height 50px
       vertical-align top
   .price
-    font-size 18px
+    margin 10px 0
+    font-size 20px
     color #FF6F00
   .detail
     width 100%
