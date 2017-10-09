@@ -40,12 +40,14 @@
         </li>
       </ul>
     </div>
-    <div v-if="selectMode === '1'">
-      <serviceListCard v-for="i in 10" :key="i" :data="data"></serviceListCard>
-    </div>
-    <div v-if="selectMode !== '1'">
-      <needListCard v-for="i in 10" :key="i" :data="data2"></needListCard>
-    </div>
+    <transition-group name="fade" mode="in-out">
+      <div v-show="selectMode === '1'" key="service" style="position:absolute;width:100%">
+        <serviceListCard v-for="i in 10" :key="i" :data="data"></serviceListCard>
+      </div>
+      <div v-show="selectMode === '2'" key="need" style="position:absolute;width:100%">
+        <needListCard v-for="i in 10" :key="i" :data="data2"></needListCard>
+      </div>
+    </transition-group>
   </div>
 </template>
 
