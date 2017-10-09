@@ -1,29 +1,36 @@
 <template>
   <div class="list">
-    <headBar></headBar>
+    <div class="head-bar shadow">
+      <el-input placeholder="请输入内容" v-model="searchWd" icon="search" :on-icon-click="handleSearch">
+        <el-select v-model="selectMode" slot="prepend" placeholder="请选择" class="select">
+          <el-option label="服务" value="1"></el-option>
+          <el-option label="需求" value="2"></el-option>
+        </el-select>
+      </el-input>
+    </div>
     <div ref="sort-wrapper" class="sort-wrapper">
       <ul class="sort-box">
-        <li class="sort-item" :class="{'active' : activeSort === 'all'}" @click="sortActive('all')">
+        <li class="sort-item" :class="{'active shadow' : activeSort === 'all'}" @click="sortActive('all')">
           <i class="icon icon-list-ul"></i><br>
           <span class="tag">全部</span>
         </li>
-        <li class="sort-item" :class="{'active' : activeSort === 'home'}" @click="sortActive('home')">
+        <li class="sort-item" :class="{'active shadow' : activeSort === 'home'}" @click="sortActive('home')">
           <i class="icon icon-home"></i><br>
           <span class="tag">家政</span>
         </li>
-        <li class="sort-item" :class="{'active' : activeSort === 'edu'}" @click="sortActive('edu')">
+        <li class="sort-item" :class="{'active shadow' : activeSort === 'edu'}" @click="sortActive('edu')">
           <i class="icon icon-graduation-cap"></i><br>
           <span class="tag">教育</span>
         </li>
-        <li class="sort-item" :class="{'active' : activeSort === 'net'}" @click="sortActive('net')">
+        <li class="sort-item" :class="{'active shadow' : activeSort === 'net'}" @click="sortActive('net')">
           <i class="icon icon-sphere"></i><br>
           <span class="tag">互联网</span>
         </li>
-        <li class="sort-item" :class="{'active' : activeSort === 'life'}" @click="sortActive('life')">
+        <li class="sort-item" :class="{'active shadow' : activeSort === 'life'}" @click="sortActive('life')">
           <i class="icon icon-mug"></i><br>
           <span class="tag">生活</span>
         </li>
-        <li class="sort-item" :class="{'active' : activeSort === 'design'}" @click="sortActive('design')">
+        <li class="sort-item" :class="{'active shadow' : activeSort === 'design'}" @click="sortActive('design')">
           <i class="icon icon-magic"></i><br>
           <span class="tag">设计</span>
         </li>
@@ -33,20 +40,25 @@
         </li>
       </ul>
     </div>
-    <div class="list-card">
+    <div v-if="selectMode === '1'">
       <serviceListCard v-for="i in 10" :key="i" :data="data"></serviceListCard>
+    </div>
+    <div v-if="selectMode !== '1'">
+      <needListCard v-for="i in 10" :key="i" :data="data2"></needListCard>
     </div>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
-import headBar from './HeadBar'
 import serviceListCard from 'components/ServiceListCard'
+import needListCard from 'components/NeedListCard'
 export default {
   name: 'list',
   data() {
     return {
+      searchWd: '',
+      selectMode: '1',
       activeSort: 'all',
       data: {
         title: 'test title',
@@ -58,6 +70,16 @@ export default {
           name: 'Tom',
           avatar: 'https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg'
         }
+      },
+      data2: {
+        title: 'test title',
+        needNum: 4,
+        location: '全国',
+        price: 92,
+        provider: {
+          name: 'Jack',
+          avatar: 'https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg'
+        }
       }
     }
   },
@@ -67,11 +89,14 @@ export default {
     },
     _initScroll() {
       if (!this.scroll) {
-        this.scroll = new BScroll(this.$refs['sort-wrapper'], {scrollX: true, click: true})
+        this.scroll = new BScroll(this.$refs['sort-wrapper'], { scrollX: true, click: true })
         console.log(this.scroll)
       } else {
         this.scroll.refresh()
       }
+    },
+    handleSearch() {
+      console.log(this.searchWd)
     }
   },
   mounted() {
@@ -80,8 +105,8 @@ export default {
     })
   },
   components: {
-    headBar,
-    serviceListCard
+    serviceListCard,
+    needListCard
   }
 }
 </script>
@@ -93,6 +118,13 @@ export default {
   width 100%
   min-height 100%
   background #ededed
+  .head-bar
+    box-sizing border-box
+    padding 10px
+    width 100%
+    background #f9fafc
+    .select
+      width 80px
   .sort-wrapper
     width 100%
     overflow hidden
@@ -106,7 +138,6 @@ export default {
         box-sizing border-box
         margin-top 4px
         padding-top 10px
-        border-right 2px solid #ededed
         height 70px
         width 70px
         font-size 0
