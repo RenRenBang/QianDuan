@@ -62,7 +62,7 @@ export default {
   methods: {
     changeActiveBtn(v) {
       this.activeBtn = v
-      v === 'list' ? router.push(v) : router.push('me')
+      v === 'list' ? router.push('/home/' + v) : router.push('/home/me')
     },
     toggleAddLayer() {
       this.addLayerActive = !this.addLayerActive

@@ -12,13 +12,13 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="手机号" prop="telNum">
-          <el-input size="large" v-model.trim.number="ruleForm.telNum" disabled="true"></el-input>
+          <el-input size="large" v-model.trim.number="ruleForm.telNum" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="真实姓名" prop="realName">
-          <el-input size="large" v-model="ruleForm.realName" disabled="true"></el-input>
+          <el-input size="large" v-model="ruleForm.realName" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="身份证号" prop="idNum">
-          <el-input size="large" v-model.trim="ruleForm.idNum" disabled="true"></el-input>
+          <el-input size="large" v-model.trim="ruleForm.idNum" :disabled="true"></el-input>
         </el-form-item>
         <div class="btn-group">
           <el-button size="large" class="btn" type="primary" @click="submitForm('ruleForm')">确认更改</el-button>

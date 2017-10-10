@@ -41,10 +41,10 @@
       </ul>
     </div>
     <transition-group name="fade" mode="in-out">
-      <div v-show="selectMode === '1'" key="service" style="position:absolute;width:100%">
+      <div v-show="selectMode === '1'" key="service" class="list-group">
         <serviceListCard v-for="i in 10" :key="i" :data="data"></serviceListCard>
       </div>
-      <div v-show="selectMode === '2'" key="need" style="position:absolute;width:100%">
+      <div v-show="selectMode === '2'" key="need" class="list-group">
         <needListCard v-for="i in 10" :key="i" :data="data2"></needListCard>
       </div>
     </transition-group>
@@ -116,10 +116,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
 .list
-  padding-bottom 115px
   width 100%
   min-height 100%
-  background #ededed
   .head-bar
     box-sizing border-box
     padding 10px
@@ -159,4 +157,9 @@ export default {
         &.active
           color #F9FAFC
           background #20A0FF
+  .list-group
+    position absolute
+    padding-bottom 115px
+    width 100%
+    background #ededed
 </style>

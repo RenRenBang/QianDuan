@@ -12,10 +12,10 @@
           <el-autocomplete size="large" v-model="ruleForm.position" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect" style="width:100%"></el-autocomplete>
         </el-form-item>
         <el-form-item label="赏金（元／人）" prop="money">
-          <el-input-number v-model="ruleForm.money" @change="handleChange" :min="1" :max="999" style="width:100%"></el-input-number>
+          <el-input-number v-model="ruleForm.money" :min="1" :max="999" style="width:100%"></el-input-number>
         </el-form-item>
         <el-form-item label="人数要求" prop="peopleNum">
-          <el-input-number v-model="ruleForm.peopleNum" @change="handleChange" :min="1" :max="100" style="width:100%"></el-input-number>
+          <el-input-number v-model="ruleForm.peopleNum" :min="1" :max="100" style="width:100%"></el-input-number>
         </el-form-item>
         <div class="btn-group">
           <el-button size="large" class="btn" type="primary" @click="submitForm('ruleForm')">发布</el-button>
