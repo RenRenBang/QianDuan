@@ -27,8 +27,10 @@
     </div>
     <ul class="optional">
       <li>
-        <i class="icon icon-bookmark"></i>
-        <span class="name">收藏的服务</span>
+        <router-link to="/collection">
+          <i class="icon icon-bookmark"></i>
+          <span class="name">收藏的服务</span>
+        </router-link>
       </li>
       <li>
         <router-link to="/editUserInfo">

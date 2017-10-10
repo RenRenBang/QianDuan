@@ -1,19 +1,21 @@
 <template>
   <div class="need-list-card">
-    <el-card v-if="data" :body-style="{'padding': '10px 20px'}">
-      <h1 class="title" slot="header">{{data.title}}</h1>
-      <div class="provider">
-        <img :src="data.provider.avatar" alt="avatar" class="avatar">
-        <span class="name">{{data.provider.name}}</span>
-      </div>
-      <div class="price">{{data.price}} 元/人</div>
-      <div class="detail clearfix">
-        <span class="need-num">需{{data.needNum}}人</span>
-        <span class="location">
-          <i class="icon icon-map"></i>{{data.location}}
-        </span>
-      </div>
-    </el-card>
+    <router-link :to="`/NeedDetail/${data.id}`">
+      <el-card v-if="data" :body-style="{'padding': '10px 20px'}">
+        <h1 class="title" slot="header">{{data.title}}</h1>
+        <div class="provider">
+          <img :src="data.provider.avatar" alt="avatar" class="avatar">
+          <span class="name">{{data.provider.name}}</span>
+        </div>
+        <div class="price">{{data.price}} 元/人</div>
+        <div class="detail clearfix">
+          <span class="need-num">需{{data.needNum}}人</span>
+          <span class="location">
+            <i class="icon icon-map"></i>{{data.location}}
+          </span>
+        </div>
+      </el-card>
+    </router-link>
   </div>
 </template>
 

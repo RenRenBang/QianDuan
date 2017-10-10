@@ -63,6 +63,7 @@ export default {
       selectMode: '1',
       activeSort: 'all',
       data: {
+        id: 1,
         title: 'test title',
         buyNum: 4,
         likeNum: 103,
@@ -74,6 +75,7 @@ export default {
         }
       },
       data2: {
+        id: 2,
         title: 'test title',
         needNum: 4,
         location: '全国',

@@ -10,6 +10,9 @@ import signin from 'container/SignIn'
 import needForm from 'container/NeedForm'
 import serviceForm from 'container/ServiceForm'
 import editUserInfo from 'container/EditUserInfo'
+import collection from 'container/Collection'
+import serviceDetail from 'container/ServiceDetail'
+import needDetail from 'container/NeedDetail'
 import aboutUs from 'container/AboutUs'
 
 Vue.use(Router)
@@ -57,6 +60,21 @@ export default new Router({
       path: '/editUserInfo',
       name: 'editUserInfo',
       component: editUserInfo
+    },
+    {
+      path: '/collection',
+      name: 'collection',
+      component: collection
+    },
+    {
+      path: '/serviceDetail/:id',
+      name: 'serviceDetail',
+      component: serviceDetail
+    },
+    {
+      path: '/needDetail/:id',
+      name: 'needDetail',
+      component: needDetail
     },
     {
       path: '/aboutUs',
