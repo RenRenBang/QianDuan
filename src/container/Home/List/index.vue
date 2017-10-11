@@ -79,6 +79,7 @@ export default {
         title: 'test title',
         needNum: 4,
         location: '全国',
+        deadline: 3,
         price: 92,
         provider: {
           name: 'Jack',

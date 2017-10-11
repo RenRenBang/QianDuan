@@ -59,7 +59,8 @@ export default {
           this.$notify({
             title: '成功',
             message: '您的服务已发布',
-            type: 'success'
+            type: 'success',
+            duration: 1500
           })
           router.go(-1)
         } else {

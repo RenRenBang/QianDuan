@@ -9,6 +9,7 @@
         </div>
         <div class="price">{{data.price}} 元/人</div>
         <div class="detail clearfix">
+          <span class="deadline">{{data.deadline}}天后失效&nbsp;&nbsp;&nbsp;|</span>
           <span class="need-num">需{{data.needNum}}人</span>
           <span class="location">
             <i class="icon icon-map"></i>{{data.location}}
@@ -69,8 +70,12 @@ export default {
     width 100%
     color #8492A6
     line-height 24px
+    .deadline
+      float left
+      font-size 14px
     .need-num
       float left
+      padding-left 10px
       font-size 14px
     .location
       float right

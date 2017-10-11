@@ -17,6 +17,10 @@
         <el-form-item label="人数要求" prop="peopleNum">
           <el-input-number v-model="ruleForm.peopleNum" :min="1" :max="100" style="width:100%"></el-input-number>
         </el-form-item>
+        <el-form-item label="截止日期" prop="deadline">
+          <el-date-picker v-model="ruleForm.deadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" style="width:100%">
+          </el-date-picker>
+        </el-form-item>
         <div class="btn-group">
           <el-button size="large" class="btn" type="primary" @click="submitForm('ruleForm')">发布</el-button>
           <br>
@@ -39,7 +43,8 @@ export default {
         needDetail: '',
         position: '',
         money: 1,
-        peopleNum: 1
+        peopleNum: 1,
+        deadline: null
       },
       rules: {
         needName: [
@@ -51,7 +56,15 @@ export default {
         ],
         position: [
           { required: true, message: '请填写正确的位置', trigger: 'change' }
+        ],
+        deadline: [
+          { required: true, message: '这里是必填项', trigger: 'change', type: 'date' }
         ]
+      },
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now() - 8.64e7
+        }
       }
     }
   },
@@ -63,7 +76,8 @@ export default {
           this.$notify({
             title: '成功',
             message: '您的需求已发布',
-            type: 'success'
+            type: 'success',
+            duration: 1500
           })
           router.go(-1)
         } else {
@@ -164,4 +178,7 @@ export default {
       .btn
         margin 5px 0
         width 100%
+  .el-picker-panel
+    .el-date-picker
+      width 100%
 </style>

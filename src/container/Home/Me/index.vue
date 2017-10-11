@@ -16,13 +16,13 @@
       </el-row>
     </div>
     <div class="order">
-      <div class="service-order">
+      <div class="buy-order">
         <i class="icon icon-briefcase"></i>
-        <span class="tag">服务订单</span>
+        <span class="tag">购买订单</span>
       </div>
-      <div class="need-order">
+      <div class="sell-order">
         <i class="icon icon-clipboard"></i>
-        <span class="tag">需求订单</span>
+        <span class="tag">售出订单</span>
       </div>
     </div>
     <ul class="optional">
@@ -97,7 +97,7 @@ export default {
     text-align center
     line-height 80px
     background #fff
-    .service-order
+    .buy-order
       display inline-block
       box-sizing border-box
       border-right 1px solid #ededed
@@ -111,7 +111,7 @@ export default {
       .tag
         font-size 16px
         vertical-align middle
-    .need-order
+    .sell-order
       display inline-block
       box-sizing border-box
       border-left 1px solid #ededed
