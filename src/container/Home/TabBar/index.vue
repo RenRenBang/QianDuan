@@ -78,7 +78,6 @@ export default {
 <style lang="stylus" scoped>
 .tab-bar-wrapper
   height 60px
-  overflow hidden
   .tab-bar
     position relative
     top 12px

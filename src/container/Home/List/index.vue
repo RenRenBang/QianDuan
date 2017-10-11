@@ -89,8 +89,12 @@ export default {
     }
   },
   methods: {
+    clearFocus() {
+      document.activeElement.blur()
+    },
     sortActive(v) {
       this.activeSort = v
+      this.clearFocus()
     },
     _initScroll() {
       if (!this.scroll) {
