@@ -32,6 +32,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .header-page
+  box-sizing border-box
+  padding-top 50px
+  min-height 100%
   .top-bar
     position fixed
     top 0

@@ -38,16 +38,16 @@
           <span class="name">修改个人信息</span>
         </router-link>
       </li>
-      <router-link to="/login">
-        <li>
-          <i class="icon icon-user-times"></i>
-          <span class="name">注销</span>
-        </li>
-      </router-link>
       <router-link to="/aboutUs">
         <li>
           <i class="icon icon-group"></i>
           <span class="name">关于我们</span>
+        </li>
+      </router-link>
+      <router-link to="/login">
+        <li class="log-out">
+          <i class="icon icon-user-times"></i>
+          <span class="name">注销</span>
         </li>
       </router-link>
     </ul>
@@ -127,7 +127,6 @@ export default {
         vertical-align middle
   .optional
     margin-top 10px
-    background #fff
     li
       box-sizing border-box
       padding 0 20px
@@ -135,6 +134,12 @@ export default {
       border-bottom 1px solid #ededed
       height 60px
       line-height 60px
+      background #fff
+      &.log-out
+        margin-top 10px
+        .name
+          color #EF5350
+          font-weight bold
       .icon
         margin-right 10px
         font-size 30px

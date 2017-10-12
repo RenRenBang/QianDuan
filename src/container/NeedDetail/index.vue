@@ -29,5 +29,5 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .need-detail
-  padding 70px 12px 0 12px
+  padding 10px 12px 0 12px
 </style>

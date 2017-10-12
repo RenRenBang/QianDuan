@@ -51,8 +51,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .service-detail
-  box-sizing border-box
-  padding-top 50px
   min-height 100%
   background #ededed
   .brief-info

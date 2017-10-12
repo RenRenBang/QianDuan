@@ -45,6 +45,5 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .collection
-  padding 50px 0 0 0
   background #ededed
 </style>
