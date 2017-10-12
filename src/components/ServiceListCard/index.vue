@@ -2,7 +2,7 @@
   <div class="service-list-card">
     <router-link :to="`/ServiceDetail/${data.id}`">
       <el-card v-if="data" :body-style="{'padding': '10px 20px'}">
-        <h1 class="title" slot="header">{{data.title}}</h1>
+        <h1 class="title" slot="header">{{data.title}}<el-tag type="primary" class="tag">{{data.tag}}</el-tag></h1>
         <div class="provider">
           <img :src="data.provider.avatar" alt="avatar" class="avatar">
           <span class="name">{{data.provider.name}}</span>
@@ -50,6 +50,9 @@ export default {
   .title
     font-size 24px
     text-align left
+    .tag
+      margin-left 10px
+      vertical-align middle
   .provider
     font-size 0
     .avatar
