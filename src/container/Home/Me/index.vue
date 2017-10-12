@@ -26,18 +26,18 @@
       </div>
     </div>
     <ul class="optional">
-      <li>
-        <router-link to="/collection">
+      <router-link to="/collection">
+        <li>
           <i class="icon icon-bookmark"></i>
           <span class="name">收藏的服务</span>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/editUserInfo">
+        </li>
+      </router-link>
+      <router-link to="/editUserInfo">
+        <li>
           <i class="icon icon-cogs"></i>
           <span class="name">修改个人信息</span>
-        </router-link>
-      </li>
+        </li>
+      </router-link>
       <router-link to="/aboutUs">
         <li>
           <i class="icon icon-group"></i>

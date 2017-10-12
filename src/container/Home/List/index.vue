@@ -3,8 +3,8 @@
     <div class="head-bar shadow">
       <el-input placeholder="请输入内容" v-model="searchWd" icon="search" :on-icon-click="handleSearch">
         <el-select v-model="selectMode" slot="prepend" placeholder="请选择" class="select">
-          <el-option label="服务" value="1"></el-option>
           <el-option label="需求" value="2"></el-option>
+          <el-option label="服务" value="1"></el-option>
         </el-select>
       </el-input>
     </div>
@@ -60,11 +60,12 @@ export default {
   data() {
     return {
       searchWd: '',
-      selectMode: '1',
+      selectMode: '2',
       activeSort: 'all',
       data: {
         id: 1,
         title: 'test title',
+        tag: '教育',
         buyNum: 4,
         likeNum: 103,
         location: '全国',
@@ -77,6 +78,7 @@ export default {
       data2: {
         id: 2,
         title: 'test title',
+        tag: '互联网',
         needNum: 4,
         location: '全国',
         deadline: 3,

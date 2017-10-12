@@ -82,7 +82,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .edit-userinfo
-  padding 70px 12px 0 12px
+  padding 20px 12px 0 12px
   .form
     .btn-group
       font-size 0
