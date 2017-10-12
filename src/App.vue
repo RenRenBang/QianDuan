@@ -14,6 +14,8 @@ export default {
 
 <style lang="stylus">
 @import "./assets/stylus/index.styl"
+::-webkit-scrollbar
+  display: none
 html, body
   height 100%
   position absolute

@@ -12,7 +12,7 @@
           <span class="buy-num">{{data.buyNum}}人购买&nbsp;&nbsp;&nbsp;|</span>
           <span class="like-num">{{data.likeNum}}人喜欢</span>
           <span class="location">
-            <i class="icon icon-map"></i>{{data.location}}
+            <i class="icon icon-location-arrow"></i>{{data.location}}
           </span>
         </div>
       </el-card>

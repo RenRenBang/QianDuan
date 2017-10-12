@@ -12,7 +12,7 @@
           <span class="deadline">{{data.deadline}}天后失效&nbsp;&nbsp;&nbsp;|</span>
           <span class="need-num">需{{data.needNum}}人</span>
           <span class="location">
-            <i class="icon icon-map"></i>{{data.location}}
+            <i class="icon icon-location-arrow"></i>{{data.location}}
           </span>
         </div>
       </el-card>
