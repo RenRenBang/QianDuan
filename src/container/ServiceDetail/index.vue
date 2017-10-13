@@ -3,7 +3,7 @@
     <headerPage title="服务详情">
       <!-- id: {{$route.params.id}} -->
       <div class="brief-info">
-        <div class="title">title</div>
+        <div class="title">title<el-tag type="primary" class="tag">SB</el-tag></div>
         <div class="price">100</div>
       </div>
       <div class="describe">
@@ -69,6 +69,9 @@ export default {
     .title
       font-size 24px
       line-height 30px
+      .tag
+        margin-left 10px
+        vertical-align middle
     .price
       font-size 18px
       line-height 30px
