@@ -8,44 +8,54 @@
         </el-select>
       </el-input>
     </div>
-    <div ref="sort-wrapper" class="sort-wrapper">
-      <ul class="sort-box">
-        <li class="sort-item" :class="{'active shadow' : activeSort === 'all'}" @click="sortActive('all')">
-          <i class="icon icon-list-ul"></i><br>
-          <span class="tag">全部</span>
-        </li>
-        <li class="sort-item" :class="{'active shadow' : activeSort === 'home'}" @click="sortActive('home')">
-          <i class="icon icon-home"></i><br>
-          <span class="tag">家政</span>
-        </li>
-        <li class="sort-item" :class="{'active shadow' : activeSort === 'edu'}" @click="sortActive('edu')">
-          <i class="icon icon-graduation-cap"></i><br>
-          <span class="tag">教育</span>
-        </li>
-        <li class="sort-item" :class="{'active shadow' : activeSort === 'net'}" @click="sortActive('net')">
-          <i class="icon icon-sphere"></i><br>
-          <span class="tag">互联网</span>
-        </li>
-        <li class="sort-item" :class="{'active shadow' : activeSort === 'life'}" @click="sortActive('life')">
-          <i class="icon icon-mug"></i><br>
-          <span class="tag">生活</span>
-        </li>
-        <li class="sort-item" :class="{'active shadow' : activeSort === 'design'}" @click="sortActive('design')">
-          <i class="icon icon-magic"></i><br>
-          <span class="tag">设计</span>
-        </li>
-        <li class="sort-item" :class="{'active' : activeSort === 'other'}" @click="sortActive('other')">
-          <i class="icon icon-tongue"></i><br>
-          <span class="tag">其他</span>
-        </li>
-      </ul>
-    </div>
-    <transition-group name="fade" mode="in-out">
-      <div v-show="selectMode === '1'" key="service" class="list-group">
-        <serviceListCard v-for="i in 10" :key="i" :data="data"></serviceListCard>
+    <transition name="fade" mode="in-out">
+      <div ref="sort-wrapper" class="sort-wrapper" v-show="sortBoxVisiable">
+        <ul class="sort-box">
+          <li class="sort-item" :class="{'active shadow' : activeSort === 'all'}" @click="sortActive('all')">
+            <i class="icon icon-list-ul"></i><br>
+            <span class="tag">全部</span>
+          </li>
+          <li class="sort-item" :class="{'active shadow' : activeSort === 'home'}" @click="sortActive('home')">
+            <i class="icon icon-home"></i><br>
+            <span class="tag">家政</span>
+          </li>
+          <li class="sort-item" :class="{'active shadow' : activeSort === 'edu'}" @click="sortActive('edu')">
+            <i class="icon icon-graduation-cap"></i><br>
+            <span class="tag">教育</span>
+          </li>
+          <li class="sort-item" :class="{'active shadow' : activeSort === 'net'}" @click="sortActive('net')">
+            <i class="icon icon-sphere"></i><br>
+            <span class="tag">互联网</span>
+          </li>
+          <li class="sort-item" :class="{'active shadow' : activeSort === 'life'}" @click="sortActive('life')">
+            <i class="icon icon-mug"></i><br>
+            <span class="tag">生活</span>
+          </li>
+          <li class="sort-item" :class="{'active shadow' : activeSort === 'design'}" @click="sortActive('design')">
+            <i class="icon icon-magic"></i><br>
+            <span class="tag">设计</span>
+          </li>
+          <li class="sort-item" :class="{'active' : activeSort === 'other'}" @click="sortActive('other')">
+            <i class="icon icon-tongue"></i><br>
+            <span class="tag">其他</span>
+          </li>
+        </ul>
       </div>
-      <div v-show="selectMode === '2'" key="need" class="list-group">
-        <needListCard v-for="i in 10" :key="i" :data="data2"></needListCard>
+    </transition>
+    <transition-group name="fade" mode="in-out">
+      <div v-show="selectMode === '1'" key="service" class="list-group" ref="list-group2">
+        <ul class="service-list">
+          <li v-for="i in 10" :key="i">
+            <serviceListCard :data="data"></serviceListCard>
+          </li>
+        </ul>
+      </div>
+      <div v-show="selectMode === '2'" key="need" class="list-group" ref="list-group">
+        <ul class="need-list">
+          <li v-for="i in 10" :key="i">
+            <needListCard :data="data2"></needListCard>
+          </li>
+        </ul>
       </div>
     </transition-group>
   </div>
@@ -62,6 +72,7 @@ export default {
       searchWd: '',
       selectMode: '2',
       activeSort: 'all',
+      sortBoxVisiable: true,
       data: {
         id: 1,
         title: 'test title',
@@ -99,18 +110,28 @@ export default {
       this.clearFocus()
     },
     _initScroll() {
-      if (!this.scroll) {
-        this.scroll = new BScroll(this.$refs['sort-wrapper'], { scrollX: true, click: true })
-        console.log(this.scroll)
+      if (!(this.sortScroll && this.listScroll)) {
+        this.sortScroll = new BScroll(this.$refs['sort-wrapper'], { scrollX: true, click: true })
+        this.listScroll = new BScroll(this.$refs['list-group'], { bounce: true, click: true })
+        this.listScroll.on('touchEnd', pos => {
+          console.log(pos)
+          if (pos.y >= -100) {
+            this.sortBoxVisiable = true
+          } else {
+            this.sortBoxVisiable = false
+          }
+        })
+        console.log(this.listScroll)
       } else {
-        this.scroll.refresh()
+        this.sortScroll.refresh()
+        this.listScroll.refresh()
       }
     },
     handleSearch() {
       console.log(this.searchWd)
     }
   },
-  mounted() {
+  created() {
     this.$nextTick(() => {
       this._initScroll()
     })
@@ -124,51 +145,76 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
-.list
-  width 100%
-  min-height 100%
-  .head-bar
-    box-sizing border-box
-    padding 10px
-    width 100%
-    background #f9fafc
-    .select
-      width 80px
-  .sort-wrapper
-    width 100%
-    overflow hidden
-    background #F9FAFC
-    .sort-box
-      width 490px
-      font-size 0
-      white-space nowrap
-      .sort-item
-        display inline-block
-        box-sizing border-box
-        margin-top 4px
-        padding-top 10px
-        height 70px
-        width 70px
-        font-size 0
-        text-align center
-        color #475669
-        font-weight 200
-        white-space normal
-        transition .3s
-        .icon
-          display inline-block
-          font-size 30px
-          vertical-align middle
-        .tag
-          display inline-block
-          margin-top 5px
-          font-size 14px
-        &.active
-          color #F9FAFC
-          background #20A0FF
-  .list-group
-    position absolute
-    padding-bottom 115px
-    width 100%
-    background #ededed
+.list {
+  width: 100%;
+  min-height: 100%;
+
+  .head-bar {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    background: #f9fafc;
+
+    .select {
+      width: 80px;
+    }
+  }
+
+  .sort-wrapper {
+    width: 100%;
+    overflow: hidden;
+    background: #F9FAFC;
+
+    .sort-box {
+      width: 490px;
+      font-size: 0;
+      white-space: nowrap;
+
+      .sort-item {
+        display: inline-block;
+        box-sizing: border-box;
+        margin-top: 4px;
+        padding-top: 10px;
+        height: 70px;
+        width: 70px;
+        font-size: 0;
+        text-align: center;
+        color: #475669;
+        font-weight: 200;
+        white-space: normal;
+        transition: 0.3s;
+
+        .icon {
+          display: inline-block;
+          font-size: 30px;
+          vertical-align: middle;
+        }
+
+        .tag {
+          display: inline-block;
+          margin-top: 5px;
+          font-size: 14px;
+        }
+
+        &.active {
+          color: #F9FAFC;
+          background: #20A0FF;
+        }
+      }
+    }
+  }
+
+  .list-group {
+    position: absolute;
+    padding-bottom: 115px;
+    height: 100%;
+    width: 100%;
+    background: #ededed;
+    overflow: hidden;
+
+    .need-list {
+      height: 2260px;
+    }
+  }
+}
 </style>
