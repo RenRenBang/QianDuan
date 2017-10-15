@@ -18,11 +18,11 @@
     <div class="order">
       <div class="buy-order">
         <i class="icon icon-briefcase"></i>
-        <span class="tag">购买订单</span>
+        <span class="tag">已购买订单</span>
       </div>
       <div class="sell-order">
         <i class="icon icon-clipboard"></i>
-        <span class="tag">售出订单</span>
+        <span class="tag">已售出订单</span>
       </div>
     </div>
     <ul class="optional">
@@ -142,7 +142,7 @@ export default {
           font-weight bold
       .icon
         margin-right 10px
-        font-size 30px
+        font-size 26px
         vertical-align middle
         &.icon-bookmark
           color #FF6F00
