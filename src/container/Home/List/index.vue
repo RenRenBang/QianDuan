@@ -43,28 +43,35 @@
       </div>
     </transition>
     <transition-group name="fade" mode="in-out">
-      <div v-show="selectMode === '1'" key="service" class="list-group" ref="list-group2">
-        <ul class="service-list">
-          <li v-for="i in 10" :key="i">
-            <serviceListCard :data="data"></serviceListCard>
-          </li>
-        </ul>
+      <div v-if="selectMode === '1'" key="service" class="list-group">
+        <scroll ref="scroll" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
+          <ul class="service-list">
+            <li v-for="i in 10" :key="i">
+              <serviceListCard :data="data"></serviceListCard>
+            </li>
+          </ul>
+        </scroll>
       </div>
-      <div v-show="selectMode === '2'" key="need" class="list-group" ref="list-group">
-        <ul class="need-list">
-          <li v-for="i in 10" :key="i">
-            <needListCard :data="data2"></needListCard>
-          </li>
-        </ul>
+      <div v-if="selectMode === '2'" key="need" class="list-group">
+        <scroll ref="scroll" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
+          <ul class="need-list">
+            <li v-for="i in 10" :key="i">
+              <needListCard :data="data2"></needListCard>
+            </li>
+          </ul>
+        </scroll>
       </div>
     </transition-group>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import BScroll from 'better-scroll'
+import Scroll from 'components/scroll/scroll'
 import serviceListCard from 'components/ServiceListCard'
 import needListCard from 'components/NeedListCard'
+import { ease } from 'assets/js/ease.js'
 export default {
   name: 'list',
   data() {
@@ -98,7 +105,25 @@ export default {
           name: 'Jack',
           avatar: 'https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg'
         }
-      }
+      },
+      scrollbar: true,
+      scrollbarFade: true,
+      pullDownRefresh: true,
+      pullDownRefreshThreshold: 90,
+      pullDownRefreshStop: 40,
+      pullUpRefreshStop: 40,
+      pullUpLoad: true,
+      pullUpLoadThreshold: 0,
+      pullUpLoadMoreTxt: '上拉加载更多',
+      pullUpLoadNoMoreTxt: '没有新数据了',
+      startY: 0,
+      scrollToX: 0,
+      scrollToY: -200,
+      scrollToTime: 700,
+      scrollToEasing: 'bounce',
+      scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
+      items: [],
+      itemIndex: 0
     }
   },
   methods: {
@@ -109,36 +134,115 @@ export default {
       this.activeSort = v
       this.clearFocus()
     },
-    _initScroll() {
-      if (!(this.sortScroll && this.listScroll)) {
+    _initSortScroll() {
+      if (!this.sortScroll) {
         this.sortScroll = new BScroll(this.$refs['sort-wrapper'], { scrollX: true, click: true })
-        this.listScroll = new BScroll(this.$refs['list-group'], { bounce: true, click: true })
-        this.listScroll.on('touchEnd', pos => {
-          console.log(pos)
-          if (pos.y >= -100) {
-            this.sortBoxVisiable = true
-          } else {
-            this.sortBoxVisiable = false
-          }
-        })
-        console.log(this.listScroll)
       } else {
         this.sortScroll.refresh()
-        this.listScroll.refresh()
       }
     },
     handleSearch() {
       console.log(this.searchWd)
+    },
+    scrollTo() {
+      this.$refs.scroll.scrollTo(this.scrollToX, this.scrollToY, this.scrollToTime, ease[this.scrollToEasing])
+    },
+    onPullingDown() {
+      // 模拟更新数据
+      console.log('pulling down and load data')
+      setTimeout(() => {
+        if (Math.random() > 0.5) {
+          // 如果有新数据
+          this.items.unshift('时间？' + +new Date())
+        } else {
+          // 如果没有新数据
+          this.$refs.scroll.forceUpdate()
+        }
+      }, 1000)
+    },
+    onPullingUp() {
+      // 更新数据
+      console.log('pulling up and load data')
+      setTimeout(() => {
+        if (Math.random() > 0.5) {
+          // 如果有新数据
+          let newPage = []
+          for (let i = 0; i < 10; i++) {
+            newPage.push('加载前' + ++this.itemIndex + '后')
+          }
+
+          this.items = this.items.concat(newPage)
+        } else {
+          // 如果没有新数据
+          this.$refs.scroll.forceUpdate()
+        }
+      }, 1000)
+    },
+    listenScroll(pos) {
+      if (pos.y >= -100) {
+        this.sortBoxVisiable = true
+      } else {
+        this.sortBoxVisiable = false
+      }
+    },
+    rebuildScroll() {
+      Vue.nextTick(() => {
+        this.$refs.scroll.destroy()
+        this.$refs.scroll.initScroll()
+      })
     }
   },
   created() {
     this.$nextTick(() => {
-      this._initScroll()
+      this._initSortScroll()
     })
   },
   components: {
+    Scroll,
     serviceListCard,
     needListCard
+  },
+  watch: {
+    scrollbarObj: {
+      handler() {
+        this.rebuildScroll()
+      },
+      deep: true
+    },
+    pullDownRefreshObj: {
+      handler() {
+        this.rebuildScroll()
+      },
+      deep: true
+    },
+    pullUpLoadObj: {
+      handler() {
+        this.rebuildScroll()
+      },
+      deep: true
+    },
+    startY() {
+      this.rebuildScroll()
+    }
+  },
+  computed: {
+    scrollbarObj: function() {
+      return this.scrollbar ? { fade: this.scrollbarFade } : false
+    },
+    pullDownRefreshObj: function() {
+      return this.pullDownRefresh ? {
+        threshold: parseInt(this.pullDownRefreshThreshold),
+        stop: parseInt(this.pullDownRefreshStop),
+        txt: '更新成功'
+      } : false
+    },
+    pullUpLoadObj: function() {
+      return this.pullUpLoad ? {
+        threshold: parseInt(this.pullUpLoadThreshold),
+        stop: parseInt(this.pullUpRefreshStop),
+        txt: { more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt }
+      } : false
+    }
   }
 }
 </script>
@@ -213,10 +317,16 @@ export default {
     height: 100%;
     width: 100%;
     background: #ededed;
-    overflow: hidden;
+  }
 
-    .need-list {
-      height: 2260px;
+  .list-scroller {
+    margin-top: 73px;
+    height: 560px;
+    background: #ededed;
+
+    &.long-mode {
+      margin-top: 0;
+      height: 630px;
     }
   }
 }

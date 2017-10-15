@@ -100,7 +100,7 @@ export default {
       }
       ctx.quadraticCurveTo(controlPointR.x, controlPointR.y, headPointR.x, headPointR.y)
 
-      ctx.fillStyle = 'rgb(170,170,170)'
+      ctx.fillStyle = '#20a0ff'
       ctx.fill()
       ctx.strokeStyle = 'rgb(153,153,153)'
       ctx.stroke()
@@ -126,7 +126,7 @@ export default {
 
       ctx.fillStyle = 'rgb(255,255,255)'
       ctx.fill()
-      ctx.strokeStyle = 'rgb(170,170,170)'
+      ctx.strokeStyle = '#20a0ff'
       ctx.stroke()
       ctx.restore()
     }
