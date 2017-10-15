@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <img src="static/logo.png" alt="" class="logo">
     <h1 class="title">人人帮</h1>
     <el-form :model="loginForm" class="form">
       <el-form-item label="用户名">
@@ -63,10 +64,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
 .login
-  padding 70px 12px 0 12px
+  padding 20px 12px 0 12px
+  text-align center
+  .logo
+    width 170px
   .title
-    line-height 100px
-    font-size 40px
+    line-height 45px
+    font-size 35px
+    font-weight 200
     text-align center
   .form
     .login-btn

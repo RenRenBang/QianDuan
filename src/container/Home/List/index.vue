@@ -250,6 +250,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
 .list {
+  overflow-y: hidden;
   width: 100%;
   min-height: 100%;
 
