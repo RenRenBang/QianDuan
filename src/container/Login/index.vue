@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <img src="static/logo.png" alt="" class="logo">
+    <img src="static/img/logo.png" alt="" class="logo">
     <h1 class="title">人人帮</h1>
     <el-form :model="loginForm" class="form">
       <el-form-item label="用户名">

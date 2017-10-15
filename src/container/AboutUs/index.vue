@@ -15,7 +15,8 @@
               <img :src="p.avatar" alt="" class="avatar">
               <div class="info">
                 <div class="name">{{p.name}}</div>
-                <div class="character">{{p.character}}</div>
+                <!-- <div class="character">{{p.character}}</div> -->
+                <div class="motto">{{p.motto}}</div>
               </div>
             </el-card>
           </div>
@@ -36,20 +37,24 @@ export default {
       member: [
         {
           name: '李耀恒',
-          avatar: 'http://element.eleme.io/1.4/static/hamburger.50e4091.png',
-          character: 'BOSS'
+          avatar: 'static/img/LYH.png',
+          character: 'BOSS',
+          motto: '满怀一腔热血，挥舞着键盘用代码去改变'
         }, {
           name: '白佳杰',
           avatar: 'http://element.eleme.io/1.4/static/hamburger.50e4091.png',
-          character: '后端'
+          character: '后端',
+          motto: '满怀一腔热血，挥舞着键盘用代码去改变'
         }, {
           name: '梁胡斯乐',
           avatar: 'http://element.eleme.io/1.4/static/hamburger.50e4091.png',
-          character: '后端'
+          character: '后端',
+          motto: '满怀一腔热血，挥舞着键盘用代码去改变'
         }, {
           name: '刘凯龙',
           avatar: 'http://element.eleme.io/1.4/static/hamburger.50e4091.png',
-          character: '前端'
+          character: '前端',
+          motto: '满怀一腔热血，挥舞着键盘用代码去改变'
         }
       ]
     }
@@ -125,7 +130,7 @@ export default {
               line-height: 50px;
             }
 
-            .character {
+            .motto {
               padding-left: 3px;
               color: #475669;
               font-size: 14px;

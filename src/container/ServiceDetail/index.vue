@@ -3,7 +3,9 @@
     <headerPage title="服务详情">
       <!-- id: {{$route.params.id}} -->
       <div class="brief-info">
-        <div class="title">title<el-tag type="primary" class="tag">SB</el-tag></div>
+        <div class="title">title
+          <el-tag type="primary" class="tag">SB</el-tag>
+        </div>
         <div class="price">100</div>
       </div>
       <div class="describe">
@@ -26,7 +28,7 @@
             </div>
           </el-col>
           <el-col :span="20">
-            <div class="submit-btn">立即预约</div>
+            <div class="submit-btn" @click="submitOrder">立即预约</div>
           </el-col>
         </el-row>
       </div>
@@ -50,6 +52,15 @@ export default {
     },
     collect() {
       this.isCollect = !this.isCollect
+    },
+    submitOrder() {
+      this.$notify({
+        title: '成功',
+        message: '服务已预约',
+        type: 'success',
+        duration: 1500
+      })
+      router.push('/home/list')
     }
   },
   components: {
@@ -60,81 +71,120 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
-.service-detail
-  min-height 100%
-  background #ededed
-  .brief-info
-    padding 10px 25px
-    background #fff
-    .title
-      font-size 24px
-      line-height 30px
-      .tag
-        margin-left 10px
-        vertical-align middle
-    .price
-      font-size 18px
-      line-height 30px
-      color #FF6F00
-  .describe
-    margin-top 10px
-    padding 15px 25px
-    background #fff
-    .lable
-      font-size 18px
-      line-height 25px
-    .text
-      font-size 14px
-      font-weight 200
-      line-height 20px
-      color #475669
-  .provider
-    margin-top 10px
-    padding 10px 25px
-    background #fff
-    .avatar
-      max-width 60px
-      vertical-align middle
-      border-radius 50%
-    .name
-      margin-left 10px
-      font-size 18px
-      font-weight 200
-      vertical-align middle
-  .location
-    margin-top 10px
-    padding 10px 25px
-    color #475669
-    line-height 30px
-    background #fff
-    .icon
-      font-size 24px
-      vertical-align middle
-    .name
-      font-size 18px
-      font-weight 200
-      vertical-align middle
-  .controler
-    position fixed
-    left 0
-    right 0
-    bottom 0
-    height 40px
-    line-height 40px
-    text-align center
-    .collect-btn
-      font-size 20px
-      background #F9FAFC
-      transition 1s
-      .icon
-        transition .3s
-        &.el-icon-star-off
-          color #C6D1DE
-        &.el-icon-star-on
-          color #F7BA2A
-          font-size 22px
-    .submit-btn
-      color #fff
-      font-size 20px
-      background #20A0FF
+.service-detail {
+  min-height: 100%;
+  background: #ededed;
+
+  .brief-info {
+    padding: 10px 25px;
+    background: #fff;
+
+    .title {
+      font-size: 24px;
+      line-height: 30px;
+
+      .tag {
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+    }
+
+    .price {
+      font-size: 18px;
+      line-height: 30px;
+      color: #FF6F00;
+    }
+  }
+
+  .describe {
+    margin-top: 10px;
+    padding: 15px 25px;
+    background: #fff;
+
+    .lable {
+      font-size: 18px;
+      line-height: 25px;
+    }
+
+    .text {
+      font-size: 14px;
+      font-weight: 200;
+      line-height: 20px;
+      color: #475669;
+    }
+  }
+
+  .provider {
+    margin-top: 10px;
+    padding: 10px 25px;
+    background: #fff;
+
+    .avatar {
+      max-width: 60px;
+      vertical-align: middle;
+      border-radius: 50%;
+    }
+
+    .name {
+      margin-left: 10px;
+      font-size: 18px;
+      font-weight: 200;
+      vertical-align: middle;
+    }
+  }
+
+  .location {
+    margin-top: 10px;
+    padding: 10px 25px;
+    color: #475669;
+    line-height: 30px;
+    background: #fff;
+
+    .icon {
+      font-size: 24px;
+      vertical-align: middle;
+    }
+
+    .name {
+      font-size: 18px;
+      font-weight: 200;
+      vertical-align: middle;
+    }
+  }
+
+  .controler {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+
+    .collect-btn {
+      font-size: 20px;
+      background: #F9FAFC;
+      transition: 1s;
+
+      .icon {
+        transition: 0.3s;
+
+        &.el-icon-star-off {
+          color: #C6D1DE;
+        }
+
+        &.el-icon-star-on {
+          color: #F7BA2A;
+          font-size: 22px;
+        }
+      }
+    }
+
+    .submit-btn {
+      color: #fff;
+      font-size: 20px;
+      background: #20A0FF;
+    }
+  }
+}
 </style>

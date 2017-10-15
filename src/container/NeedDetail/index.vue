@@ -23,7 +23,7 @@
         <span class="name">全国</span>
       </div>
       <div class="controler">
-        <div class="submit-btn">我要参与</div>
+        <div class="submit-btn" @click="submitOrder">我要参与</div>
       </div>
     </headerPage>
   </div>
@@ -41,6 +41,15 @@ export default {
   methods: {
     goBack() {
       router.go(-1)
+    },
+    submitOrder() {
+      this.$notify({
+        title: '成功',
+        message: '已参与此需求',
+        type: 'success',
+        duration: 1500
+      })
+      router.push('/home/list')
     }
   },
   components: {
