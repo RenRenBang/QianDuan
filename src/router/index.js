@@ -11,6 +11,8 @@ import needForm from 'container/NeedForm'
 import serviceForm from 'container/ServiceForm'
 import editUserInfo from 'container/EditUserInfo'
 import collection from 'container/Collection'
+import buyOrder from 'container/BuyOrder'
+import sellOrder from 'container/SellOrder'
 import serviceDetail from 'container/ServiceDetail'
 import needDetail from 'container/NeedDetail'
 import aboutUs from 'container/AboutUs'
@@ -65,6 +67,16 @@ export default new Router({
       path: '/collection',
       name: 'collection',
       component: collection
+    },
+    {
+      path: '/buyOrder',
+      name: 'buyOrder',
+      component: buyOrder
+    },
+    {
+      path: '/sellOrder',
+      name: 'sellOrder',
+      component: sellOrder
     },
     {
       path: '/serviceDetail/:id',
