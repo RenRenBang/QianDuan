@@ -161,6 +161,8 @@ export default {
   }
 
   .sort-wrapper {
+    position: fixed;
+    z-index: 1;
     width: 100%;
     overflow: hidden;
     background: #F9FAFC;
@@ -206,6 +208,7 @@ export default {
 
   .list-group {
     position: absolute;
+    padding-top: 70px;
     padding-bottom: 115px;
     height: 100%;
     width: 100%;
