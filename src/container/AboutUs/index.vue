@@ -101,9 +101,11 @@ export default {
 
         .describe {
           margin: 20px 10px;
-          font-size: 14px;
+          font-size: 16px;
           text-indent: 2em;
-          line-height: 20px;
+          font-weight: 200;
+          line-height: 25px;
+          text-align: justify;
         }
       }
 

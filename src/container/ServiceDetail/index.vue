@@ -11,6 +11,9 @@
       <div class="describe">
         <div class="lable">服务内容</div>
         <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa temporibus hic sapiente, quasi eos, maxime maiores, accusantium doloribus dicta id aliquam praesentium? Minus odit cupiditate quasi perferendis eaque asperiores adipisci?</p>
+        <div class="img">
+          <img class="img-responsive" src="static/img/example.png" alt="">
+        </div>
       </div>
       <div class="provider">
         <img src="https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg" alt="" class="avatar">
@@ -72,6 +75,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
 .service-detail {
+  box-sizing: border-box;
+  padding-bottom: 40px;
   min-height: 100%;
   background: #ededed;
 
@@ -111,6 +116,10 @@ export default {
       font-weight: 200;
       line-height: 20px;
       color: #475669;
+    }
+
+    .img {
+      margin-top: 10px;
     }
   }
 

@@ -44,6 +44,11 @@ export default {
     onSubmit() {
       console.log(this.loginForm)
       this.logIn()
+      this.$message({
+        message: '欢迎回来',
+        type: 'success',
+        duration: 1500
+      })
       router.push('/home/list')
     },
     logIn() {
@@ -63,23 +68,37 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
-.login
-  padding 20px 12px 0 12px
-  text-align center
-  .logo
-    width 170px
-  .title
-    line-height 45px
-    font-size 35px
-    font-weight 200
-    text-align center
-  .form
-    .login-btn
-      width 100%
-  .other-control
-    margin-top -15px
-    .foget
-      float left
-    .sign-in
-      float right
+.login {
+  padding: 20px 12px 0 12px;
+  text-align: center;
+
+  .logo {
+    width: 170px;
+  }
+
+  .title {
+    line-height: 45px;
+    font-size: 35px;
+    font-weight: 200;
+    text-align: center;
+  }
+
+  .form {
+    .login-btn {
+      width: 100%;
+    }
+  }
+
+  .other-control {
+    margin-top: -15px;
+
+    .foget {
+      float: left;
+    }
+
+    .sign-in {
+      float: right;
+    }
+  }
+}
 </style>

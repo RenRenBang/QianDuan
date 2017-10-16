@@ -9,7 +9,7 @@
       <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullUpLoad="isPullUpLoad">
         <div class="pullup-wrapper" v-if="pullUpLoad">
           <div class="before-trigger" v-if="!isPullUpLoad">
-            <span>{{pullUpTxt}}</span>
+            <span style="font-size:14px;color:#1f2d3d;">{{pullUpTxt}}</span>
           </div>
           <div class="after-trigger" v-else>
             <loading></loading>
@@ -27,7 +27,7 @@
             <loading></loading>
           </div>
           <div v-else>
-            <span>{{refreshTxt}}</span>
+            <span style="font-size:14px;color:#1f2d3d;">{{refreshTxt}}</span>
           </div>
         </div>
       </div>
