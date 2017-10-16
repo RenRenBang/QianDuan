@@ -2,32 +2,37 @@
   <div class="signin">
     <headerPage title="用户注册">
       <el-form :model="ruleForm" class="form" label-position="top" :rules="rules" ref="ruleForm">
-        <el-form-item label="昵称" prop="nickName">
-          <el-input size="large" v-model="ruleForm.nickName"></el-input>
+        <el-form-item label="昵称" prop="nickname">
+          <el-input size="large" v-model="ruleForm.nickname"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="telNum">
-          <el-input size="large" v-model.trim.number="ruleForm.telNum"></el-input>
+        <el-form-item label="手机号" prop="uphone" ref="uphone">
+          <el-input size="large" v-model.trim="ruleForm.uphone" :disabled="telNumDisabled">
+            <el-button slot="append" type="primary" @click="sendCode" :disabled="sendCodeDisabled">{{sendCodeText}}</el-button>
+          </el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="pass">
-          <el-input size="large" v-model="ruleForm.pass"></el-input>
+        <el-form-item label="验证码" prop="code">
+          <el-input size="large" v-model="ruleForm.code"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" size="large" v-model="ruleForm.password"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
-          <el-input size="large" v-model="ruleForm.checkPass"></el-input>
+          <el-input type="password" size="large" v-model="ruleForm.checkPass"></el-input>
         </el-form-item>
-        <el-form-item label="真实姓名" prop="realName">
-          <el-input size="large" v-model="ruleForm.realName"></el-input>
+        <el-form-item label="真实姓名" prop="name">
+          <el-input size="large" v-model="ruleForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="身份证号" prop="idNum">
-          <el-input size="large" v-model.trim="ruleForm.idNum"></el-input>
+        <el-form-item label="身份证号" prop="idNumber">
+          <el-input size="large" v-model.trim="ruleForm.idNumber"></el-input>
         </el-form-item>
         <el-form-item class="upload" label="身份证照" prop="idCard">
           <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
           <!-- <el-input type="file" accept="image/*" v-model="ruleForm.idCard"></el-input> -->
-          <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false">
             <img v-if="imageUrl" :src="imageUrl" class="idcard">
             <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp在这里添加身份证正面照片</i>
           </el-upload>
-          <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <el-upload class="idcard-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false">
             <img v-if="imageUrl" :src="imageUrl" class="idcard">
             <i v-else class="el-icon-plus idcard-uploader-icon">&nbsp在这里添加身份证背面照片</i>
           </el-upload>
@@ -43,6 +48,7 @@
 </template>
 
 <script>
+import qs from 'qs'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
 export default {
@@ -61,7 +67,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm.pass) {
+      } else if (value !== this.ruleForm.password) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
@@ -78,34 +84,50 @@ export default {
         callback()
       }
     }
+    var validateTelNum = (rule, value, callback) => {
+      if (!/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(value)) {
+        this.sendCodeDisabled = true
+        callback(new Error('输入的手机号有误'))
+      } else {
+        this.sendCodeDisabled = false
+        callback()
+      }
+    }
     return {
+      sendCodeText: '发送验证码',
+      telNumDisabled: false,
+      sendCodeDisabled: true,
       ruleForm: {
-        nickName: '',
-        telNum: null,
-        pass: '',
+        nickname: '',
+        uphone: '',
+        code: '',
+        password: '',
         checkPass: '',
-        realName: '',
-        idNum: null,
-        idCard: null
+        name: '',
+        idNumber: ''
       },
+      imageUrl: null,
       rules: {
-        nickName: [
+        nickname: [
           { required: true, message: '请输入您的昵称', trigger: 'blur' },
           { min: 3, max: 7, message: '长度在 3 到 7 个字符', trigger: 'blur' }
         ],
-        telNum: [
-          { required: true, message: '请输入正确的手机号', trigger: 'change', type: 'number' }
+        uphone: [
+          { required: true, validator: validateTelNum }
         ],
-        pass: [
+        code: [
+          { required: true, message: '请输入您的手机收到的验证码', trigger: 'blur' }
+        ],
+        password: [
           { required: true, validator: validatePass, trigger: 'blur' }
         ],
         checkPass: [
           { required: true, validator: validatePass2, trigger: 'blur' }
         ],
-        realName: [
+        name: [
           { required: true, message: '请输入您的真实姓名', trigger: 'change' }
         ],
-        idNum: [
+        idNumber: [
           { required: true, message: '请输入身份证号', trigger: 'change' },
           { validator: IdentityCodeValid, trigger: 'change' }
         ]
@@ -116,54 +138,149 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
-          router.go(-1)
+          this.$http.post('http://localhost:8080/api/addCuser', qs.stringify(this.postForm), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }).then((response) => {
+            console.log(response.data)
+            if (response.data.statusCode === '200') {
+              this.$message({
+                message: '恭喜，注册成功',
+                type: 'success',
+                duration: 2000
+              })
+              router.go(-1)
+            } else {
+              this.$message({
+                message: '这个手机号已经注册过了哦',
+                type: 'error',
+                duration: 2000
+              })
+            }
+          }).catch((err) => {
+            this.$message({
+              message: err,
+              type: 'error',
+              duration: 2000
+            })
+          })
         } else {
-          console.log('error submit!!')
+          this.$message({
+            message: '注册失败，好好检查一下吧',
+            type: 'error',
+            duration: 2000
+          })
           return false
         }
       })
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+      this.sendCodeDisabled = true
+    },
+    sendCode() {
+      this.$http.post('http://localhost:8080/api/getCheckCode', qs.stringify({ uphone: this.ruleForm.uphone }), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then((response) => {
+        console.log(this.ruleForm.uphone)
+        this.$message({
+          message: '验证码已发送',
+          type: 'success',
+          duration: 1500
+        })
+        this.telNumDisabled = true
+        this.sendCodeDisabled = true
+        this.time = 0
+        let that = this
+        let lastTime = 20
+        this.sendCodeText = `请${lastTime - this.time}秒后再重新发送`
+        let interval = setInterval(() => {
+          that.time += 1
+          that.sendCodeText = `请${lastTime - that.time}秒后再重新发送`
+          if (that.time >= lastTime) {
+            clearInterval(interval)
+            this.telNumDisabled = false
+            this.sendCodeDisabled = false
+            that.sendCodeText = '发送验证码'
+          }
+        }, 1000)
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
+      })
     }
   },
   components: {
     headerPage
+  },
+  computed: {
+    postForm() {
+      return {
+        nickname: this.ruleForm.nickname,
+        uphone: this.ruleForm.uphone,
+        code: this.ruleForm.code,
+        password: this.ruleForm.password,
+        name: this.ruleForm.name,
+        idNumber: this.ruleForm.idNumber,
+        profile: ''
+      }
+    }
   }
 }
 </script>
 
 <!-- Add 'scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
-.signin
-  padding 10px 12px 0 12px
-  .form
-    .btn-group
-      font-size 0
-      .signin-btn
-        margin 5px 0
-        width 100%
-    .upload
-      .idcard-uploader
-        .el-upload
-          border: 1px dashed #d9d9d9
-          border-radius: 6px
-          width: 100%
-          cursor: pointer
-          position: relative
-          overflow: hidden
-          &:hover
-            border-color: #20a0ff
-        .idcard-uploader-icon
-          font-size: 18px
-          color: #8c939d
-          width: 100%
-          height: 178px
-          line-height: 178px
-          text-align: center
-        .idcard
-          width: 100%
-          height: 178px
-          display: block
+.signin {
+  padding: 10px 12px 0 12px;
+
+  .form {
+    .btn-group {
+      font-size: 0;
+
+      .signin-btn {
+        margin: 5px 0;
+        width: 100%;
+      }
+    }
+
+    .upload {
+      .idcard-uploader {
+        .el-upload {
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          width: 100%;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+
+          &:hover {
+            border-color: #20a0ff;
+          }
+        }
+
+        .idcard-uploader-icon {
+          font-size: 18px;
+          color: #8c939d;
+          width: 100%;
+          height: 178px;
+          line-height: 178px;
+          text-align: center;
+        }
+
+        .idcard {
+          width: 100%;
+          height: 178px;
+          display: block;
+        }
+      }
+    }
+  }
+}
 </style>

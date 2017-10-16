@@ -10,6 +10,8 @@ import router from './router'
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+
+router.push('/login')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

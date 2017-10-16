@@ -7,7 +7,7 @@
         <el-input size="large" v-model="loginForm.uphone"></el-input>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input type="password" size="large" v-model="loginForm.upassword"></el-input>
+        <el-input type="password" size="large" v-model="loginForm.password"></el-input>
       </el-form-item>
       <el-form-item width="100%">
         <el-button class="login-btn" type="primary" size="large" @click="onSubmit">登录</el-button>
@@ -36,30 +36,39 @@ export default {
     return {
       loginForm: {
         uphone: '',
-        upassword: ''
+        password: ''
       }
     }
   },
   methods: {
     onSubmit() {
       console.log(this.loginForm)
-      this.logIn()
-      this.$message({
-        message: '欢迎回来',
-        type: 'success',
-        duration: 1500
-      })
-      router.push('/home/list')
-    },
-    logIn() {
       this.$http.post('http://localhost:8080/api/to_login', qs.stringify(this.loginForm), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then((response) => {
-        console.log(response.data)
-      }).catch((error) => {
-        console.log(error)
+        if (response.data.statusCode === '200') {
+          this.$message({
+            message: '欢迎回来',
+            type: 'success',
+            duration: 1500
+          })
+          console.log(response.data)
+          router.push('/home/list')
+        } else {
+          this.$message({
+            message: '用户名或密码错误',
+            type: 'error',
+            duration: 2000
+          })
+        }
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
       })
     }
   }
