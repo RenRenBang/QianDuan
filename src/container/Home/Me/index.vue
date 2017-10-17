@@ -49,7 +49,7 @@
         </li>
       </router-link>
       <router-link to="/login">
-        <li class="log-out">
+        <li class="log-out" @click="logout">
           <i class="icon icon-user-times"></i>
           <span class="name">注销</span>
         </li>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import store from '@/store'
 export default {
   name: 'me',
   data() {
@@ -66,6 +67,9 @@ export default {
     }
   },
   methods: {
+    logout() {
+      store.commit('logout')
+    }
   }
 }
 </script>

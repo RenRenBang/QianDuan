@@ -30,6 +30,7 @@
 <script>
 import qs from 'qs'
 import router from '@/router'
+import store from '@/store'
 export default {
   name: 'login',
   data() {
@@ -54,6 +55,7 @@ export default {
             type: 'success',
             duration: 1500
           })
+          store.commit('login', 20)
           console.log(response.data)
           router.push('/home/list')
         } else {
