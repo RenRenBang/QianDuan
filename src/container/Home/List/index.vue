@@ -168,30 +168,33 @@ export default {
       })
     }
   },
+  created() {
+    this.$http.get('http://localhost:8080/api/queryCorderBy?type=n&trade&title').then((response) => {
+      this.needList = response.data.data
+      console.log(this.needList)
+    }).catch(() => {
+      this.$message({
+        message: 'NEED',
+        type: 'error',
+        duration: 2000
+      })
+    })
+    this.$http.get('http://localhost:8080/api/queryCorderBy?type=s&trade&title').then((response) => {
+      this.serviceList = response.data.data
+      console.log(this.serviceList)
+    }).catch(() => {
+      this.$message({
+        message: 'SERVICE',
+        type: 'error',
+        duration: 2000
+      })
+    })
+  },
   mounted() {
     this.$nextTick(() => {
-      this.$http.get('http://localhost:8080/api/queryCorderBy?type=n&trade&title').then((response) => {
-        this.needList = response.data.data
-        console.log(this.needList)
-      }).catch((err) => {
-        this.$message({
-          message: err,
-          type: 'error',
-          duration: 2000
-        })
-      })
-      this.$http.get('http://localhost:8080/api/queryCorderBy?type=s&trade&title').then((response) => {
-        this.serviceList = response.data.data
-        console.log(this.serviceList)
-      }).catch((err) => {
-        this.$message({
-          message: err,
-          type: 'error',
-          duration: 2000
-        })
-      })
       this._initSortScroll()
     })
+    this.rebuildScroll()
   },
   components: {
     Scroll,

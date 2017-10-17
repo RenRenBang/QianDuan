@@ -6,7 +6,7 @@
           <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
         </h1>
         <div class="provider" v-if="cuser">
-          <img :src="cuser.image" alt="avatar" class="avatar">
+          <img :src="'http://47.95.214.71' + cuser.image" alt="avatar" class="avatar">
           <span class="name">{{cuser.nickname}}</span>
         </div>
         <div class="price">{{data.money}} 元/次</div>
