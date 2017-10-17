@@ -14,7 +14,7 @@
       </el-form-item>
     </el-form>
     <div class="other-control">
-      <router-link to="/foget">
+      <router-link to="/home/list">
         <el-button class="foget" type="text" size="large">
           忘记密码
         </el-button>
@@ -55,7 +55,7 @@ export default {
             type: 'success',
             duration: 1500
           })
-          store.commit('login', 20)
+          store.commit('login', response.data.data[0].uid)
           console.log(response.data)
           router.push('/home/list')
         } else {

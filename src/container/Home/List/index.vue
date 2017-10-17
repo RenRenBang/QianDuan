@@ -44,19 +44,19 @@
     </transition>
     <transition-group name="fade" mode="in-out">
       <div v-if="selectMode === '1'" key="service" class="list-group">
-        <scroll ref="scroll" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
+        <scroll ref="scroll" v-if="serviceList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
           <ul class="service-list">
-            <li v-for="i in 10" :key="i">
-              <serviceListCard :data="data"></serviceListCard>
+            <li v-for="(item, index) in serviceList" :key="index">
+              <serviceListCard :data="item"></serviceListCard>
             </li>
           </ul>
         </scroll>
       </div>
       <div v-if="selectMode === '2'" key="need" class="list-group">
-        <scroll ref="scroll" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
+        <scroll ref="scroll" v-if="needList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
           <ul class="need-list">
-            <li v-for="i in 10" :key="i">
-              <needListCard :data="data2"></needListCard>
+            <li v-for="(item, index) in needList" :key="index">
+              <needListCard :data="item"></needListCard>
             </li>
           </ul>
         </scroll>
@@ -76,36 +76,12 @@ export default {
   name: 'list',
   data() {
     return {
+      needList: null,
+      serviceList: null,
       searchWd: '',
       selectMode: '2',
       activeSort: 'all',
       sortBoxVisiable: true,
-      data: {
-        id: 1,
-        title: 'test title',
-        tag: '教育',
-        buyNum: 4,
-        likeNum: 103,
-        location: '全国',
-        price: 998,
-        provider: {
-          name: 'Tom',
-          avatar: 'https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg'
-        }
-      },
-      data2: {
-        id: 2,
-        title: 'test title',
-        tag: '互联网',
-        needNum: 4,
-        location: '全国',
-        deadline: 3,
-        price: 92,
-        provider: {
-          name: 'Jack',
-          avatar: 'https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg'
-        }
-      },
       scrollbar: true,
       scrollbarFade: true,
       pullDownRefresh: true,
@@ -192,8 +168,28 @@ export default {
       })
     }
   },
-  created() {
+  mounted() {
     this.$nextTick(() => {
+      this.$http.get('http://localhost:8080/api/queryCorderBy?type=n&trade&title').then((response) => {
+        this.needList = response.data.data
+        console.log(this.needList)
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
+      })
+      this.$http.get('http://localhost:8080/api/queryCorderBy?type=s&trade&title').then((response) => {
+        this.serviceList = response.data.data
+        console.log(this.serviceList)
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
+      })
       this._initSortScroll()
     })
   },
