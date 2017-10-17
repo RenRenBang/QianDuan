@@ -1,14 +1,16 @@
 <template>
   <div class="collection">
     <headerPage title="收藏的服务">
-      <div class="list-group">
-        <serviceListCard v-for="i in 10" :key="i" :data="data"></serviceListCard>
+      <div class="list-group" v-if="serviceListObj">
+        <serviceListCard v-for="(item, index) in serviceListObj" :key="index" :data="item"></serviceListCard>
       </div>
     </headerPage>
   </div>
 </template>
 
 <script>
+import qs from 'qs'
+import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
 import serviceListCard from 'components/ServiceListCard'
@@ -16,18 +18,7 @@ export default {
   name: 'collection',
   data() {
     return {
-      data: {
-        id: 1,
-        title: 'test title',
-        buyNum: 4,
-        likeNum: 103,
-        location: '全国',
-        price: 998,
-        provider: {
-          name: 'Tom',
-          avatar: 'https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg'
-        }
-      }
+      serviceList: undefined
     }
   },
   methods: {
@@ -38,12 +29,52 @@ export default {
   components: {
     headerPage,
     serviceListCard
+  },
+  computed: {
+    uid() {
+      return store.state.uID
+    },
+    serviceListObj() {
+      if (!this.serviceList) {
+        return undefined
+      }
+      return this.serviceList.map((item) => {
+        return {
+          oid: item.corder.oid,
+          title: item.corder.title,
+          trade: item.corder.trade,
+          money: item.corder.money,
+          gmNum: item.corder.gmNum,
+          collNum: item.corder.collNum,
+          address: item.corder.address
+        }
+      })
+    }
+  },
+  created() {
+    console.log(this.uid)
+    this.$http.post(`http://localhost:8080/api/findCollectionByUid`, qs.stringify({ uid: this.uid }), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then((response) => {
+      this.serviceList = response.data.data
+      console.log(this.serviceList)
+    }).catch((err) => {
+      this.$message({
+        message: err,
+        type: 'error',
+        duration: 2000
+      })
+    })
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
-.collection
-  background #ededed
+.collection {
+  min-height: 100%;
+  background: #ededed;
+}
 </style>

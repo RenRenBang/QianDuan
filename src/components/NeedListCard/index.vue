@@ -114,7 +114,7 @@ export default {
 
     .location {
       float: right;
-      width: 220px;
+      max-width: 220px;
       text-align: right;
       font-size: 14px;
       text-overflow: ellipsis;
