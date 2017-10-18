@@ -1,7 +1,7 @@
 <template>
   <div class="edit-userinfo">
     <headerPage title="修改个人信息">
-      <el-form :model="ruleForm" class="form" label-position="top" :rules="rules" ref="ruleForm">
+      <el-form :model="ruleForm" class="form" label-position="top" :rules="rules" ref="ruleForm" v-if="cuser">
         <el-form-item label="昵称" prop="nickName">
           <el-input size="large" v-model="ruleForm.nickName"></el-input>
         </el-form-item>
@@ -11,14 +11,14 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="手机号" prop="telNum">
-          <el-input size="large" v-model.trim.number="ruleForm.telNum" :disabled="true"></el-input>
+        <el-form-item label="手机号">
+          <el-input size="large" v-model.trim.number="cuser.uphone" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="真实姓名" prop="realName">
-          <el-input size="large" v-model="ruleForm.realName" :disabled="true"></el-input>
+        <el-form-item label="真实姓名">
+          <el-input size="large" v-model="cuser.name" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="身份证号" prop="idNum">
-          <el-input size="large" v-model.trim="ruleForm.idNum" :disabled="true"></el-input>
+        <el-form-item label="身份证号">
+          <el-input size="large" v-model.trim="cuser.idNumber" :disabled="true"></el-input>
         </el-form-item>
         <div class="btn-group">
           <el-button size="large" class="btn" type="primary" @click="submitForm('ruleForm')">确认更改</el-button>
@@ -31,18 +31,18 @@
 </template>
 
 <script>
+// import qs from 'qs'
+import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
 export default {
   name: 'editUserInfo',
   data() {
     return {
+      cuser: undefined,
       ruleForm: {
         nickName: '网名',
-        avatar: null,
-        telNum: '15147777777',
-        realName: '无知群众',
-        idNum: '150302199609110019'
+        avatar: null
       },
       rules: {
         nickName: [
@@ -75,6 +75,22 @@ export default {
   },
   components: {
     headerPage
+  },
+  computed: {
+    uid() {
+      return store.state.uID
+    }
+  },
+  mounted() {
+    this.$http.get(`http://47.95.214.71:8080/api/findByUid?uid=${this.uid}`).then((response) => {
+      this.cuser = response.data.data[0]
+    }).catch((err) => {
+      this.$message({
+        message: err,
+        type: 'error',
+        duration: 2000
+      })
+    })
   }
 }
 </script>
