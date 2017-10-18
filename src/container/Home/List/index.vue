@@ -107,6 +107,7 @@ export default {
     },
     sortActive(v) {
       this.activeSort = v
+      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
       this.clearFocus()
     },
     _initSortScroll() {
@@ -118,6 +119,7 @@ export default {
     },
     handleSearch() {
       console.log(this.searchWd)
+      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
     },
     scrollTo() {
       this.$refs.scroll.scrollTo(this.scrollToX, this.scrollToY, this.scrollToTime, ease[this.scrollToEasing])
@@ -149,7 +151,7 @@ export default {
       })
     },
     getNeedList() {
-      this.$http.get('http://47.95.214.71:8080/api/queryCorderBy?type=n&trade&title').then((response) => {
+      this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}`).then((response) => {
         this.needList = response.data.data
         console.log(this.needList)
         this.$refs.scroll.forceUpdate()
@@ -158,7 +160,7 @@ export default {
       })
     },
     getServiceList() {
-      this.$http.get('http://47.95.214.71:8080/api/queryCorderBy?type=s&trade&title').then((response) => {
+      this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}`).then((response) => {
         this.serviceList = response.data.data
         console.log(this.serviceList)
         this.$refs.scroll.forceUpdate()
@@ -222,6 +224,26 @@ export default {
         stop: parseInt(this.pullUpRefreshStop),
         txt: { more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt }
       } : false
+    },
+    queryType() {
+      switch (this.activeSort) {
+        case 'all':
+          return ''
+        case 'home':
+          return '家政'
+        case 'edu':
+          return '教育'
+        case 'net':
+          return '互联网'
+        case 'life':
+          return '生活'
+        case 'design':
+          return '设计'
+        case 'other':
+          return '其他'
+        default:
+          return 'ERR'
+      }
     }
   }
 }
