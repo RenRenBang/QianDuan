@@ -1,27 +1,27 @@
 <template>
   <div class="service-detail">
-    <headerPage title="服务详情">
+    <headerPage title="服务详情" v-if="data">
       <!-- id: {{$route.params.id}} -->
       <div class="brief-info">
-        <div class="title">title
-          <el-tag type="primary" class="tag">SB</el-tag>
+        <div class="title">{{data.title}}
+          <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
         </div>
-        <div class="price">100</div>
+        <div class="price">{{data.money}}</div>
       </div>
       <div class="describe">
         <div class="lable">服务内容</div>
-        <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa temporibus hic sapiente, quasi eos, maxime maiores, accusantium doloribus dicta id aliquam praesentium? Minus odit cupiditate quasi perferendis eaque asperiores adipisci?</p>
+        <p class="text">{{data.money}}</p>
         <div class="img">
           <img class="img-responsive" src="static/img/example.png" alt="">
         </div>
       </div>
       <div class="provider">
         <img src="https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg" alt="" class="avatar">
-        <span class="name">名字</span>
+        <span class="name">{{data.cuser.name}}</span>
       </div>
       <div class="location">
         <i class="icon icon-location-arrow"></i>
-        <span class="name">全国</span>
+        <span class="name">{{data.address}}</span>
       </div>
       <div class="controler">
         <el-row>
@@ -46,7 +46,8 @@ export default {
   name: 'serviceDetail',
   data() {
     return {
-      isCollect: false
+      isCollect: false,
+      data: undefined
     }
   },
   methods: {
@@ -68,6 +69,13 @@ export default {
   },
   components: {
     headerPage
+  },
+  created() {
+    this.$http.get(`http://localhost:8080/api//queryCorderById?oid=${this.$route.params.id}`).then((response) => {
+      this.data = response.data.data[0]
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 }
 </script>

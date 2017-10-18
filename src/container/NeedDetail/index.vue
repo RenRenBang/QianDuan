@@ -57,6 +57,13 @@ export default {
   },
   components: {
     headerPage
+  },
+  created() {
+    this.$http.get(`http://localhost:8080/api//queryCorderById?oid=${this.$route.params.id}`).then((response) => {
+      this.data = response.data.data[0]
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 }
 </script>
