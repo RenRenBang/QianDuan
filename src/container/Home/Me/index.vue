@@ -1,16 +1,16 @@
 <template>
   <div class="me">
-    <div class="head">
+    <div class="head" v-if="cuser">
       <el-row>
         <el-col :span="5" :offset="1">
           <div class="avatar">
-            <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1762973822,121126736&fm=27&gp=0.jpg" alt="">
+            <img :src="'http://47.95.214.71' + cuser.image" alt="">
           </div>
         </el-col>
         <el-col :span="17" :offset="1">
           <div class="userinfo">
-            <span class="name">我叫XXX</span>
-            <div class="other">Lorem ipsum dolor sit am</div>
+            <span class="name">{{cuser.name}}</span>
+            <div class="other">{{cuser.profile}}</div>
           </div>
         </el-col>
       </el-row>
@@ -64,12 +64,29 @@ export default {
   name: 'me',
   data() {
     return {
+      cuser: undefined
     }
   },
   methods: {
     logout() {
       store.commit('logout')
     }
+  },
+  computed: {
+    uid() {
+      return store.state.uID
+    }
+  },
+  mounted() {
+    this.$http.get(` http://localhost:8080/api/findByUid?uid=${this.uid}`).then((response) => {
+      this.cuser = response.data.data[0]
+    }).catch((err) => {
+      this.$message({
+        message: err,
+        type: 'error',
+        duration: 2000
+      })
+    })
   }
 }
 </script>

@@ -1,29 +1,28 @@
 <template>
   <div class="need-detail">
-    <headerPage title="需求详情">
-      <!-- id: {{$route.params.id}} -->
+    <headerPage title="需求详情" v-if="data">
       <div class="brief-info clearfix">
-        <div class="title">title
-          <el-tag type="primary" class="tag">SB</el-tag>
+        <div class="title">{{data.title}}
+          <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
         </div>
-        <div class="need-people">还需99人&nbsp;&nbsp;|</div>
-        <div class="deadline">&nbsp;&nbsp;10天后失效</div>
-        <div class="price">100元/人</div>
+        <div class="need-people">还需{{data.ocount}}人&nbsp;&nbsp;|</div>
+        <div class="deadline">&nbsp;&nbsp;{{data.ocount}}天后失效</div>
+        <div class="price">{{data.money}}元/人</div>
       </div>
       <div class="describe">
         <div class="lable">需求内容</div>
-        <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa temporibus hic sapiente, quasi eos, maxime maiores, accusantium doloribus dicta id aliquam praesentium? Minus odit cupiditate quasi perferendis eaque asperiores adipisci?</p>
+        <p class="text">{{data.odescribe}}</p>
         <div class="img">
           <img class="img-responsive" src="static/img/example.png" alt="">
         </div>
       </div>
       <div class="provider">
-        <img src="https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg" alt="" class="avatar">
-        <span class="name">名字</span>
+        <img :src="'http://47.95.214.71' + data.cuser.image" alt="" class="avatar">
+        <span class="name">{{data.cuser.name}}</span>
       </div>
       <div class="location">
         <i class="icon icon-location-arrow"></i>
-        <span class="name">全国</span>
+        <span class="name">{{data.address}}</span>
       </div>
       <div class="controler">
         <div class="submit-btn" @click="submitOrder">我要参与</div>
@@ -33,12 +32,14 @@
 </template>
 
 <script>
+import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
 export default {
   name: 'needDetail',
   data() {
     return {
+      data: undefined
     }
   },
   methods: {
@@ -46,24 +47,38 @@ export default {
       router.go(-1)
     },
     submitOrder() {
-      this.$notify({
-        title: '成功',
-        message: '已参与此需求',
-        type: 'success',
-        duration: 1500
+      this.$http.get(`http://localhost:8080/api/addTransaction?uid=${this.uid}&oid=${this.$route.params.id}`).then((response) => {
+        console.log(response.data)
+        this.$notify({
+          title: '成功',
+          message: '已参与此需求',
+          type: 'success',
+          duration: 1500
+        })
+        router.push('/home/list')
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
       })
-      router.push('/home/list')
     }
   },
   components: {
     headerPage
   },
   created() {
-    this.$http.get(`http://localhost:8080/api//queryCorderById?oid=${this.$route.params.id}`).then((response) => {
+    this.$http.get(`http://localhost:8080/api/queryCorderById?oid=${this.$route.params.id}`).then((response) => {
       this.data = response.data.data[0]
     }).catch((error) => {
       console.log(error)
     })
+  },
+  computed: {
+    uid() {
+      return store.state.uID
+    }
   }
 }
 </script>
@@ -89,7 +104,8 @@ export default {
 
       .tag {
         margin-left: 10px;
-        vertical-align: middle;
+        margin-top: 4px;
+        vertical-align: top;
       }
     }
 

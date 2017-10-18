@@ -1,7 +1,6 @@
 <template>
   <div class="service-detail">
     <headerPage title="服务详情" v-if="data">
-      <!-- id: {{$route.params.id}} -->
       <div class="brief-info">
         <div class="title">{{data.title}}
           <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
@@ -10,13 +9,13 @@
       </div>
       <div class="describe">
         <div class="lable">服务内容</div>
-        <p class="text">{{data.money}}</p>
+        <p class="text">{{data.odescribe}}</p>
         <div class="img">
           <img class="img-responsive" src="static/img/example.png" alt="">
         </div>
       </div>
       <div class="provider">
-        <img src="https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg" alt="" class="avatar">
+        <img :src="'http://47.95.214.71' + data.cuser.image" alt="" class="avatar">
         <span class="name">{{data.cuser.name}}</span>
       </div>
       <div class="location">
@@ -40,6 +39,8 @@
 </template>
 
 <script>
+import qs from 'qs'
+import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
 export default {
@@ -56,26 +57,67 @@ export default {
     },
     collect() {
       this.isCollect = !this.isCollect
+      if (this.isCollect) {
+        this.$http.post(`http://localhost:8080/api/addCollections`, qs.stringify(this.postObj), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          }
+        }).then((response) => {
+          console.log(response.data)
+          this.$notify({
+            title: '成功',
+            message: '成功收藏',
+            type: 'success',
+            duration: 1500
+          })
+        }).catch((err) => {
+          this.$message({
+            message: err,
+            type: 'error',
+            duration: 2000
+          })
+        })
+      }
     },
     submitOrder() {
-      this.$notify({
-        title: '成功',
-        message: '服务已预约',
-        type: 'success',
-        duration: 1500
+      this.$http.get(`http://localhost:8080/api/addTransaction?uid=${this.uid}&oid=${this.$route.params.id}`).then((response) => {
+        console.log(response.data)
+        this.$notify({
+          title: '成功',
+          message: '服务已预约',
+          type: 'success',
+          duration: 1500
+        })
+        router.push('/home/list')
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
       })
-      router.push('/home/list')
     }
   },
   components: {
     headerPage
   },
   created() {
-    this.$http.get(`http://localhost:8080/api//queryCorderById?oid=${this.$route.params.id}`).then((response) => {
+    this.$http.get(`http://localhost:8080/api/queryCorderById?oid=${this.$route.params.id}`).then((response) => {
       this.data = response.data.data[0]
     }).catch((error) => {
       console.log(error)
     })
+  },
+  computed: {
+    uid() {
+      return store.state.uID
+    },
+    postObj() {
+      return {
+        uid: this.uid,
+        oid: this.$route.params.id
+      }
+    }
   }
 }
 </script>
@@ -98,7 +140,8 @@ export default {
 
       .tag {
         margin-left: 10px;
-        vertical-align: middle;
+        margin-top: 4px;
+        vertical-align: top;
       }
     }
 
