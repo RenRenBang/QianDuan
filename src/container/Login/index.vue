@@ -23,7 +23,7 @@
         <el-button class="sign-in" type="text" size="large">注册</el-button>
       </router-link>
     </div>
-    <!-- <input type="file" id="take-picture" accept="image/*"> -->
+    <div class="copyright">Copyright ©2017 Young Tech. All rights reserved.</div>
   </div>
 </template>
 
@@ -80,7 +80,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
 .login {
-  padding: 20px 12px 0 12px;
+  top: 0;
+  bottom: 0;
+  padding: 30px;
   text-align: center;
 
   .logo {
@@ -110,6 +112,16 @@ export default {
     .sign-in {
       float: right;
     }
+  }
+
+  .copyright {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    font-size: 12px;
+    font-weight: 200;
+    color: #475669;
   }
 }
 </style>

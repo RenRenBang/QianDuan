@@ -182,7 +182,7 @@ export default {
     sendCode() {
       this.$http.post('http://47.95.214.71:8080/api/getCheckCode', qs.stringify({ uphone: this.ruleForm.uphone }), {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
       }).then((response) => {
         console.log(this.ruleForm.uphone)
@@ -195,7 +195,7 @@ export default {
         this.sendCodeDisabled = true
         this.time = 0
         let that = this
-        let lastTime = 20
+        let lastTime = 120
         this.sendCodeText = `请${lastTime - this.time}秒后再重新发送`
         let interval = setInterval(() => {
           that.time += 1
