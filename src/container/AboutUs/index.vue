@@ -37,24 +37,24 @@ export default {
       member: [
         {
           name: '李耀恒',
-          avatar: 'static/img/LYH.png',
+          avatar: 'static/img/LYH.jpeg',
           character: 'BOSS',
-          motto: '满怀一腔热血，挥舞着键盘用代码去改变'
+          motto: '挥舞着键盘敲出我的世界'
         }, {
           name: '白佳杰',
-          avatar: 'http://element.eleme.io/1.4/static/hamburger.50e4091.png',
+          avatar: 'static/img/BJJ.png',
           character: '后端',
-          motto: '满怀一腔热血，挥舞着键盘用代码去改变'
+          motto: '面朝大海，春暖花开'
         }, {
           name: '梁胡斯乐',
-          avatar: 'http://element.eleme.io/1.4/static/hamburger.50e4091.png',
+          avatar: 'static/img/LHSL.png',
           character: '后端',
-          motto: '满怀一腔热血，挥舞着键盘用代码去改变'
+          motto: 'php是世界上最牛逼的语言'
         }, {
           name: '刘凯龙',
-          avatar: 'http://element.eleme.io/1.4/static/hamburger.50e4091.png',
+          avatar: 'static/img/LKL.png',
           character: '前端',
-          motto: '满怀一腔热血，挥舞着键盘用代码去改变'
+          motto: 'Write Less, Do More'
         }
       ]
     }
