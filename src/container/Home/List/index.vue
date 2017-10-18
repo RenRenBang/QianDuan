@@ -44,7 +44,7 @@
     </transition>
     <transition-group name="fade" mode="in-out">
       <div v-if="selectMode === '1'" key="service" class="list-group">
-        <scroll ref="scroll" v-if="serviceList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
+        <scroll ref="scroll" v-if="serviceList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="serviceList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
           <ul class="service-list">
             <li v-for="(item, index) in serviceList" :key="index">
               <serviceListCard :data="item"></serviceListCard>
@@ -53,7 +53,7 @@
         </scroll>
       </div>
       <div v-if="selectMode === '2'" key="need" class="list-group">
-        <scroll ref="scroll" v-if="needList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
+        <scroll ref="scroll" v-if="needList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="needList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
           <ul class="need-list">
             <li v-for="(item, index) in needList" :key="index">
               <needListCard :data="item"></needListCard>
@@ -98,7 +98,6 @@ export default {
       scrollToTime: 700,
       scrollToEasing: 'bounce',
       scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
-      items: [],
       itemIndex: 0
     }
   },
@@ -126,33 +125,12 @@ export default {
     onPullingDown() {
       // 模拟更新数据
       console.log('pulling down and load data')
-      setTimeout(() => {
-        if (Math.random() > 0.5) {
-          // 如果有新数据
-          this.items.unshift('时间？' + +new Date())
-        } else {
-          // 如果没有新数据
-          this.$refs.scroll.forceUpdate()
-        }
-      }, 1000)
+      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
     },
     onPullingUp() {
       // 更新数据
       console.log('pulling up and load data')
-      setTimeout(() => {
-        if (Math.random() > 0.5) {
-          // 如果有新数据
-          let newPage = []
-          for (let i = 0; i < 10; i++) {
-            newPage.push('加载前' + ++this.itemIndex + '后')
-          }
-
-          this.items = this.items.concat(newPage)
-        } else {
-          // 如果没有新数据
-          this.$refs.scroll.forceUpdate()
-        }
-      }, 1000)
+      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
     },
     listenScroll(pos) {
       if (pos.y >= -100) {
@@ -163,32 +141,35 @@ export default {
     },
     rebuildScroll() {
       Vue.nextTick(() => {
+        if (!this.$refs.scroll) {
+          return
+        }
         this.$refs.scroll.destroy()
         this.$refs.scroll.initScroll()
+      })
+    },
+    getNeedList() {
+      this.$http.get('http://localhost:8080/api/queryCorderBy?type=n&trade&title').then((response) => {
+        this.needList = response.data.data
+        console.log(this.needList)
+        this.$refs.scroll.forceUpdate()
+      }).catch(() => {
+        console.log('need err')
+      })
+    },
+    getServiceList() {
+      this.$http.get('http://localhost:8080/api/queryCorderBy?type=s&trade&title').then((response) => {
+        this.serviceList = response.data.data
+        console.log(this.serviceList)
+        this.$refs.scroll.forceUpdate()
+      }).catch(() => {
+        console.log('service err')
       })
     }
   },
   created() {
-    this.$http.get('http://localhost:8080/api/queryCorderBy?type=n&trade&title').then((response) => {
-      this.needList = response.data.data
-      console.log(this.needList)
-    }).catch(() => {
-      this.$message({
-        message: 'NEED',
-        type: 'error',
-        duration: 2000
-      })
-    })
-    this.$http.get('http://localhost:8080/api/queryCorderBy?type=s&trade&title').then((response) => {
-      this.serviceList = response.data.data
-      console.log(this.serviceList)
-    }).catch(() => {
-      this.$message({
-        message: 'SERVICE',
-        type: 'error',
-        duration: 2000
-      })
-    })
+    this.getNeedList()
+    this.getServiceList()
   },
   mounted() {
     this.$nextTick(() => {
