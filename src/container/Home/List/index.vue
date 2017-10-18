@@ -149,7 +149,7 @@ export default {
       })
     },
     getNeedList() {
-      this.$http.get('http://localhost:8080/api/queryCorderBy?type=n&trade&title').then((response) => {
+      this.$http.get('http://47.95.214.71:8080/api/queryCorderBy?type=n&trade&title').then((response) => {
         this.needList = response.data.data
         console.log(this.needList)
         this.$refs.scroll.forceUpdate()
@@ -158,7 +158,7 @@ export default {
       })
     },
     getServiceList() {
-      this.$http.get('http://localhost:8080/api/queryCorderBy?type=s&trade&title').then((response) => {
+      this.$http.get('http://47.95.214.71:8080/api/queryCorderBy?type=s&trade&title').then((response) => {
         this.serviceList = response.data.data
         console.log(this.serviceList)
         this.$refs.scroll.forceUpdate()

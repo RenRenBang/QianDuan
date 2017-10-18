@@ -89,7 +89,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.postObj)
-          this.$http.post(`http://localhost:8080/api/addCorder`, qs.stringify(this.postObj), {
+          this.$http.post(`http://47.95.214.71:8080/api/addCorder`, qs.stringify(this.postObj), {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
             }

@@ -58,7 +58,7 @@ export default {
     collect() {
       this.isCollect = !this.isCollect
       if (this.isCollect) {
-        this.$http.post(`http://localhost:8080/api/addCollections`, qs.stringify(this.postObj), {
+        this.$http.post(`http://47.95.214.71:8080/api/addCollections`, qs.stringify(this.postObj), {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
           }
@@ -80,7 +80,7 @@ export default {
       }
     },
     submitOrder() {
-      this.$http.get(`http://localhost:8080/api/addTransaction?uid=${this.uid}&oid=${this.$route.params.id}`).then((response) => {
+      this.$http.get(`http://47.95.214.71:8080/api/addTransaction?uid=${this.uid}&oid=${this.$route.params.id}`).then((response) => {
         console.log(response.data)
         this.$notify({
           title: '成功',
@@ -102,7 +102,7 @@ export default {
     headerPage
   },
   created() {
-    this.$http.get(`http://localhost:8080/api/queryCorderById?oid=${this.$route.params.id}`).then((response) => {
+    this.$http.get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.$route.params.id}`).then((response) => {
       this.data = response.data.data[0]
     }).catch((error) => {
       console.log(error)

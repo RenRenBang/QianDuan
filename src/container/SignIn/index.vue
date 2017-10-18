@@ -138,7 +138,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$http.post('http://localhost:8080/api/addCuser', qs.stringify(this.postForm), {
+          this.$http.post('http://47.95.214.71:8080/api/addCuser', qs.stringify(this.postForm), {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             }
@@ -180,7 +180,7 @@ export default {
       this.sendCodeDisabled = true
     },
     sendCode() {
-      this.$http.post('http://localhost:8080/api/getCheckCode', qs.stringify({ uphone: this.ruleForm.uphone }), {
+      this.$http.post('http://47.95.214.71:8080/api/getCheckCode', qs.stringify({ uphone: this.ruleForm.uphone }), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }

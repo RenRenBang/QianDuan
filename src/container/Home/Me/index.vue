@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted() {
-    this.$http.get(` http://localhost:8080/api/findByUid?uid=${this.uid}`).then((response) => {
+    this.$http.get(`http://47.95.214.71:8080/api/findByUid?uid=${this.uid}`).then((response) => {
       this.cuser = response.data.data[0]
     }).catch((err) => {
       this.$message({

@@ -4,7 +4,7 @@
     <h1 class="title">人人帮</h1>
     <el-form :model="loginForm" class="form">
       <el-form-item label="用户名">
-        <el-input size="large" v-model="loginForm.uphone"></el-input>
+        <el-input size="large" v-model="loginForm.uphone" placeholder="您的手机号"></el-input>
       </el-form-item>
       <el-form-item label="密码">
         <el-input type="password" size="large" v-model="loginForm.password"></el-input>
@@ -44,7 +44,7 @@ export default {
   methods: {
     onSubmit() {
       console.log(this.loginForm)
-      this.$http.post('http://localhost:8080/api/to_login', qs.stringify(this.loginForm), {
+      this.$http.post('http://47.95.214.71:8080/api/to_login', qs.stringify(this.loginForm), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }

@@ -53,7 +53,7 @@ export default {
   },
   created() {
     console.log(this.uid)
-    this.$http.post(`http://localhost:8080/api/findCollectionByUid`, qs.stringify({ uid: this.uid }), {
+    this.$http.post(`http://47.95.214.71:8080/api/findCollectionByUid`, qs.stringify({ uid: this.uid }), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
