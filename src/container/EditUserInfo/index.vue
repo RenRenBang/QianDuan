@@ -5,10 +5,11 @@
         <el-form-item label="昵称" prop="nickName">
           <el-input size="large" v-model="ruleForm.nickName"></el-input>
         </el-form-item>
-        <el-form-item class="upload" label="头像" prop="avatar">
-          <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :auto-upload="false">
-            <img v-if="ruleForm.avatar" :src="ruleForm.avatar" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        <el-form-item class="upload" label="头像">
+          <el-upload name="file" ref="upload" action="http://47.95.214.71:8080/api/onefile2" :data="uploadFileExData" :on-remove="handleRemoveFile" :file-list="file" list-type="picture">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
         <el-form-item label="手机号">
@@ -40,21 +41,22 @@ export default {
   data() {
     return {
       cuser: undefined,
+      file: [],
       ruleForm: {
         nickName: '网名',
-        avatar: null
+        uphone: null
       },
       rules: {
         nickName: [
           { required: true, message: '请输入您的昵称', trigger: 'blur' },
-          { min: 3, max: 7, message: '长度在 3 到 7 个字符', trigger: 'blur' }
+          { min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           console.log(this.ruleForm)
           this.$notify({
@@ -71,6 +73,12 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+    },
+    handleRemoveFile(file, fileList) {
+      console.log(file, fileList)
+    },
+    submitUpload() {
+      this.$refs.upload.submit()
     }
   },
   components: {
@@ -79,52 +87,50 @@ export default {
   computed: {
     uid() {
       return store.state.uID
+    },
+    uploadFileExData() {
+      return {
+        uid: this.uid,
+        uphone: this.ruleForm.uphone
+      }
     }
   },
   mounted() {
-    this.$http.get(`http://47.95.214.71:8080/api/findByUid?uid=${this.uid}`).then((response) => {
-      this.cuser = response.data.data[0]
-    }).catch((err) => {
-      this.$message({
-        message: err,
-        type: 'error',
-        duration: 2000
+    this.$http
+      .get(`http://47.95.214.71:8080/api/findByUid?uid=${this.uid}`)
+      .then(response => {
+        this.cuser = response.data.data[0]
+        this.ruleForm.nickName = this.cuser.nickname
+        this.ruleForm.uphone = this.cuser.uphone
       })
-    })
+      .catch(err => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
+      })
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
-.edit-userinfo
-  padding 20px 12px 0 12px
-  .form
-    .btn-group
-      font-size 0
-      .btn
-        margin 5px 0
-        width 100%
-    .upload
-      .avatar-uploader
-        .el-upload
-          border: 1px dashed #d9d9d9
-          border-radius: 6px
-          width: 178px
-          cursor: pointer
-          position: relative
-          overflow: hidden
-          &:hover
-            border-color: #20a0ff
-        .avatar-uploader-icon
-          font-size: 18px
-          color: #8c939d
-          width: 178px
-          height: 178px
-          line-height: 178px
-          text-align: center
-        .avatar
-          width: 178px
-          height: 178px
-          display: block
+.edit-userinfo {
+  padding: 20px 12px 0 12px;
+
+  .form {
+    .btn-group {
+      font-size: 0;
+
+      .btn {
+        margin: 5px 0;
+        width: 100%;
+      }
+    }
+
+    .upload {
+    }
+  }
+}
 </style>

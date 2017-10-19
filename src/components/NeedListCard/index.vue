@@ -11,7 +11,7 @@
         </div>
         <div class="price">{{data.money}} 元/人</div>
         <div class="detail clearfix">
-          <span class="deadline">{{data.endTime}}天后失效&nbsp;&nbsp;&nbsp;|</span>
+          <span class="deadline">{{deadline}}天后失效&nbsp;&nbsp;&nbsp;|</span>
           <span class="need-num">需{{data.ocount}}人</span>
           <span class="location">
             <i class="icon icon-location-arrow"></i>{{data.address}}
@@ -51,6 +51,14 @@ export default {
         duration: 2000
       })
     })
+  },
+  computed: {
+    deadline() {
+      if (!this.data.endTime) {
+        return 'err'
+      }
+      return Math.ceil(new Date(this.data.endTime - new Date().getTime()).getTime() / 1000 / 60 / 60 / 24)
+    }
   }
 }
 </script>
