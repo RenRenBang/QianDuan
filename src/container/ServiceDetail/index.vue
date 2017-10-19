@@ -77,6 +77,22 @@ export default {
             duration: 2000
           })
         })
+      } else {
+        this.$http.get(`http://47.95.214.71:8080/api/deleteCollections?cid=${this.cid}`).then((response) => {
+          console.log(response.data)
+          this.$notify({
+            title: '成功',
+            message: '已经取消收藏',
+            type: 'success',
+            duration: 1500
+          })
+        }).catch((err) => {
+          this.$message({
+            message: err,
+            type: 'error',
+            duration: 2000
+          })
+        })
       }
     },
     submitOrder() {
@@ -104,6 +120,15 @@ export default {
   created() {
     this.$http.get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.$route.params.id}`).then((response) => {
       this.data = response.data.data[0]
+    }).catch((error) => {
+      console.log(error)
+    })
+    this.$http.get(`http://47.95.214.71:8080/api/findCidByUidOid?uid=${this.uid}&oid=${this.$route.params.id}`).then((response) => {
+      console.log('HERE', response.data)
+      if (response.data.tagCode !== 'null') {
+        this.isCollect = true
+        this.cid = response.data.tagCode
+      }
     }).catch((error) => {
       console.log(error)
     })

@@ -57,7 +57,7 @@ export default {
           })
           store.commit('login', response.data.data[0].uid)
           console.log(response.data)
-          router.push('/home/list')
+          router.replace('/home/list')
         } else {
           this.$message({
             message: '用户名或密码错误',
