@@ -9,7 +9,7 @@
         </el-col>
         <el-col :span="17" :offset="1">
           <div class="userinfo">
-            <span class="name">{{cuser.name}}</span>
+            <span class="name">{{cuser.nickname}}</span>
             <div class="other">{{cuser.profile}}</div>
           </div>
         </el-col>
@@ -77,7 +77,7 @@ export default {
       return store.state.uID
     }
   },
-  mounted() {
+  created() {
     this.$http.get(`http://47.95.214.71:8080/api/findByUid?uid=${this.uid}`).then((response) => {
       this.cuser = response.data.data[0]
     }).catch((err) => {

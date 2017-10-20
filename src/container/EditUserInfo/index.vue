@@ -6,9 +6,8 @@
           <el-input size="large" v-model="ruleForm.nickName"></el-input>
         </el-form-item>
         <el-form-item class="upload" label="头像">
-          <el-upload name="file" ref="upload" action="http://47.95.214.71:8080/api/onefile2" :data="uploadFileExData" :on-remove="handleRemoveFile" :file-list="file" list-type="picture">
+          <el-upload name="file" ref="upload" action="http://47.95.214.71:8080/api/onefile2" :data="uploadFileExData" :on-remove="handleRemoveFile" :file-list="file" list-type="picture" :auto-upload="false">
             <el-button size="small" type="primary">点击上传</el-button>
-            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
@@ -32,7 +31,7 @@
 </template>
 
 <script>
-// import qs from 'qs'
+import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
@@ -58,13 +57,27 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.ruleForm)
-          this.$notify({
-            title: '成功',
-            message: '修改个人信息成功',
-            type: 'success'
+          this.$http.post(`http://47.95.214.71:8080/api/updateNameAndNick`, qs.stringify(this.postObj), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            }
+          }).then((response) => {
+            console.log(response.data.data)
+            this.submitUpload()
+            console.log(this.ruleForm)
+            this.$notify({
+              title: '成功',
+              message: '修改个人信息成功',
+              type: 'success'
+            })
+            router.go(-1)
+          }).catch((err) => {
+            this.$message({
+              message: err,
+              type: 'error',
+              duration: 2000
+            })
           })
-          router.go(-1)
         } else {
           console.log('error submit!!')
           return false
@@ -92,6 +105,13 @@ export default {
       return {
         uid: this.uid,
         uphone: this.ruleForm.uphone
+      }
+    },
+    postObj() {
+      return {
+        uid: this.uid,
+        nickname: this.ruleForm.nickName,
+        password: ''
       }
     }
   },
