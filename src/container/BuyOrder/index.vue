@@ -3,16 +3,16 @@
     <headerPage title="已购买订单">
       <el-tabs v-model="activeName" @tab-click="handleClick" class="tabs">
         <el-tab-pane label="服务" name="service" class="service-tab">
-          <ul class="service-list">
-            <li v-for="i in 10" :key="i">
-              <serviceListCard :data="data"></serviceListCard>
+          <ul class="service-list" v-if="serviceList">
+            <li v-for="(item, index) in serviceList" :key="index">
+              <serviceListCard :data="item.corder"></serviceListCard>
             </li>
           </ul>
         </el-tab-pane>
         <el-tab-pane label="需求" name="need" class="need-tab">
-          <ul class="need-list">
-            <li v-for="i in 10" :key="i">
-              <needListCard :data="data2"></needListCard>
+          <ul class="need-list" v-if="needList">
+            <li v-for="(item, index) in needList" :key="index">
+              <needListCard :data="item.corder"></needListCard>
             </li>
           </ul>
         </el-tab-pane>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
 import serviceListCard from 'components/ServiceListCard'
@@ -31,32 +32,8 @@ export default {
   data() {
     return {
       activeName: 'service',
-      data: {
-        id: 1,
-        title: 'test title',
-        tag: '教育',
-        buyNum: 4,
-        likeNum: 103,
-        location: '全国',
-        price: 998,
-        provider: {
-          name: 'Tom',
-          avatar: 'https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg'
-        }
-      },
-      data2: {
-        id: 2,
-        title: 'test title',
-        tag: '互联网',
-        needNum: 4,
-        location: '全国',
-        deadline: 3,
-        price: 92,
-        provider: {
-          name: 'Jack',
-          avatar: 'https://i.loli.net/2017/10/09/59dad0a5aa41c.jpg'
-        }
-      }
+      serviceList: undefined,
+      needList: undefined
     }
   },
   methods: {
@@ -64,13 +41,47 @@ export default {
       router.go(-1)
     },
     handleClick(tab, event) {
-      console.log(tab, event)
+      console.log(this.activeName)
+      this.activeName === 'service' ? this.getServiceList() : this.getNeedList()
+    },
+    getServiceList() {
+      this.$http.get(`http://localhost:8080/api/queryTransactionById?uid=${this.uid}&type=s`).then((response) => {
+        this.serviceList = response.data.data
+        console.log('get service')
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
+      })
+    },
+    getNeedList() {
+      this.$http.get(`http://localhost:8080/api/queryTransactionById?uid=${this.uid}&type=n`).then((response) => {
+        this.needList = response.data.data
+        console.log('get need')
+      }).catch((err) => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
+      })
     }
   },
   components: {
     headerPage,
     serviceListCard,
     needListCard
+  },
+  computed: {
+    uid() {
+      return store.state.uID
+    }
+  },
+  created() {
+    this.getServiceList()
+    this.getNeedList()
   }
 }
 </script>

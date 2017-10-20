@@ -25,7 +25,7 @@
       <router-link to="/sellOrder">
         <div class="sell-order-btn">
           <i class="icon icon-clipboard"></i>
-          <span class="tag">已售出订单</span>
+          <span class="tag">已发布订单</span>
         </div>
       </router-link>
     </div>

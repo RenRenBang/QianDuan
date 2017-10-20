@@ -11,8 +11,17 @@
         </div>
         <div class="price">{{data.money}} 元/人</div>
         <div class="detail clearfix">
-          <span class="deadline">{{deadline}}天后失效&nbsp;&nbsp;&nbsp;|</span>
-          <span class="need-num">需{{data.ocount}}人</span>
+          <span v-if="deadline > 0">
+            <span class="deadline">
+              {{deadline}}天后失效&nbsp;&nbsp;&nbsp;|
+            </span>
+            <span class="need-num">需{{data.ocount}}人</span>
+          </span>
+          <span v-else>
+            <span class="deadline">
+              <el-tag type="gray">已失效</el-tag>
+            </span>
+          </span>
           <span class="location">
             <i class="icon icon-location-arrow"></i>{{data.address}}
           </span>

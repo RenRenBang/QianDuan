@@ -9,7 +9,14 @@
           <img :src="'http://47.95.214.71' + cuser.image" alt="avatar" class="avatar">
           <span class="name">{{cuser.nickname}}</span>
         </div>
-        <div class="price">{{data.money}} 元/次</div>
+        <div class="price">
+          <div v-if="data.money === 0">
+            免费
+          </div>
+          <div v-else>
+            {{data.money}} 元/次
+          </div>
+        </div>
         <div class="detail clearfix">
           <span class="buy-num">{{data.gmNum}}人购买&nbsp;&nbsp;&nbsp;|</span>
           <span class="like-num">{{data.collNum}}人喜欢</span>

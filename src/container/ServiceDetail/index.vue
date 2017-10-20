@@ -5,7 +5,14 @@
         <div class="title">{{data.title}}
           <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
         </div>
-        <div class="price">{{data.money}}</div>
+        <div class="price">
+          <div v-if="data.money === 0">
+            免费
+          </div>
+          <div v-else>
+            {{data.money}} 元/次
+          </div>
+        </div>
       </div>
       <div class="describe">
         <div class="lable">服务内容</div>
@@ -205,7 +212,8 @@ export default {
     background: #fff;
 
     .avatar {
-      max-width: 60px;
+      height: 60px;
+      width: 60px;
       vertical-align: middle;
       border-radius: 50%;
     }
