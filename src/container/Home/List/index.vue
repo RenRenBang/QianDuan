@@ -67,6 +67,7 @@
 
 <script>
 import Vue from 'vue'
+import store from '@/store'
 import BScroll from 'better-scroll'
 import Scroll from 'components/scroll/scroll'
 import serviceListCard from 'components/ServiceListCard'
@@ -113,6 +114,7 @@ export default {
     },
     handleSelect() {
       this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
+      store.commit('changeListMode', this.selectMode)
     },
     _initSortScroll() {
       if (!this.sortScroll) {
@@ -205,6 +207,10 @@ export default {
     }
   },
   created() {
+    if (this.listMode) {
+      this.selectMode = this.listMode
+    }
+    store.commit('changeListMode', '2')
     this.getNeedList()
     this.getServiceList()
   },
@@ -278,6 +284,9 @@ export default {
         default:
           return 'ERR'
       }
+    },
+    listMode() {
+      return store.state.listMode
     }
   }
 }

@@ -5,9 +5,16 @@
         <div class="title">{{data.title}}
           <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
         </div>
-        <div class="need-people">还需{{data.ocount}}人&nbsp;&nbsp;|</div>
-        <div class="deadline">&nbsp;&nbsp;{{data.ocount}}天后失效</div>
-        <div class="price">{{data.money}}元/人</div>
+        <div v-if="deadline > 0 && data.ocount > 0">
+          <div class="need-people">还需{{data.ocount}}人&nbsp;&nbsp;|</div>
+          <div class="deadline">&nbsp;&nbsp;{{deadline}}天后失效</div>
+          <div class="price">{{data.money}}元/人</div>
+        </div>
+        <div v-else>
+          <span class="deadline">
+            <el-tag type="gray">已失效</el-tag>
+          </span>
+        </div>
       </div>
       <div class="describe">
         <div class="lable">需求内容</div>
@@ -24,7 +31,7 @@
         <i class="icon icon-location-arrow"></i>
         <span class="name">{{data.address}}</span>
       </div>
-      <div class="controler">
+      <div class="controler" v-if="deadline > 0 && data.ocount > 0">
         <div class="submit-btn" @click="submitOrder">我要参与</div>
       </div>
     </headerPage>
@@ -47,37 +54,55 @@ export default {
       router.go(-1)
     },
     submitOrder() {
-      this.$http.get(`http://47.95.214.71:8080/api/addTransaction?uid=${this.uid}&oid=${this.$route.params.id}`).then((response) => {
-        console.log(response.data)
-        this.$notify({
-          title: '成功',
-          message: '已参与此需求',
-          type: 'success',
-          duration: 1500
+      this.$http
+        .get(
+          `http://47.95.214.71:8080/api/addTransaction?uid=${this
+            .uid}&oid=${this.$route.params.id}`
+        )
+        .then(response => {
+          console.log(response.data)
+          this.$notify({
+            title: '成功',
+            message: '已参与此需求',
+            type: 'success',
+            duration: 1500
+          })
+          router.push('/home/list')
         })
-        router.push('/home/list')
-      }).catch((err) => {
-        this.$message({
-          message: err,
-          type: 'error',
-          duration: 2000
+        .catch(err => {
+          this.$message({
+            message: err,
+            type: 'error',
+            duration: 2000
+          })
         })
-      })
     }
   },
   components: {
     headerPage
   },
   created() {
-    this.$http.get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.$route.params.id}`).then((response) => {
-      this.data = response.data.data[0]
-    }).catch((error) => {
-      console.log(error)
-    })
+    this.$http
+      .get(
+        `http://47.95.214.71:8080/api/queryCorderById?oid=${this.$route.params
+          .id}`
+      )
+      .then(response => {
+        this.data = response.data.data[0]
+      })
+      .catch(error => {
+        console.log(error)
+      })
   },
   computed: {
     uid() {
       return store.state.uID
+    },
+    deadline() {
+      if (!this.data.endTime) {
+        return 'err'
+      }
+      return Math.ceil(new Date(this.data.endTime - new Date().getTime()).getTime() / 1000 / 60 / 60 / 24)
     }
   }
 }

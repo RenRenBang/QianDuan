@@ -11,7 +11,7 @@
         </div>
         <div class="price">{{data.money}} 元/人</div>
         <div class="detail clearfix">
-          <span v-if="deadline > 0">
+          <span v-if="deadline > 0 && data.ocount > 0">
             <span class="deadline">
               {{deadline}}天后失效&nbsp;&nbsp;&nbsp;|
             </span>

@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-    uID: ''
+    uID: '',
+    listMode: ''
   },
   mutations: {
     login: (state, newID) => {
@@ -11,6 +12,9 @@ export default new Vuex.Store({
     },
     logout: (state) => {
       state.uID = ''
+    },
+    changeListMode: (state, newMode) => {
+      state.listMode = newMode
     }
   }
 })
