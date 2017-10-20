@@ -19,7 +19,7 @@
           <el-input type="textarea" :autosize="{ minRows: 3}" v-model.trim.number="ruleForm.odescribe" placeholder="希望服务的目标人群 + 服务的范围点"></el-input>
         </el-form-item>
         <el-form-item label="我的位置" prop="address">
-          <el-input size="large" v-model="ruleForm.address" style="width:100%"></el-input>
+          <el-autocomplete v-model="ruleForm.address" :fetch-suggestions="querySearchAsync" placeholder="请输入您的位置" @select="handleSelect" style="width: 100%"></el-autocomplete>
         </el-form-item>
         <el-form-item label="出价（元）" prop="money">
           <el-input-number v-model="ruleForm.money" :min="0" :max="999" style="width:100%"></el-input-number>
@@ -103,6 +103,17 @@ export default {
     },
     handleSelect(item) {
       console.log(item)
+    },
+    querySearchAsync(queryString, cb) {
+      this.$http.get(`http://restapi.amap.com/v3/assistant/inputtips?key=bd94f49741fa7aa8090ebace2e7cc3fe&keywords=${queryString}`).then((response) => {
+        cb(response.data.tips.map((item) => {
+          item.value = item.name
+          return item
+        }))
+        console.log(response.data.tips)
+      }).catch(() => {
+        console.log('AUTOCOMPLETE ERR')
+      })
     }
   },
   components: {
