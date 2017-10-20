@@ -2,7 +2,7 @@
   <div class="list">
     <div class="head-bar shadow">
       <el-input placeholder="请输入内容" v-model="searchWd" icon="search" :on-icon-click="handleSearch">
-        <el-select v-model="selectMode" slot="prepend" placeholder="请选择" class="select">
+        <el-select v-model="selectMode" slot="prepend" placeholder="请选择" class="select" @change="handleSelect">
           <el-option label="需求" value="2"></el-option>
           <el-option label="服务" value="1"></el-option>
         </el-select>
@@ -45,7 +45,7 @@
     <transition-group name="fade" mode="in-out">
       <div v-if="selectMode === '1'" key="service" class="list-group">
         <scroll ref="scroll" v-if="serviceList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="serviceList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
-          <ul class="service-list">
+          <ul class="service-list list">
             <li v-for="(item, index) in serviceList" :key="index">
               <serviceListCard :data="item"></serviceListCard>
             </li>
@@ -54,7 +54,7 @@
       </div>
       <div v-if="selectMode === '2'" key="need" class="list-group">
         <scroll ref="scroll" v-if="needList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="needList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
-          <ul class="need-list">
+          <ul class="need-list list">
             <li v-for="(item, index) in needList" :key="index">
               <needListCard :data="item"></needListCard>
             </li>
@@ -76,6 +76,7 @@ export default {
   name: 'list',
   data() {
     return {
+      offset: 10,
       needList: null,
       serviceList: null,
       searchWd: '',
@@ -110,6 +111,9 @@ export default {
       this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
       this.clearFocus()
     },
+    handleSelect() {
+      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
+    },
     _initSortScroll() {
       if (!this.sortScroll) {
         this.sortScroll = new BScroll(this.$refs['sort-wrapper'], { scrollX: true, click: true })
@@ -132,7 +136,41 @@ export default {
     onPullingUp() {
       // 更新数据
       console.log('pulling up and load data')
-      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
+      if (this.selectMode === '1') {
+        this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=${this.offset}`).then((response) => {
+          if (response.data.statusCode === '200') {
+            let list = []
+            for (let i of response.data.data) {
+              list.push(i)
+            }
+            this.serviceList = this.serviceList.concat(list)
+            console.log(this.serviceList)
+            this.offset += 10
+          } else {
+            // 如果没有新数据
+            this.$refs.scroll.forceUpdate()
+          }
+        }).catch(() => {
+          console.log('service err')
+        })
+      } else {
+        this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=${this.offset}`).then((response) => {
+          if (response.data.statusCode === '200') {
+            let list = []
+            for (let i of response.data.data) {
+              list.push(i)
+            }
+            this.needList = this.needList.concat(list)
+            console.log(this.needList)
+            this.offset += 10
+          } else {
+            // 如果没有新数据
+            this.$refs.scroll.forceUpdate()
+          }
+        }).catch(() => {
+          console.log('need err')
+        })
+      }
     },
     listenScroll(pos) {
       if (pos.y >= -100) {
@@ -143,27 +181,24 @@ export default {
     },
     rebuildScroll() {
       Vue.nextTick(() => {
-        if (!this.$refs.scroll) {
-          return
-        }
         this.$refs.scroll.destroy()
         this.$refs.scroll.initScroll()
       })
     },
     getNeedList() {
-      this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}`).then((response) => {
+      this.offset = 0
+      this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=0`).then((response) => {
         this.needList = response.data.data
         console.log(this.needList)
-        this.$refs.scroll.forceUpdate()
       }).catch(() => {
         console.log('need err')
       })
     },
     getServiceList() {
-      this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}`).then((response) => {
+      this.offset = 0
+      this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=0`).then((response) => {
         this.serviceList = response.data.data
         console.log(this.serviceList)
-        this.$refs.scroll.forceUpdate()
       }).catch(() => {
         console.log('service err')
       })
@@ -177,7 +212,6 @@ export default {
     this.$nextTick(() => {
       this._initSortScroll()
     })
-    this.rebuildScroll()
   },
   components: {
     Scroll,
@@ -315,21 +349,25 @@ export default {
 
   .list-group {
     position: absolute;
-    padding-top: 70px;
-    padding-bottom: 115px;
-    height: 100%;
+    top: 60px;
+    bottom: 0;
     width: 100%;
     background: #ededed;
   }
 
   .list-scroller {
-    margin-top: 73px;
-    height: 560px;
+    position: absolute;
+    top: 73px;
+    bottom: 48px;
+    width: 100%;
     background: #ededed;
 
     &.long-mode {
-      margin-top: 0;
-      height: 630px;
+      top: 0px;
+      bottom: 48px;
+    }
+
+    .list {
     }
   }
 }
