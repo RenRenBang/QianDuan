@@ -42,7 +42,7 @@
         </ul>
       </div>
     </transition>
-    <transition-group name="fade" mode="in-out">
+    <transition-group name="fade" mode="in-out" v-loading.fullscreen.lock="!(serviceList && needList)" element-loading-text="拼命加载中">
       <div v-if="selectMode === '1'" key="service" class="list-group">
         <scroll ref="scroll" v-if="serviceList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="serviceList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
           <ul class="service-list list">
@@ -190,7 +190,11 @@ export default {
     getNeedList() {
       this.offset = 0
       this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=0`).then((response) => {
-        this.needList = response.data.data
+        if (response.data.data) {
+          this.needList = response.data.data
+        } else {
+          this.needList = []
+        }
         console.log(this.needList)
       }).catch(() => {
         console.log('need err')
@@ -199,7 +203,11 @@ export default {
     getServiceList() {
       this.offset = 0
       this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=0`).then((response) => {
-        this.serviceList = response.data.data
+        if (response.data.data) {
+          this.serviceList = response.data.data
+        } else {
+          this.serviceList = []
+        }
         console.log(this.serviceList)
       }).catch(() => {
         console.log('service err')

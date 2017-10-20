@@ -2,14 +2,14 @@
   <div class="buy-order">
     <headerPage title="已购买订单">
       <el-tabs v-model="activeName" @tab-click="handleClick" class="tabs">
-        <el-tab-pane label="服务" name="service" class="service-tab">
+        <el-tab-pane label="服务" name="service" class="service-tab" v-loading.fullscreen.lock="!serviceList" element-loading-text="拼命加载中">
           <ul class="service-list" v-if="serviceList">
             <li v-for="(item, index) in serviceList" :key="index">
               <serviceListCard :data="item.corder"></serviceListCard>
             </li>
           </ul>
         </el-tab-pane>
-        <el-tab-pane label="需求" name="need" class="need-tab">
+        <el-tab-pane label="需求" name="need" class="need-tab" v-loading.fullscreen.lock="!needList" element-loading-text="拼命加载中">
           <ul class="need-list" v-if="needList">
             <li v-for="(item, index) in needList" :key="index">
               <needListCard :data="item.corder"></needListCard>

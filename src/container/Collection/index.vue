@@ -1,6 +1,6 @@
 <template>
   <div class="collection">
-    <headerPage title="收藏的服务">
+    <headerPage title="收藏的服务" v-loading.fullscreen.lock="!serviceListObj" element-loading-text="拼命加载中">
       <div class="list-group" v-if="serviceListObj">
         <serviceListCard v-for="(item, index) in serviceListObj" :key="index" :data="item"></serviceListCard>
       </div>
