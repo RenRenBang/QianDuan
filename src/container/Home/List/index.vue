@@ -209,8 +209,9 @@ export default {
   created() {
     if (this.listMode) {
       this.selectMode = this.listMode
+    } else {
+      store.commit('changeListMode', '2')
     }
-    store.commit('changeListMode', '2')
     this.getNeedList()
     this.getServiceList()
   },
