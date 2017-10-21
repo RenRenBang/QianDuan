@@ -2,19 +2,25 @@
   <div class="sell-order">
     <headerPage title="已发布订单">
       <el-tabs v-model="activeName" @tab-click="handleClick" class="tabs">
-        <el-tab-pane label="服务" name="service" class="service-tab" v-loading.fullscreen.lock="!serviceList" element-loading-text="拼命加载中">
+        <el-tab-pane label="服务" name="service" class="service-tab">
           <ul class="service-list" v-if="serviceList">
             <li v-for="(item, index) in serviceList" :key="index">
               <serviceListCard :data="item"></serviceListCard>
             </li>
           </ul>
+          <div v-else>
+            <h1 class="no-content">这里空空如也～</h1>
+          </div>
         </el-tab-pane>
-        <el-tab-pane label="需求" name="need" class="need-tab" v-loading.fullscreen.lock="!needList" element-loading-text="拼命加载中">
+        <el-tab-pane label="需求" name="need" class="need-tab">
           <ul class="need-list" v-if="needList">
             <li v-for="(item, index) in needList" :key="index">
               <needListCard :data="item"></needListCard>
             </li>
           </ul>
+          <div v-else>
+            <h1 class="no-content">这里空空如也～</h1>
+          </div>
         </el-tab-pane>
       </el-tabs>
     </headerPage>
@@ -32,8 +38,8 @@ export default {
   data() {
     return {
       activeName: 'service',
-      serviceList: undefined,
-      needList: undefined
+      serviceList: [],
+      needList: []
     }
   },
   methods: {
@@ -122,6 +128,14 @@ export default {
       .need-tab {
         height: 100%;
       }
+    }
+
+    .no-content {
+      text-align: center;
+      margin-top: 140px;
+      font-size: 19px;
+      font-weight: 200;
+      color: #99A9BF;
     }
   }
 }

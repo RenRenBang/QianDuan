@@ -44,22 +44,28 @@
     </transition>
     <transition-group name="fade" mode="in-out" v-loading.fullscreen.lock="!(serviceList && needList)" element-loading-text="拼命加载中">
       <div v-if="selectMode === '1'" key="service" class="list-group">
-        <scroll ref="scroll" v-if="serviceList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="serviceList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
+        <scroll ref="scroll" v-if="serviceList.length > 0" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="serviceList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
           <ul class="service-list list">
             <li v-for="(item, index) in serviceList" :key="index">
               <serviceListCard :data="item"></serviceListCard>
             </li>
           </ul>
         </scroll>
+        <div v-else>
+          <h1 class="no-content">这里空空如也～</h1>
+        </div>
       </div>
       <div v-if="selectMode === '2'" key="need" class="list-group">
-        <scroll ref="scroll" v-if="needList" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="needList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
+        <scroll ref="scroll" v-if="needList.length > 0" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="needList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
           <ul class="need-list list">
             <li v-for="(item, index) in needList" :key="index">
               <needListCard :data="item"></needListCard>
             </li>
           </ul>
         </scroll>
+        <div v-else>
+          <h1 class="no-content">这里空空如也～</h1>
+        </div>
       </div>
     </transition-group>
   </div>
@@ -403,6 +409,14 @@ export default {
 
     .list {
     }
+  }
+
+  .no-content {
+    text-align: center;
+    margin-top: 140px;
+    font-size: 19px;
+    font-weight: 200;
+    color: #99A9BF;
   }
 }
 </style>

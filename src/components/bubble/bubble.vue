@@ -102,7 +102,7 @@ export default {
 
       ctx.fillStyle = '#20a0ff'
       ctx.fill()
-      ctx.strokeStyle = 'rgb(153,153,153)'
+      ctx.strokeStyle = '#20a0ff'
       ctx.stroke()
       ctx.restore()
     },
