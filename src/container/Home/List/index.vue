@@ -139,39 +139,45 @@ export default {
       // 更新数据
       console.log('pulling up and load data')
       if (this.selectMode === '1') {
-        this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=${this.offset}`).then((response) => {
-          if (response.data.statusCode === '200') {
-            let list = []
-            for (let i of response.data.data) {
-              list.push(i)
+        this.$http
+          .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=${this.offset}`)
+          .then(response => {
+            if (response.data.statusCode === '200') {
+              let list = []
+              for (let i of response.data.data) {
+                list.push(i)
+              }
+              this.serviceList = this.serviceList.concat(list)
+              console.log(this.serviceList)
+              this.offset += 10
+            } else {
+              // 如果没有新数据
+              this.$refs.scroll.forceUpdate()
             }
-            this.serviceList = this.serviceList.concat(list)
-            console.log(this.serviceList)
-            this.offset += 10
-          } else {
-            // 如果没有新数据
-            this.$refs.scroll.forceUpdate()
-          }
-        }).catch(() => {
-          console.log('service err')
-        })
+          })
+          .catch(() => {
+            console.log('service err')
+          })
       } else {
-        this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=${this.offset}`).then((response) => {
-          if (response.data.statusCode === '200') {
-            let list = []
-            for (let i of response.data.data) {
-              list.push(i)
+        this.$http
+          .get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=${this.offset}`)
+          .then(response => {
+            if (response.data.statusCode === '200') {
+              let list = []
+              for (let i of response.data.data) {
+                list.push(i)
+              }
+              this.needList = this.needList.concat(list)
+              console.log(this.needList)
+              this.offset += 10
+            } else {
+              // 如果没有新数据
+              this.$refs.scroll.forceUpdate()
             }
-            this.needList = this.needList.concat(list)
-            console.log(this.needList)
-            this.offset += 10
-          } else {
-            // 如果没有新数据
-            this.$refs.scroll.forceUpdate()
-          }
-        }).catch(() => {
-          console.log('need err')
-        })
+          })
+          .catch(() => {
+            console.log('need err')
+          })
       }
     },
     listenScroll(pos) {
@@ -189,29 +195,35 @@ export default {
     },
     getNeedList() {
       this.offset = 0
-      this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=0`).then((response) => {
-        if (response.data.data) {
-          this.needList = response.data.data
-        } else {
-          this.needList = []
-        }
-        console.log(this.needList)
-      }).catch(() => {
-        console.log('need err')
-      })
+      this.$http
+        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=0`)
+        .then(response => {
+          if (response.data.data) {
+            this.needList = response.data.data
+          } else {
+            this.needList = []
+          }
+          console.log(this.needList)
+        })
+        .catch(() => {
+          console.log('need err')
+        })
     },
     getServiceList() {
       this.offset = 0
-      this.$http.get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=0`).then((response) => {
-        if (response.data.data) {
-          this.serviceList = response.data.data
-        } else {
-          this.serviceList = []
-        }
-        console.log(this.serviceList)
-      }).catch(() => {
-        console.log('service err')
-      })
+      this.$http
+        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=0`)
+        .then(response => {
+          if (response.data.data) {
+            this.serviceList = response.data.data
+          } else {
+            this.serviceList = []
+          }
+          console.log(this.serviceList)
+        })
+        .catch(() => {
+          console.log('service err')
+        })
     }
   },
   created() {
@@ -261,18 +273,22 @@ export default {
       return this.scrollbar ? { fade: this.scrollbarFade } : false
     },
     pullDownRefreshObj: function() {
-      return this.pullDownRefresh ? {
-        threshold: parseInt(this.pullDownRefreshThreshold),
-        stop: parseInt(this.pullDownRefreshStop),
-        txt: '更新成功'
-      } : false
+      return this.pullDownRefresh
+        ? {
+            threshold: parseInt(this.pullDownRefreshThreshold),
+            stop: parseInt(this.pullDownRefreshStop),
+            txt: '更新成功'
+          }
+        : false
     },
     pullUpLoadObj: function() {
-      return this.pullUpLoad ? {
-        threshold: parseInt(this.pullUpLoadThreshold),
-        stop: parseInt(this.pullUpRefreshStop),
-        txt: { more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt }
-      } : false
+      return this.pullUpLoad
+        ? {
+            threshold: parseInt(this.pullUpLoadThreshold),
+            stop: parseInt(this.pullUpRefreshStop),
+            txt: { more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt }
+          }
+        : false
     },
     queryType() {
       switch (this.activeSort) {

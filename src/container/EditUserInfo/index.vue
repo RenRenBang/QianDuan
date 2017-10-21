@@ -6,8 +6,8 @@
           <el-input size="large" v-model="ruleForm.nickName"></el-input>
         </el-form-item>
         <el-form-item class="upload" label="头像">
-          <el-upload name="file" ref="upload" action="http://47.95.214.71:8080/api/onefile2" :data="uploadFileExData" :on-remove="handleRemoveFile" :file-list="file" list-type="picture" :auto-upload="false">
-            <el-button size="small" type="primary">点击上传</el-button>
+          <el-upload name="file" ref="upload" action="http://47.95.214.71:8080/api/onefile2" :data="uploadFileExData" :on-remove="handleRemoveFile" :file-list="file" list-type="picture" :on-change="handleUploadChange" :auto-upload="false" accept="image/*">
+            <el-button size="small" type="primary" :disabled="uploadBtnDisable">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
@@ -39,6 +39,7 @@ export default {
   name: 'editUserInfo',
   data() {
     return {
+      uploadBtnDisable: false,
       cuser: undefined,
       file: [],
       ruleForm: {
@@ -87,8 +88,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
+    handleUploadChange(file, fileList) {
+      this.uploadBtnDisable = true
+    },
     handleRemoveFile(file, fileList) {
-      console.log(file, fileList)
+      this.uploadBtnDisable = false
     },
     submitUpload() {
       this.$refs.upload.submit()

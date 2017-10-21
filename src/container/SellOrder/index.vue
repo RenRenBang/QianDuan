@@ -45,28 +45,34 @@ export default {
       this.activeName === 'service' ? this.getServiceList() : this.getNeedList()
     },
     getServiceList() {
-      this.$http.get(`http://localhost:8080/api/queryCorderListById?uid=${this.uid}&type=s`).then((response) => {
-        this.serviceList = response.data.data
-        console.log('get service')
-      }).catch((err) => {
-        this.$message({
-          message: err,
-          type: 'error',
-          duration: 2000
+      this.$http
+        .get(`http://localhost:8080/api/queryCorderListById?uid=${this.uid}&type=s`)
+        .then(response => {
+          this.serviceList = response.data.data
+          console.log('get service')
         })
-      })
+        .catch(err => {
+          this.$message({
+            message: err,
+            type: 'error',
+            duration: 2000
+          })
+        })
     },
     getNeedList() {
-      this.$http.get(`http://localhost:8080/api/queryCorderListById?uid=${this.uid}&type=n`).then((response) => {
-        this.needList = response.data.data
-        console.log('get need')
-      }).catch((err) => {
-        this.$message({
-          message: err,
-          type: 'error',
-          duration: 2000
+      this.$http
+        .get(`http://localhost:8080/api/queryCorderListById?uid=${this.uid}&type=n`)
+        .then(response => {
+          this.needList = response.data.data
+          console.log('get need')
         })
-      })
+        .catch(err => {
+          this.$message({
+            message: err,
+            type: 'error',
+            duration: 2000
+          })
+        })
     }
   },
   components: {

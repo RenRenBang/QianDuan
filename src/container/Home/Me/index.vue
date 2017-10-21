@@ -78,7 +78,14 @@ export default {
     }
   },
   created() {
-    this.$http.get(`http://47.95.214.71:8080/api/findByUid?uid=${this.uid}`).then((response) => {
+    this.$http.get(`http://47.95.214.71:8080/api/findByUid?uid=${this.uid}`
+    // , {
+    //   headers: {
+    //     'If-Modified-Since': '0',
+    //     'Cache-Control': 'no-cache'
+    //   }
+    // }
+    ).then((response) => {
       this.cuser = response.data.data[0]
     }).catch((err) => {
       this.$message({

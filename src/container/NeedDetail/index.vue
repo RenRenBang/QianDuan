@@ -102,7 +102,13 @@ export default {
       if (!this.data.endTime) {
         return 'err'
       }
-      return Math.ceil(new Date(this.data.endTime - new Date().getTime()).getTime() / 1000 / 60 / 60 / 24)
+      return Math.ceil(
+        new Date(this.data.endTime - new Date().getTime()).getTime() /
+          1000 /
+          60 /
+          60 /
+          24
+      )
     }
   }
 }
