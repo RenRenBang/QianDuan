@@ -32,7 +32,15 @@
         <span class="name">{{data.address}}</span>
       </div>
       <div class="controler" v-if="deadline > 0 && data.ocount > 0">
-        <div class="submit-btn" @click="submitOrder">我要参与</div>
+        <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover">
+          <p class="text">
+            <i class="icon el-icon-warning"></i> 您确定要参与此需求吗？</p>
+          <div style="text-align: right; margin: 0">
+            <el-button size="small" type="text" @click="popoverVisible = false">我再看看</el-button>
+            <el-button type="primary" size="small" @click="submitOrder">确定</el-button>
+          </div>
+        </el-popover>
+        <div class="submit-btn" v-popover:popover>我要参与</div>
       </div>
     </headerPage>
   </div>
@@ -46,7 +54,8 @@ export default {
   name: 'needDetail',
   data() {
     return {
-      data: undefined
+      data: undefined,
+      popoverVisible: false
     }
   },
   methods: {
@@ -55,10 +64,7 @@ export default {
     },
     submitOrder() {
       this.$http
-        .get(
-          `http://47.95.214.71:8080/api/addTransaction?uid=${this
-            .uid}&oid=${this.$route.params.id}`
-        )
+        .get(`http://47.95.214.71:8080/api/addTransaction?uid=${this.uid}&oid=${this.$route.params.id}`)
         .then(response => {
           console.log(response.data)
           this.$notify({
@@ -83,10 +89,7 @@ export default {
   },
   created() {
     this.$http
-      .get(
-        `http://47.95.214.71:8080/api/queryCorderById?oid=${this.$route.params
-          .id}`
-      )
+      .get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.$route.params.id}`)
       .then(response => {
         this.data = response.data.data[0]
       })
@@ -102,13 +105,7 @@ export default {
       if (!this.data.endTime) {
         return 'err'
       }
-      return Math.ceil(
-        new Date(this.data.endTime - new Date().getTime()).getTime() /
-          1000 /
-          60 /
-          60 /
-          24
-      )
+      return Math.ceil(new Date(this.data.endTime - new Date().getTime()).getTime() / 1000 / 60 / 60 / 24)
     }
   }
 }
@@ -237,6 +234,18 @@ export default {
       color: #fff;
       font-size: 20px;
       background: #20A0FF;
+    }
+  }
+}
+
+.popover {
+  .text {
+    font-size: 15px;
+    font-weight: 200;
+    line-height: 30px;
+
+    .icon {
+      color: #F7BA2A;
     }
   }
 }

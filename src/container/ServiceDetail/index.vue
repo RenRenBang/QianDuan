@@ -37,7 +37,15 @@
             </div>
           </el-col>
           <el-col :span="20">
-            <div class="submit-btn" @click="submitOrder">立即预约</div>
+            <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover">
+              <p class="text">
+                <i class="icon el-icon-warning"></i> 您确定要预约此服务吗？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button size="small" type="text" @click="popoverVisible = false">我再看看</el-button>
+                <el-button type="primary" size="small" @click="submitOrder">确定</el-button>
+              </div>
+            </el-popover>
+            <div class="submit-btn" v-popover:popover>立即预约</div>
           </el-col>
         </el-row>
       </div>
@@ -54,6 +62,7 @@ export default {
   name: 'serviceDetail',
   data() {
     return {
+      popoverVisible: false,
       isCollect: false,
       data: undefined
     }
@@ -65,80 +74,95 @@ export default {
     collect() {
       this.isCollect = !this.isCollect
       if (this.isCollect) {
-        this.$http.post(`http://47.95.214.71:8080/api/addCollections`, qs.stringify(this.postObj), {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-          }
-        }).then((response) => {
-          console.log(response.data)
-          this.$notify({
-            title: '成功',
-            message: '成功收藏',
-            type: 'success',
-            duration: 1500
+        this.$http
+          .post(`http://47.95.214.71:8080/api/addCollections`, qs.stringify(this.postObj), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            }
           })
-        }).catch((err) => {
-          this.$message({
-            message: err,
-            type: 'error',
-            duration: 2000
+          .then(response => {
+            console.log(response.data)
+            this.$notify({
+              title: '成功',
+              message: '成功收藏',
+              type: 'success',
+              duration: 1500
+            })
           })
-        })
+          .catch(err => {
+            this.$message({
+              message: err,
+              type: 'error',
+              duration: 2000
+            })
+          })
       } else {
-        this.$http.get(`http://47.95.214.71:8080/api/deleteCollections?cid=${this.cid}`).then((response) => {
-          console.log(response.data)
-          this.$notify({
-            title: '成功',
-            message: '已经取消收藏',
-            type: 'success',
-            duration: 1500
+        this.$http
+          .get(`http://47.95.214.71:8080/api/deleteCollections?cid=${this.cid}`)
+          .then(response => {
+            console.log(response.data)
+            this.$notify({
+              title: '成功',
+              message: '已经取消收藏',
+              type: 'success',
+              duration: 1500
+            })
           })
-        }).catch((err) => {
-          this.$message({
-            message: err,
-            type: 'error',
-            duration: 2000
+          .catch(err => {
+            this.$message({
+              message: err,
+              type: 'error',
+              duration: 2000
+            })
           })
-        })
       }
     },
     submitOrder() {
-      this.$http.get(`http://47.95.214.71:8080/api/addTransaction?uid=${this.uid}&oid=${this.$route.params.id}`).then((response) => {
-        console.log(response.data)
-        this.$notify({
-          title: '成功',
-          message: '服务已预约',
-          type: 'success',
-          duration: 1500
+      this.$http
+        .get(`http://47.95.214.71:8080/api/addTransaction?uid=${this.uid}&oid=${this.$route.params.id}`)
+        .then(response => {
+          console.log(response.data)
+          this.$notify({
+            title: '成功',
+            message: '服务已预约',
+            type: 'success',
+            duration: 1500
+          })
+          router.push('/home/list')
         })
-        router.push('/home/list')
-      }).catch((err) => {
-        this.$message({
-          message: err,
-          type: 'error',
-          duration: 2000
+        .catch(err => {
+          this.$message({
+            message: err,
+            type: 'error',
+            duration: 2000
+          })
         })
-      })
     }
   },
   components: {
     headerPage
   },
   created() {
-    this.$http.get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.$route.params.id}`).then((response) => {
-      this.data = response.data.data[0]
-    }).catch((error) => {
-      console.log(error)
-    })
-    this.$http.get(`http://47.95.214.71:8080/api/findCidByUidOid?uid=${this.uid}&oid=${this.$route.params.id}`).then((response) => {
-      console.log('HERE', response.data)
-      if (response.data.tagCode !== 'null') {
-        this.isCollect = true
-        this.cid = response.data.tagCode
-      }
-    }).catch((error) => {
-      console.log(error)
-    })
+    this.$http
+      .get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.$route.params.id}`)
+      .then(response => {
+        this.data = response.data.data[0]
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    this.$http
+      .get(`http://47.95.214.71:8080/api/findCidByUidOid?uid=${this.uid}&oid=${this.$route.params.id}`)
+      .then(response => {
+        console.log('HERE', response.data)
+        if (response.data.tagCode !== 'null') {
+          this.isCollect = true
+          this.cid = response.data.tagCode
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
   },
   computed: {
     uid() {
@@ -277,6 +301,18 @@ export default {
       color: #fff;
       font-size: 20px;
       background: #20A0FF;
+    }
+  }
+}
+
+.popover {
+  .text {
+    font-size: 15px;
+    font-weight: 200;
+    line-height: 30px;
+
+    .icon {
+      color: #F7BA2A;
     }
   }
 }
