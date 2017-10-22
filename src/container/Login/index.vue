@@ -14,8 +14,8 @@
       </el-form-item>
     </el-form>
     <div class="other-control">
-      <router-link to="/home/list">
-        <el-button class="foget" type="text" size="large">
+      <router-link to="/forgetPassword">
+        <el-button class="forget" type="text" size="large">
           忘记密码
         </el-button>
       </router-link>
@@ -105,7 +105,7 @@ export default {
   .other-control {
     margin-top: -15px;
 
-    .foget {
+    .forget {
       float: left;
     }
 

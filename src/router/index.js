@@ -7,6 +7,7 @@ import me from 'container/Home/Me'
 
 import login from 'container/Login'
 import signin from 'container/SignIn'
+import forgetPassword from 'container/ForgetPassword'
 import needForm from 'container/NeedForm'
 import serviceForm from 'container/ServiceForm'
 import editUserInfo from 'container/EditUserInfo'
@@ -47,6 +48,11 @@ export default new Router({
       path: '/signin',
       name: 'signin',
       component: signin
+    },
+    {
+      path: '/forgetPassword',
+      name: 'forgetPassword',
+      component: forgetPassword
     },
     {
       path: '/needForm',
