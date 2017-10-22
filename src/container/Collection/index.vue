@@ -1,8 +1,11 @@
 <template>
   <div class="collection">
-    <headerPage title="收藏的服务" v-loading.fullscreen.lock="!serviceListObj" element-loading-text="拼命加载中">
+    <headerPage title="收藏的服务">
       <div class="list-group" v-if="serviceListObj">
         <serviceListCard v-for="(item, index) in serviceListObj" :key="index" :data="item"></serviceListCard>
+      </div>
+      <div v-else>
+        <h1 class="no-content">这里空空如也～</h1>
       </div>
     </headerPage>
   </div>
@@ -38,7 +41,7 @@ export default {
       if (!this.serviceList) {
         return undefined
       }
-      return this.serviceList.map((item) => {
+      return this.serviceList.map(item => {
         return {
           oid: item.corder.oid,
           title: item.corder.title,
@@ -53,20 +56,23 @@ export default {
   },
   created() {
     console.log(this.uid)
-    this.$http.post(`http://47.95.214.71:8080/api/findCollectionByUid`, qs.stringify({ uid: this.uid }), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }).then((response) => {
-      this.serviceList = response.data.data
-      console.log(this.serviceList)
-    }).catch((err) => {
-      this.$message({
-        message: err,
-        type: 'error',
-        duration: 2000
+    this.$http
+      .post(`http://47.95.214.71:8080/api/findCollectionByUid`, qs.stringify({ uid: this.uid }), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
       })
-    })
+      .then(response => {
+        this.serviceList = response.data.data
+        console.log(this.serviceList)
+      })
+      .catch(err => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
+      })
   }
 }
 </script>
@@ -76,5 +82,13 @@ export default {
 .collection {
   min-height: 100%;
   background: #ededed;
+
+  .no-content {
+    text-align: center;
+    margin-top: 140px;
+    font-size: 19px;
+    font-weight: 200;
+    color: #99A9BF;
+  }
 }
 </style>
