@@ -37,12 +37,20 @@
             </div>
           </el-col>
           <el-col :span="20">
-            <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover">
+            <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover" v-if="data.cuser.uid !== uid">
               <p class="text">
                 <i class="icon el-icon-warning"></i> 您确定要预约此服务吗？</p>
               <div style="text-align: right; margin: 0">
                 <el-button size="small" type="text" @click="popoverVisible = false">我再看看</el-button>
                 <el-button type="primary" size="small" @click="submitOrder">确定</el-button>
+              </div>
+            </el-popover>
+            <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover" v-else>
+              <p class="text">
+                <i class="icon el-icon-warning"></i> 你没法预约自己发布的服务呦～
+              </p>
+              <div style="text-align: right; margin: 0">
+                <el-button type="primary" size="small" @click="popoverVisible = false">确定</el-button>
               </div>
             </el-popover>
             <div class="submit-btn" v-popover:popover>立即预约</div>

@@ -32,12 +32,20 @@
         <span class="name">{{data.address}}</span>
       </div>
       <div class="controler" v-if="deadline > 0 && data.ocount > 0">
-        <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover">
+        <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover" v-if="data.cuser.uid !== uid">
           <p class="text">
             <i class="icon el-icon-warning"></i> 您确定要参与此需求吗？</p>
           <div style="text-align: right; margin: 0">
             <el-button size="small" type="text" @click="popoverVisible = false">我再看看</el-button>
             <el-button type="primary" size="small" @click="submitOrder">确定</el-button>
+          </div>
+        </el-popover>
+        <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover" v-else>
+          <p class="text">
+            <i class="icon el-icon-warning"></i> 你没法参与自己发布的需求呦～
+          </p>
+          <div style="text-align: right; margin: 0">
+            <el-button type="primary" size="small" @click="popoverVisible = false">确定</el-button>
           </div>
         </el-popover>
         <div class="submit-btn" v-popover:popover>我要参与</div>
@@ -92,6 +100,7 @@ export default {
       .get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.$route.params.id}`)
       .then(response => {
         this.data = response.data.data[0]
+        console.log('data.cuser.uid !== uid', this.data.cuser.uid !== this.uid)
       })
       .catch(error => {
         console.log(error)
