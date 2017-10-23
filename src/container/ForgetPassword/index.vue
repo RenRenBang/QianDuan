@@ -1,5 +1,5 @@
 <template>
-  <div class="signin">
+  <div class="forget">
     <headerPage title="重置密码">
       <el-form :model="ruleForm" class="form" label-position="top" :rules="rules" ref="ruleForm">
         <el-form-item label="手机号" prop="uphone" ref="uphone">
@@ -17,9 +17,9 @@
           <el-input type="password" size="large" v-model="ruleForm.checkPass"></el-input>
         </el-form-item>
         <div class="btn-group">
-          <el-button size="large" class="signin-btn" type="primary" @click="submitForm('ruleForm')">提交</el-button>
+          <el-button size="large" class="forget-btn" type="primary" @click="submitForm('ruleForm')">提交</el-button>
           <br>
-          <el-button size="large" class="signin-btn" @click="resetForm('ruleForm')">重置</el-button>
+          <el-button size="large" class="forget-btn" @click="resetForm('ruleForm')">重置</el-button>
         </div>
       </el-form>
     </headerPage>
@@ -31,7 +31,7 @@ import qs from 'qs'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
 export default {
-  name: 'signin',
+  name: 'forget',
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -98,9 +98,15 @@ export default {
                   type: 'success',
                   duration: 2000
                 })
+              } else if (response.data.statusCode === '300') {
+                this.$message({
+                  message: '验证码有问题呦～',
+                  type: 'error',
+                  duration: 2000
+                })
               } else {
                 this.$message({
-                  message: '这个手机号已经注册过了哦',
+                  message: '这个手机号还没注册过',
                   type: 'error',
                   duration: 2000
                 })
@@ -198,14 +204,14 @@ export default {
 
 <!-- Add 'scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
-.signin {
+.forget {
   padding: 10px 12px 0 12px;
 
   .form {
     .btn-group {
       font-size: 0;
 
-      .signin-btn {
+      .forget-btn {
         margin: 5px 0;
         width: 100%;
       }

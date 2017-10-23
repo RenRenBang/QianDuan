@@ -52,32 +52,24 @@ export default {
     },
     getServiceList() {
       this.$http
-        .get(`http://localhost:8080/api/queryTransactionById?uid=${this.uid}&type=s`)
+        .get(`http://47.95.214.71:8080/api/queryTransactionById?uid=${this.uid}&type=s`)
         .then(response => {
           this.serviceList = response.data.data
           console.log('get service')
         })
         .catch(err => {
-          this.$message({
-            message: err,
-            type: 'error',
-            duration: 2000
-          })
+          console.log(err)
         })
     },
     getNeedList() {
       this.$http
-        .get(`http://localhost:8080/api/queryTransactionById?uid=${this.uid}&type=n`)
+        .get(`http://47.95.214.71:8080/api/queryTransactionById?uid=${this.uid}&type=n`)
         .then(response => {
           this.needList = response.data.data
           console.log('get need')
         })
         .catch(err => {
-          this.$message({
-            message: err,
-            type: 'error',
-            duration: 2000
-          })
+          console.log(err)
         })
     }
   },

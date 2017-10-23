@@ -52,11 +52,7 @@ export default {
     this.$http.get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.data.oid}`).then((response) => {
       this.cuser = response.data.data[0].cuser
     }).catch((err) => {
-      this.$message({
-        message: err,
-        type: 'error',
-        duration: 2000
-      })
+      console.log(err)
     })
   }
 }

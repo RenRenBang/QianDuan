@@ -52,7 +52,7 @@ export default {
     },
     getServiceList() {
       this.$http
-        .get(`http://localhost:8080/api/queryCorderListById?uid=${this.uid}&type=s`)
+        .get(`http://47.95.214.71:8080/api/queryCorderListById?uid=${this.uid}&type=s`)
         .then(response => {
           this.serviceList = response.data.data
           console.log('get service')
@@ -67,7 +67,7 @@ export default {
     },
     getNeedList() {
       this.$http
-        .get(`http://localhost:8080/api/queryCorderListById?uid=${this.uid}&type=n`)
+        .get(`http://47.95.214.71:8080/api/queryCorderListById?uid=${this.uid}&type=n`)
         .then(response => {
           this.needList = response.data.data
           console.log('get need')
