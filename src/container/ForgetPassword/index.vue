@@ -94,7 +94,7 @@ export default {
               if (response.data.statusCode === '200') {
                 router.go(-1)
                 this.$message({
-                  message: '恭喜，注册成功',
+                  message: '恭喜，重置密码成功',
                   type: 'success',
                   duration: 2000
                 })

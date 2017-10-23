@@ -17,8 +17,8 @@
       <div class="describe">
         <div class="lable">服务内容</div>
         <p class="text">{{data.odescribe}}</p>
-        <div class="img">
-          <img class="img-responsive" src="static/img/example.png" alt="">
+        <div class="img" v-if="data.ophotoPath">
+          <img class="img-responsive" :src="`http://47.95.214.71${data.ophotoPath}`" alt="">
         </div>
       </div>
       <div class="provider">
@@ -37,7 +37,7 @@
             </div>
           </el-col>
           <el-col :span="20">
-            <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover" v-if="data.cuser.uid !== uid">
+            <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover" width="300" v-if="data.cuser.uid !== uid">
               <p class="text">
                 <i class="icon el-icon-warning"></i> 您确定要预约此服务吗？</p>
               <div style="text-align: right; margin: 0">
@@ -45,7 +45,7 @@
                 <el-button type="primary" size="small" @click="submitOrder">确定</el-button>
               </div>
             </el-popover>
-            <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover" v-else>
+            <el-popover ref="popover" placement="top" v-model="popoverVisible" popper-class="popover" width="300" v-else>
               <p class="text">
                 <i class="icon el-icon-warning"></i> 你没法预约自己发布的服务呦～
               </p>
@@ -315,7 +315,7 @@ export default {
 
 .popover {
   .text {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 200;
     line-height: 30px;
 

@@ -48,6 +48,14 @@
           <span class="name">关于我们</span>
         </li>
       </router-link>
+      <li @click="codeVer">
+        <i class="icon icon-code"></i>
+        <span class="name">版本信息</span>
+      </li>
+      <li @click="dialogVisible = true">
+        <i class="icon icon-smile"></i>
+        <span class="name">帮助与反馈</span>
+      </li>
       <router-link to="/login">
         <li class="log-out" @click="logout">
           <i class="icon icon-user-times"></i>
@@ -55,6 +63,18 @@
         </li>
       </router-link>
     </ul>
+    <el-dialog title="帮助与反馈" :visible.sync="dialogVisible" size="large">
+      <el-form>
+        <el-form-item label="您遇到什么麻烦了？">
+          <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" placeholder="请输入内容" v-model="helpText">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="helpYes">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -64,12 +84,27 @@ export default {
   name: 'me',
   data() {
     return {
-      cuser: undefined
+      cuser: undefined,
+      dialogVisible: false,
+      helpText: ''
     }
   },
   methods: {
     logout() {
       store.commit('logout')
+    },
+    codeVer() {
+      this.$alert('您现在使用的是最新版本2.3.1', '版本信息', {
+        confirmButtonText: '确定',
+        callback: action => {}
+      })
+    },
+    helpYes() {
+      this.$message({
+        type: 'success',
+        message: '您的反馈我们已经收到啦～'
+      })
+      this.dialogVisible = false
     }
   },
   computed: {
@@ -78,22 +113,18 @@ export default {
     }
   },
   created() {
-    this.$http.get(`http://47.95.214.71:8080/api/findByUid?uid=${this.uid}`
-    // , {
-    //   headers: {
-    //     'If-Modified-Since': '0',
-    //     'Cache-Control': 'no-cache'
-    //   }
-    // }
-    ).then((response) => {
-      this.cuser = response.data.data[0]
-    }).catch((err) => {
-      this.$message({
-        message: err,
-        type: 'error',
-        duration: 2000
+    this.$http
+      .get(`http://47.95.214.71:8080/api/findByUid?uid=${this.uid}`)
+      .then(response => {
+        this.cuser = response.data.data[0]
       })
-    })
+      .catch(err => {
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
+      })
   }
 }
 </script>
@@ -224,6 +255,14 @@ export default {
 
         &.icon-group {
           color: #2196F3;
+        }
+
+        &.icon-smile {
+          color: #FFA000;
+        }
+
+        &.icon-code {
+          color: #616161;
         }
       }
 

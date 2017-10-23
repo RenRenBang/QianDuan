@@ -17,6 +17,10 @@
         </el-form-item>
         <el-form-item label="服务详情" prop="odescribe">
           <el-input type="textarea" :autosize="{ minRows: 3}" v-model.trim.number="ruleForm.odescribe" placeholder="希望服务的目标人群 + 服务的范围点"></el-input>
+          <el-upload name="file" ref="upload" action="http://47.95.214.71:8080/api/addCorder" :data="uploadFileExData" :on-success="handleUploadSuccess" :on-remove="handleRemoveFile" :file-list="file" list-type="picture" :on-change="handleUploadChange" :auto-upload="false" accept="image/*">
+            <el-button size="small" type="primary" :disabled="uploadBtnDisable">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">在这里你可以选择上传一张图片来说明更详细的情况<br>只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
         </el-form-item>
         <el-form-item label="我的位置" prop="address">
           <el-autocomplete v-model="ruleForm.address" :fetch-suggestions="querySearchAsync" placeholder="请输入您的位置" @select="handleSelect" style="width: 100%"></el-autocomplete>
@@ -35,7 +39,6 @@
 </template>
 
 <script>
-import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
@@ -43,6 +46,8 @@ export default {
   name: 'serviceForm',
   data() {
     return {
+      uploadBtnDisable: false,
+      file: [],
       ruleForm: {
         title: '',
         odescribe: '',
@@ -72,26 +77,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.postObj)
-          this.$http.post(`http://47.95.214.71:8080/api/addCorder`, qs.stringify(this.postObj), {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-            }
-          }).then((response) => {
-            console.log(response.data)
-            this.$notify({
-              title: '成功',
-              message: '您的服务已发布',
-              type: 'success',
-              duration: 1500
-            })
-            router.go(-1)
-          }).catch((err) => {
-            this.$message({
-              message: err,
-              type: 'error',
-              duration: 2000
-            })
-          })
+          this.submitUpload()
         } else {
           console.log('error submit!!')
           return false
@@ -114,6 +100,24 @@ export default {
       }).catch(() => {
         console.log('AUTOCOMPLETE ERR')
       })
+    },
+    handleUploadChange(file, fileList) {
+      this.uploadBtnDisable = true
+    },
+    handleRemoveFile(file, fileList) {
+      this.uploadBtnDisable = false
+    },
+    handleUploadSuccess() {
+      this.$notify({
+        title: '成功',
+        message: '您的服务已发布',
+        type: 'success',
+        duration: 1500
+      })
+      router.go(-1)
+    },
+    submitUpload() {
+      this.$refs.upload.submit()
     }
   },
   components: {
@@ -123,7 +127,7 @@ export default {
     uid() {
       return store.state.uID
     },
-    postObj() {
+    uploadFileExData() {
       return {
         type: 's',
         trade: this.ruleForm.trade,

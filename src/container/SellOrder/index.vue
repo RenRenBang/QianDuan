@@ -5,7 +5,7 @@
         <el-tab-pane label="服务" name="service" class="service-tab">
           <ul class="service-list" v-if="serviceList">
             <li v-for="(item, index) in serviceList" :key="index">
-              <serviceListCard :data="item"></serviceListCard>
+              <serviceListCard :deleteIcon="true" :data="item"></serviceListCard>
             </li>
           </ul>
           <div v-else>
@@ -15,7 +15,7 @@
         <el-tab-pane label="需求" name="need" class="need-tab">
           <ul class="need-list" v-if="needList">
             <li v-for="(item, index) in needList" :key="index">
-              <needListCard :data="item"></needListCard>
+              <needListCard :deleteIcon="true" :data="item"></needListCard>
             </li>
           </ul>
           <div v-else>

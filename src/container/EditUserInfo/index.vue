@@ -122,7 +122,8 @@ export default {
       return {
         uid: this.uid,
         nickname: this.ruleForm.nickName,
-        password: ''
+        password: '',
+        profile: this.ruleForm.profile
       }
     }
   },

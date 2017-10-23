@@ -1,13 +1,14 @@
 <template>
   <div class="need-list-card">
     <router-link :to="`/NeedDetail/${data.oid}`">
-      <el-card v-if="data" :body-style="{'padding': '10px 20px'}">
+      <el-card v-if="data" :body-style="{'padding': '8px 15px'}">
         <h1 class="title" slot="header">{{data.title}}
           <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
         </h1>
         <div class="provider" v-if="cuser">
           <img :src="'http://47.95.214.71' + cuser.image" alt="avatar" class="avatar">
           <span class="name">{{cuser.nickname}}</span>
+          <i v-if="deleteIcon" class="delete el-icon-delete"></i>
         </div>
         <div class="price">{{data.money}} 元/人</div>
         <div class="detail clearfix">
@@ -38,6 +39,10 @@ export default {
   props: {
     data: {
       type: Object
+    },
+    deleteIcon: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -51,11 +56,14 @@ export default {
     }
   },
   mounted() {
-    this.$http.get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.data.oid}`).then((response) => {
-      this.cuser = response.data.data[0].cuser
-    }).catch((err) => {
-      console.log(err)
-    })
+    this.$http
+      .get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.data.oid}`)
+      .then(response => {
+        this.cuser = response.data.data[0].cuser
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   computed: {
     deadline() {
@@ -101,6 +109,14 @@ export default {
       line-height: 50px;
       vertical-align: top;
     }
+
+    .delete {
+      font-size: 28px;
+      line-height: 50px;
+      vertical-align: top;
+      float: right;
+      color: #FF4949;
+    }
   }
 
   .price {
@@ -127,7 +143,7 @@ export default {
 
     .location {
       float: right;
-      max-width: 220px;
+      max-width: 173px;
       text-align: right;
       font-size: 14px;
       text-overflow: ellipsis;
