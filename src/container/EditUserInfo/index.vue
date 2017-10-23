@@ -11,6 +11,9 @@
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
+        <el-form-item label="个人简介" prop="profile">
+          <el-input type="textarea" :autosize="{ minRows: 2}" v-model.trim.number="ruleForm.profile" placeholder="SHOW 出你自己～"></el-input>
+        </el-form-item>
         <el-form-item label="手机号">
           <el-input size="large" v-model.trim.number="cuser.uphone" :disabled="true"></el-input>
         </el-form-item>
@@ -44,12 +47,16 @@ export default {
       file: [],
       ruleForm: {
         nickName: '网名',
-        uphone: null
+        uphone: null,
+        profile: null
       },
       rules: {
         nickName: [
           { required: true, message: '请输入您的昵称', trigger: 'blur' },
           { min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur' }
+        ],
+        profile: [
+          { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -126,6 +133,7 @@ export default {
         this.cuser = response.data.data[0]
         this.ruleForm.nickName = this.cuser.nickname
         this.ruleForm.uphone = this.cuser.uphone
+        this.ruleForm.profile = this.cuser.profile
       })
       .catch(err => {
         this.$message({
