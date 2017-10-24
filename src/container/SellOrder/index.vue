@@ -3,7 +3,7 @@
     <headerPage title="已发布订单">
       <el-tabs v-model="activeName" @tab-click="handleClick" class="tabs">
         <el-tab-pane label="服务" name="service" class="service-tab">
-          <ul class="service-list" v-if="serviceList">
+          <ul class="service-list" v-if="serviceList && serviceList.length !== 0">
             <li v-for="(item, index) in serviceList" :key="index">
               <serviceListCard :deleteIcon="true" :data="item"></serviceListCard>
             </li>
@@ -13,7 +13,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="需求" name="need" class="need-tab">
-          <ul class="need-list" v-if="needList">
+          <ul class="need-list" v-if="needList && needList.length !== 0">
             <li v-for="(item, index) in needList" :key="index">
               <needListCard :deleteIcon="true" :data="item"></needListCard>
             </li>
@@ -54,7 +54,9 @@ export default {
       this.$http
         .get(`http://47.95.214.71:8080/api/queryCorderListById?uid=${this.uid}&type=s`)
         .then(response => {
-          this.serviceList = response.data.data
+          this.serviceList = response.data.data.filter(item => {
+            return item.isValid === 1
+          })
           console.log('get service')
         })
         .catch(err => {
@@ -69,7 +71,9 @@ export default {
       this.$http
         .get(`http://47.95.214.71:8080/api/queryCorderListById?uid=${this.uid}&type=n`)
         .then(response => {
-          this.needList = response.data.data
+          this.needList = response.data.data.filter(item => {
+            return item.isValid === 1
+          })
           console.log('get need')
         })
         .catch(err => {

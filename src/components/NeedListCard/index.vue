@@ -8,7 +8,9 @@
         <div class="provider" v-if="cuser">
           <img :src="'http://47.95.214.71' + cuser.image" alt="avatar" class="avatar">
           <span class="name">{{cuser.nickname}}</span>
-          <i v-if="deleteIcon" class="delete el-icon-delete"></i>
+          <el-button type="text" size="large" @click.stop.self="deleteThis">
+            <i v-if="deleteIcon" class="delete el-icon-delete"></i>
+          </el-button>
         </div>
         <div class="price">{{data.money}} 元/人</div>
         <div class="detail clearfix">
@@ -33,6 +35,7 @@
 </template>
 
 <script>
+import qs from 'qs'
 import router from '@/router'
 export default {
   name: 'needListCard',
@@ -53,6 +56,25 @@ export default {
   methods: {
     goBack() {
       router.go(-1)
+    },
+    deleteThis() {
+      this.$http
+        .post('http://47.95.214.71:8080/api/updateCorderIsValidById', qs.stringify(this.deleteObj), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          }
+        })
+        .then(response => {
+          console.log(response.data)
+          this.$message({
+            message: '订单删除成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   mounted() {
@@ -71,6 +93,12 @@ export default {
         return 'err'
       }
       return Math.ceil(new Date(this.data.endTime - new Date().getTime()).getTime() / 1000 / 60 / 60 / 24)
+    },
+    deleteObj() {
+      return {
+        isValid: 0,
+        oid: this.data.oid
+      }
     }
   }
 }
@@ -111,6 +139,7 @@ export default {
     }
 
     .delete {
+      display: inline-blcok;
       font-size: 28px;
       line-height: 50px;
       vertical-align: top;
