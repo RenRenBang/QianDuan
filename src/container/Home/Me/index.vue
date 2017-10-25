@@ -48,11 +48,11 @@
           <span class="name">关于我们</span>
         </li>
       </router-link>
-      <li @click="codeVer">
+      <li @click="CodeVerDialogVisible = true">
         <i class="icon icon-code"></i>
         <span class="name">版本信息</span>
       </li>
-      <li @click="dialogVisible = true">
+      <li @click="helpDialogVisible = true">
         <i class="icon icon-smile"></i>
         <span class="name">帮助与反馈</span>
       </li>
@@ -63,7 +63,7 @@
         </li>
       </router-link>
     </ul>
-    <el-dialog title="帮助与反馈" :visible.sync="dialogVisible" size="large">
+    <el-dialog title="帮助与反馈" :visible.sync="helpDialogVisible" size="large">
       <el-form>
         <el-form-item label="您遇到什么麻烦了？">
           <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" placeholder="请输入内容" v-model="helpText">
@@ -71,8 +71,14 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="helpDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="helpYes">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="版本信息" :visible.sync="CodeVerDialogVisible" size="large">
+      您现在使用的是最新版本2.3.1
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="CodeVerDialogVisible = false">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -85,7 +91,8 @@ export default {
   data() {
     return {
       cuser: undefined,
-      dialogVisible: false,
+      helpDialogVisible: false,
+      CodeVerDialogVisible: false,
       helpText: ''
     }
   },
@@ -93,18 +100,12 @@ export default {
     logout() {
       store.commit('logout')
     },
-    codeVer() {
-      this.$alert('您现在使用的是最新版本2.3.1', '版本信息', {
-        confirmButtonText: '确定',
-        callback: action => {}
-      })
-    },
     helpYes() {
       this.$message({
         type: 'success',
         message: '您的反馈我们已经收到啦～'
       })
-      this.dialogVisible = false
+      this.helpDialogVisible = false
     }
   },
   computed: {

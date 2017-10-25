@@ -8,7 +8,7 @@
         <div class="provider" v-if="cuser">
           <img :src="'http://47.95.214.71' + cuser.image" alt="avatar" class="avatar">
           <span class="name">{{cuser.nickname}}</span>
-          <el-button v-if="deleteIcon" type="text" size="large" @click.stop.native.prevent="deleteCheck" class="delete">
+          <el-button v-if="deleteIcon" type="text" size="large" @click.stop.native.prevent="deleteThis" class="delete">
             <i class="el-icon-delete"></i>
           </el-button>
         </div>
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import qs from 'qs'
 import router from '@/router'
 export default {
   name: 'serviceListCard',
@@ -56,54 +55,17 @@ export default {
       router.go(-1)
     },
     deleteThis() {
+      this.$emit('deleteCorder', this.deleteObj)
+    },
+    updateData() {
       this.$http
-        .post(
-          'http://47.95.214.71:8080/api/updateCorderIsValidById',
-          qs.stringify(this.deleteObj),
-          {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-            }
-          }
-        )
+        .get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.data.oid}`)
         .then(response => {
-          console.log(response.data)
-          this.goBack()
-          this.$message({
-            message: '您的订单已删除',
-            type: 'success',
-            duration: 2000
-          })
+          this.cuser = response.data.data[0].cuser
         })
         .catch(err => {
           console.log(err)
         })
-    },
-    deleteCheck() {
-      this.$confirm('此操作将永久删除该订单, 是否继续?', '删除', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.deleteThis()
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
-    },
-    updateData() {
-      this.$http
-      .get(`http://47.95.214.71:8080/api/queryCorderById?oid=${this.data.oid}`)
-      .then(response => {
-        this.cuser = response.data.data[0].cuser
-      })
-      .catch(err => {
-        console.log(err)
-      })
     }
   },
   mounted() {

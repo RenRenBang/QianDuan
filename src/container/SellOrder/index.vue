@@ -5,7 +5,7 @@
         <el-tab-pane label="服务" name="service" class="service-tab">
           <ul class="service-list" v-if="serviceList && serviceList.length !== 0">
             <li v-for="(item, index) in serviceList" :key="index">
-              <serviceListCard :deleteIcon="true" :data="item"></serviceListCard>
+              <serviceListCard :deleteIcon="true" :data="item" @deleteCorder="deleteCorderCheck"></serviceListCard>
             </li>
           </ul>
           <div v-else>
@@ -15,7 +15,7 @@
         <el-tab-pane label="需求" name="need" class="need-tab">
           <ul class="need-list" v-if="needList && needList.length !== 0">
             <li v-for="(item, index) in needList" :key="index">
-              <needListCard :deleteIcon="true" :data="item"></needListCard>
+              <needListCard :deleteIcon="true" :data="item" @deleteCorder="deleteCorderCheck"></needListCard>
             </li>
           </ul>
           <div v-else>
@@ -24,10 +24,20 @@
         </el-tab-pane>
       </el-tabs>
     </headerPage>
+    <el-dialog class="dialog" title="删除自己发布的订单" :visible.sync="deleteDialogVisible" size="large">
+      <p class="content">
+        <i class="icon el-icon-warning"></i>您确定要永久删除此订单吗？
+      </p>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="deleteDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteCorder">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
@@ -37,9 +47,11 @@ export default {
   name: 'sellOrder',
   data() {
     return {
+      deleteDialogVisible: false,
       activeName: 'service',
       serviceList: [],
-      needList: []
+      needList: [],
+      tempDeleteObj: null
     }
   },
   methods: {
@@ -82,6 +94,31 @@ export default {
             type: 'error',
             duration: 2000
           })
+        })
+    },
+    deleteCorderCheck(obj) {
+      console.log('event', obj)
+      this.tempDeleteObj = obj
+      this.deleteDialogVisible = true
+    },
+    deleteCorder() {
+      this.$http
+        .post('http://47.95.214.71:8080/api/updateCorderIsValidById', qs.stringify(this.tempDeleteObj), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          }
+        })
+        .then(response => {
+          console.log(response.data)
+          this.goBack()
+          this.$message({
+            message: '订单删除成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
+        .catch(err => {
+          console.log(err)
         })
     }
   },
@@ -140,6 +177,18 @@ export default {
       font-size: 19px;
       font-weight: 200;
       color: #99A9BF;
+    }
+  }
+
+  .dialog {
+    .content {
+      line-height: 30px;
+
+      .icon {
+        margin-right: 10px;
+        font-size: 30px;
+        color: #F7BA2A;
+      }
     }
   }
 }

@@ -113,14 +113,14 @@ export default {
   },
   computed: {
     pullUpTxt() {
-      const moreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more || 'scrollComponent.defaultLoadTxtMore'
+      const moreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more) || 'scrollComponent.defaultLoadTxtMore'
 
-      const noMoreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore || 'scrollComponent.defaultLoadTxtNoMore'
+      const noMoreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore) || 'scrollComponent.defaultLoadTxtNoMore'
 
       return this.pullUpDirty ? moreTxt : noMoreTxt
     },
     refreshTxt() {
-      return this.pullDownRefresh && this.pullDownRefresh.txt || 'scrollComponent.defaultRefreshTxt'
+      return (this.pullDownRefresh && this.pullDownRefresh.txt) || 'scrollComponent.defaultRefreshTxt'
     }
   },
   created() {
@@ -155,7 +155,7 @@ export default {
       this.scroll = new BScroll(this.$refs.wrapper, options)
 
       if (this.listenScroll) {
-        this.scroll.on('scroll', (pos) => {
+        this.scroll.on('scroll', pos => {
           this.$emit('scroll', pos)
         })
       }
@@ -219,7 +219,7 @@ export default {
         this.$emit('pullingDown')
       })
 
-      this.scroll.on('scroll', (pos) => {
+      this.scroll.on('scroll', pos => {
         if (this.beforePullDown) {
           this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop)
           this.pullDownStyle = `top:${Math.min(pos.y + this.pullDownInitTop, 10)}px`
@@ -240,7 +240,7 @@ export default {
     },
     _reboundPullDown() {
       const { stopTime = 600 } = this.pullDownRefresh
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         setTimeout(() => {
           this.isRebounding = true
           this.scroll.finishPullDown()
@@ -270,7 +270,6 @@ export default {
     Bubble
   }
 }
-
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -282,6 +281,10 @@ export default {
   bottom: 0;
   overflow: hidden;
   background: #fff;
+
+  .scroll-content {
+    min-height: 100%;
+  }
 
   .list-content {
     position: relative;
