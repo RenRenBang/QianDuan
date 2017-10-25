@@ -21,9 +21,11 @@
           <img class="img-responsive" :src="`http://47.95.214.71${data.ophotoPath}`" alt="">
         </div>
       </div>
-      <div class="provider">
+      <div class="provider clearfix">
         <img :src="'http://47.95.214.71' + data.cuser.image" alt="" class="avatar">
         <span class="name">{{data.cuser.name}}</span>
+        <br>
+        <span class="tel">{{data.cuser.uphone}}</span>
       </div>
       <div class="location">
         <i class="icon icon-location-arrow"></i>
@@ -239,22 +241,28 @@ export default {
   }
 
   .provider {
+    box-sizing: border-box;
     margin-top: 10px;
     padding: 10px 25px;
+    width: 100%;
     background: #fff;
 
     .avatar {
+      float: left;
+      margin-right: 10px;
       height: 60px;
       width: 60px;
-      vertical-align: middle;
       border-radius: 50%;
     }
 
     .name {
-      margin-left: 10px;
       font-size: 18px;
       font-weight: 200;
-      vertical-align: middle;
+      line-height: 35px;
+    }
+
+    .tel {
+      font-size: 17px;
     }
   }
 

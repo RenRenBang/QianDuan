@@ -32,7 +32,7 @@
           <el-input-number v-model="ruleForm.ocount" :min="1" :max="100" style="width:100%"></el-input-number>
         </el-form-item>
         <el-form-item label="截止日期" prop="deadline">
-          <el-date-picker v-model="ruleForm.deadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @focus="clearFocus()" style="width:100%">
+          <el-date-picker v-model="ruleForm.deadline" type="datetime" placeholder="选择日期" :picker-options="pickerOptions" @focus="clearFocus()" style="width:100%">
           </el-date-picker>
         </el-form-item>
         <div class="btn-group">
