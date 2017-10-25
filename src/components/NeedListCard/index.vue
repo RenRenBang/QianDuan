@@ -8,8 +8,8 @@
         <div class="provider" v-if="cuser">
           <img :src="'http://47.95.214.71' + cuser.image" alt="avatar" class="avatar">
           <span class="name">{{cuser.nickname}}</span>
-          <el-button type="text" size="large" @click.stop.self="deleteThis">
-            <i v-if="deleteIcon" class="delete el-icon-delete"></i>
+          <el-button v-if="deleteIcon" type="text" size="large" @click.stop.native.prevent="deleteCheck" class="delete">
+            <i class="el-icon-delete"></i>
           </el-button>
         </div>
         <div class="price">{{data.money}} 元/人</div>
@@ -66,6 +66,7 @@ export default {
         })
         .then(response => {
           console.log(response.data)
+          this.goBack()
           this.$message({
             message: '订单删除成功',
             type: 'success',
@@ -74,6 +75,22 @@ export default {
         })
         .catch(err => {
           console.log(err)
+        })
+    },
+    deleteCheck() {
+      this.$confirm('此操作将永久删除该订单, 是否继续?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.deleteThis()
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
         })
     }
   },
