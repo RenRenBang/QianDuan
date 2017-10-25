@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
@@ -47,6 +48,7 @@ export default {
   data() {
     return {
       uploadBtnDisable: false,
+      fileList: [],
       file: [],
       ruleForm: {
         title: '',
@@ -56,27 +58,22 @@ export default {
         trade: ''
       },
       rules: {
-        title: [
-          { required: true, message: '这里是必填项', trigger: 'blur' },
-          { min: 3, message: '不能短于3个字符哦', trigger: 'blur' }
-        ],
-        odescribe: [
-          { required: true, message: '请填写正确的信息', trigger: 'change' }
-        ],
-        address: [
-          { required: true, message: '请填写正确的位置', trigger: 'change' }
-        ],
-        trade: [
-          { required: true, message: '这是必填项', trigger: 'change' }
-        ]
+        title: [{ required: true, message: '这里是必填项', trigger: 'blur' }, { min: 3, message: '不能短于3个字符哦', trigger: 'blur' }],
+        odescribe: [{ required: true, message: '请填写正确的信息', trigger: 'change' }],
+        address: [{ required: true, message: '请填写正确的位置', trigger: 'change' }],
+        trade: [{ required: true, message: '这是必填项', trigger: 'change' }]
       }
     }
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           console.log(this.postObj)
+          if (this.fileList.length === 0) {
+            this.submitNoUpload()
+            return
+          }
           this.submitUpload()
         } else {
           console.log('error submit!!')
@@ -91,21 +88,28 @@ export default {
       console.log(item)
     },
     querySearchAsync(queryString, cb) {
-      this.$http.get(`http://restapi.amap.com/v3/assistant/inputtips?key=bd94f49741fa7aa8090ebace2e7cc3fe&keywords=${queryString}`).then((response) => {
-        cb(response.data.tips.map((item) => {
-          item.value = item.name
-          return item
-        }))
-        console.log(response.data.tips)
-      }).catch(() => {
-        console.log('AUTOCOMPLETE ERR')
-      })
+      this.$http
+        .get(`http://restapi.amap.com/v3/assistant/inputtips?key=bd94f49741fa7aa8090ebace2e7cc3fe&keywords=${queryString}`)
+        .then(response => {
+          cb(
+            response.data.tips.map(item => {
+              item.value = item.name
+              return item
+            })
+          )
+          console.log(response.data.tips)
+        })
+        .catch(() => {
+          console.log('AUTOCOMPLETE ERR')
+        })
     },
     handleUploadChange(file, fileList) {
       this.uploadBtnDisable = true
+      this.fileList = fileList
     },
     handleRemoveFile(file, fileList) {
       this.uploadBtnDisable = false
+      this.fileList = fileList
     },
     handleUploadSuccess() {
       this.$notify({
@@ -115,6 +119,31 @@ export default {
         duration: 1500
       })
       router.go(-1)
+    },
+    submitNoUpload() {
+      this.$http
+        .post(`http://47.95.214.71:8080/api/addCorder`, qs.stringify(this.uploadFileExData), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          }
+        })
+        .then(response => {
+          console.log(response.data)
+          this.$notify({
+            title: '成功',
+            message: '您的服务已发布',
+            type: 'success',
+            duration: 1500
+          })
+          router.go(-1)
+        })
+        .catch(err => {
+          this.$message({
+            message: err,
+            type: 'error',
+            duration: 2000
+          })
+        })
     },
     submitUpload() {
       this.$refs.upload.submit()

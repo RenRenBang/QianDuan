@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
@@ -54,6 +55,7 @@ export default {
   data() {
     return {
       uploadBtnDisable: false,
+      fileList: [],
       file: [],
       ruleForm: {
         title: '',
@@ -83,6 +85,10 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log(this.postObj)
+          if (this.fileList.length === 0) {
+            this.submitNoUpload()
+            return
+          }
           this.submitUpload()
         } else {
           console.log('error submit!!')
@@ -117,9 +123,11 @@ export default {
     },
     handleUploadChange(file, fileList) {
       this.uploadBtnDisable = true
+      this.fileList = fileList
     },
     handleRemoveFile(file, fileList) {
       this.uploadBtnDisable = false
+      this.fileList = fileList
     },
     handleUploadSuccess() {
       this.$notify({
@@ -129,6 +137,31 @@ export default {
         duration: 1500
       })
       router.go(-1)
+    },
+    submitNoUpload() {
+      this.$http
+        .post(`http://47.95.214.71:8080/api/addCorder`, qs.stringify(this.uploadFileExData), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          }
+        })
+        .then(response => {
+          console.log(response.data)
+          this.$notify({
+            title: '成功',
+            message: '您的需求已发布',
+            type: 'success',
+            duration: 1500
+          })
+          router.go(-1)
+        })
+        .catch(err => {
+          this.$message({
+            message: err,
+            type: 'error',
+            duration: 2000
+          })
+        })
     },
     submitUpload() {
       this.$refs.upload.submit()
