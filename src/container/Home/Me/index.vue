@@ -1,5 +1,5 @@
 <template>
-  <div class="me">
+  <div class="me" v-loading.fullscreen.lock="!cuser" element-loading-text="拼命加载中">
     <div class="head" v-if="cuser">
       <el-row>
         <el-col :span="5" :offset="1">
@@ -18,13 +18,13 @@
     <div class="order">
       <router-link to="/buyOrder">
         <div class="buy-order-btn">
-          <i class="icon icon-briefcase"></i>
+          <i class="icon icon-sign-in"></i>
           <span class="tag">已购买订单</span>
         </div>
       </router-link>
       <router-link to="/sellOrder">
         <div class="sell-order-btn">
-          <i class="icon icon-clipboard"></i>
+          <i class="icon icon-sign-out"></i>
           <span class="tag">已发布订单</span>
         </div>
       </router-link>
@@ -53,7 +53,7 @@
         <span class="name">版本信息</span>
       </li>
       <li @click="helpDialogVisible = true">
-        <i class="icon icon-smile"></i>
+        <i class="icon icon-feed"></i>
         <span class="name">帮助与反馈</span>
       </li>
       <router-link to="/login">
@@ -238,7 +238,12 @@ export default {
       }
 
       .icon {
-        margin-right: 10px;
+        display: inline-block;
+        height: 60px;
+        width: 60px;
+        margin-left: -20px;
+        text-align: center;
+        line-height: 60px;
         font-size: 26px;
         vertical-align: middle;
 
@@ -258,7 +263,7 @@ export default {
           color: #2196F3;
         }
 
-        &.icon-smile {
+        &.icon-feed {
           color: #FFA000;
         }
 

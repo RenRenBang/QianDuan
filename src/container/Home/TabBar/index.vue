@@ -14,7 +14,7 @@
         </el-col>
         <el-col :span="8">
           <div class="icon-btn" @click="changeActiveBtn('me')">
-            <i class="icon icon-user-o" :class="{'active' : activeBtn === 'me'}"></i>
+            <i class="icon icon-user" :class="{'active' : activeBtn === 'me'}"></i>
           </div>
         </el-col>
       </el-row>
@@ -34,7 +34,7 @@
             <el-col :span="6" :offset="6">
               <router-link to="/needForm">
               <div class="btn need-btn" @click="toggleAddLayer()">
-                <i class="icon icon-clipboard"></i>
+                <i class="icon icon-flag"></i>
               </div>
               </router-link>
               <div class="tag">发布需求</div>

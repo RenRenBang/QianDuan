@@ -21,8 +21,8 @@
           </div>
         </div>
         <div class="detail clearfix">
-          <span class="buy-num">{{data.gmNum}}人购买&nbsp;&nbsp;&nbsp;|</span>
-          <span class="like-num">{{data.collNum}}人喜欢</span>
+          <span class="buy-num"><i class="icon-shopping-cart"></i> {{data.gmNum}}&nbsp;&nbsp;&nbsp;|</span>
+          <span class="like-num"><i class="icon-heart"></i> {{data.collNum}}</span>
           <span class="location">
             <i class="icon icon-location-arrow"></i>{{data.address}}
           </span>

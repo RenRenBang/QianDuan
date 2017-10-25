@@ -12,7 +12,7 @@
       <div ref="sort-wrapper" class="sort-wrapper" v-show="sortBoxVisiable">
         <ul class="sort-box">
           <li class="sort-item" :class="{'active shadow' : activeSort === 'all'}" @click="sortActive('all')">
-            <i class="icon icon-list-ul"></i><br>
+            <i class="icon icon-th-large"></i><br>
             <span class="tag">全部</span>
           </li>
           <li class="sort-item" :class="{'active shadow' : activeSort === 'home'}" @click="sortActive('home')">
@@ -24,19 +24,19 @@
             <span class="tag">教育</span>
           </li>
           <li class="sort-item" :class="{'active shadow' : activeSort === 'net'}" @click="sortActive('net')">
-            <i class="icon icon-sphere"></i><br>
+            <i class="icon icon-globe"></i><br>
             <span class="tag">互联网</span>
           </li>
           <li class="sort-item" :class="{'active shadow' : activeSort === 'life'}" @click="sortActive('life')">
-            <i class="icon icon-mug"></i><br>
+            <i class="icon icon-coffee"></i><br>
             <span class="tag">生活</span>
           </li>
           <li class="sort-item" :class="{'active shadow' : activeSort === 'design'}" @click="sortActive('design')">
-            <i class="icon icon-magic"></i><br>
+            <i class="icon icon-pencil"></i><br>
             <span class="tag">设计</span>
           </li>
           <li class="sort-item" :class="{'active' : activeSort === 'other'}" @click="sortActive('other')">
-            <i class="icon icon-tongue"></i><br>
+            <i class="icon icon-certificate"></i><br>
             <span class="tag">其他</span>
           </li>
         </ul>
