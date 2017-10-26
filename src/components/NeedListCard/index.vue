@@ -1,7 +1,7 @@
 <template>
   <div class="need-list-card">
     <router-link :to="`/NeedDetail/${data.oid}`">
-      <el-card v-if="data" :body-style="{'padding': '8px 15px'}">
+      <el-card v-if="data" :body-style="{'padding': '8px 20px'}">
         <h1 class="title" slot="header">{{data.title}}
           <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
         </h1>
@@ -155,7 +155,7 @@ export default {
 
     .location {
       float: right;
-      max-width: 173px;
+      max-width: 193px;
       text-align: right;
       font-size: 14px;
       text-overflow: ellipsis;
