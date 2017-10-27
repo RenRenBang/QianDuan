@@ -63,14 +63,16 @@
         </li>
       </router-link>
     </ul>
-    <el-dialog title="帮助与反馈" :visible.sync="helpDialogVisible" size="large">
-      <el-form>
-        <el-form-item label="您遇到什么麻烦了？">
-          <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" placeholder="请输入内容" v-model="helpText">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
+    <el-dialog title="帮助与反馈" class="help-dialog" :visible.sync="helpDialogVisible" width="90%">
+      <div class="body">
+        <el-form>
+          <el-form-item label="您遇到什么麻烦了？">
+            <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" placeholder="请输入内容" v-model="helpText">
+            </el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div slot="footer" class="footer">
         <el-button @click="helpDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="helpYes">确 定</el-button>
       </div>
@@ -290,6 +292,16 @@ export default {
       width: 2em;
       vertical-align: middle;
       background: mintcream;
+    }
+  }
+
+  .help-dialog {
+    .body {
+      margin-top: -30px;
+    }
+
+    .footer {
+      margin-top: -30px;
     }
   }
 }

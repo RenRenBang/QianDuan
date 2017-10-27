@@ -3,7 +3,7 @@
     <headerPage title="服务详情" v-if="data">
       <div class="brief-info">
         <div class="title">{{data.title}}
-          <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
+          <el-tag class="tag" size="small">{{data.trade}}</el-tag>
         </div>
         <div class="price">
           <div v-if="data.money === 0">

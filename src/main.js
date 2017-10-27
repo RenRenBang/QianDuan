@@ -12,6 +12,8 @@ import store from './store'
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 Vue.use(Vuex)
+
+Vue.prototype.$ELEMENT = { size: 'large' }
 Vue.use(ElementUI)
 
 router.push('/login')

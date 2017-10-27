@@ -4,23 +4,23 @@
     <h1 class="title">人人帮</h1>
     <el-form :model="loginForm" class="form">
       <el-form-item label="用户名">
-        <el-input size="large" v-model="loginForm.uphone" placeholder="您的手机号"></el-input>
+        <el-input v-model="loginForm.uphone" placeholder="您的手机号"></el-input>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input type="password" size="large" v-model="loginForm.password"></el-input>
+        <el-input type="password" v-model="loginForm.password"></el-input>
       </el-form-item>
       <el-form-item width="100%">
-        <el-button class="login-btn" type="primary" size="large" @click="onSubmit" round>登录</el-button>
+        <el-button class="login-btn" type="primary" @click="onSubmit">登录</el-button>
       </el-form-item>
     </el-form>
     <div class="other-control">
       <router-link to="/forgetPassword">
-        <el-button class="forget" type="text" size="large">
+        <el-button class="forget" type="text">
           忘记密码
         </el-button>
       </router-link>
       <router-link to="/signin">
-        <el-button class="sign-in" type="text" size="large">注册</el-button>
+        <el-button class="sign-in" type="text">注册</el-button>
       </router-link>
     </div>
     <div class="copyright">Copyright ©2017 Young Tech. All rights reserved.</div>

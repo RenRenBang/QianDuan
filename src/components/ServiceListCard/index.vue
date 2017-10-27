@@ -3,7 +3,7 @@
     <router-link :to="`/ServiceDetail/${data.oid}`">
       <el-card v-if="data" :body-style="{'padding': '8px 20px'}">
         <h1 class="title" slot="header">{{data.title}}
-          <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
+          <el-tag class="tag" size="small">{{data.trade}}</el-tag>
         </h1>
         <div class="provider" v-if="cuser">
           <img :src="'http://47.95.214.71' + cuser.image" alt="avatar" class="avatar">
