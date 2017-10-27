@@ -1,6 +1,19 @@
-# 人人帮
+# 人人帮-前端
 
-## 前端
+## 使用方式
+
+```shell
+# 安装依赖
+npm install
+# 进入开发模式
+npm run dev
+# 编译打包
+npm run build
+```
+
+ 这里是 [线上demo](http://47.95.214.71/) 
+
+## 简介
 
 ### 技术栈
 
@@ -66,11 +79,11 @@ Vuex 实际上是 Flux 架构思想的一种实现，Flux将一个应用分成�
 
 Flux 的最大特点，就是数据的 "单向流动"。
 
- 1. 用户访问 View
- 2. View 发出用户的 Action
- 3. Dispatcher 收到 Action，要求 Store 进行相应的更新
- 4. Store 更新后，发出一个"change"事件
- 5. View 收到"change"事件后，更新页面
+    1. 用户访问 View
+    2. View 发出用户的 Action
+    3. Dispatcher 收到 Action，要求 Store 进行相应的更新
+    4. Store 更新后，发出一个"change"事件
+    5. View 收到"change"事件后，更新页面
 
 上面过程中，数据总是"单向流动"，任何相邻的部分都不会发生数据的"双向流动"。这保证了流程的清晰。
 
