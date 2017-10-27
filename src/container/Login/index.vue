@@ -10,7 +10,7 @@
         <el-input type="password" size="large" v-model="loginForm.password"></el-input>
       </el-form-item>
       <el-form-item width="100%">
-        <el-button class="login-btn" type="primary" size="large" @click="onSubmit">登录</el-button>
+        <el-button class="login-btn" type="primary" size="large" @click="onSubmit" round>登录</el-button>
       </el-form-item>
     </el-form>
     <div class="other-control">

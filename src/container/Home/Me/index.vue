@@ -75,9 +75,9 @@
         <el-button type="primary" @click="helpYes">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="版本信息" class="version-dialog" :visible.sync="CodeVerDialogVisible" size="large">
-      Version: 1.0 palevioletred
-      <span class="color" style="background: palevioletred"></span>
+    <el-dialog title="版本信息" class="version-dialog" :visible.sync="CodeVerDialogVisible" width="90%">
+      Version: 2.0 Mintcream
+      <span class="color"></span>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="CodeVerDialogVisible = false">确 定</el-button>
       </div>
@@ -284,8 +284,12 @@ export default {
   .version-dialog {
     .color {
       display: inline-block;
+      margin-left: 10px;
+      border: 1px solid #D8DCE5;
       height: 2em;
       width: 2em;
+      vertical-align: middle;
+      background: mintcream;
     }
   }
 }
