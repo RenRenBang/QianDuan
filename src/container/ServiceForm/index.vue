@@ -89,7 +89,7 @@ export default {
     },
     querySearchAsync(queryString, cb) {
       this.$http
-        .get(`http://restapi.amap.com/v3/assistant/inputtips?key=bd94f49741fa7aa8090ebace2e7cc3fe&keywords=${queryString}`)
+        .get(`http://restapi.amap.com/v3/assistant/inputtips?key=${this.MAP_KEY}&keywords=${queryString}`)
         .then(response => {
           cb(
             response.data.tips.map(item => {
@@ -155,6 +155,9 @@ export default {
   computed: {
     uid() {
       return store.state.uID
+    },
+    MAP_KEY() {
+      return store.state.MAP_KEY
     },
     uploadFileExData() {
       return {

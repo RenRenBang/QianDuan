@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
+    MAP_KEY: 'bd94f49741fa7aa8090ebace2e7cc3fe',
     uID: '',
     listMode: ''
   },
