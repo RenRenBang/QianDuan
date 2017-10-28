@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import tabBar from './TabBar'
+import TabBar from './TabBar'
 
 export default {
   name: 'home',
@@ -19,7 +19,7 @@ export default {
     }
   },
   components: {
-    tabBar
+    TabBar
   }
 }
 </script>

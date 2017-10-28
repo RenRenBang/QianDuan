@@ -1,43 +1,28 @@
 <template>
   <div class="need-list-card">
-    <router-link :to="`/NeedDetail/${data.oid}`">
-      <el-card v-if="data" :body-style="{'padding': '8px 20px'}">
-        <h1 class="title" slot="header">{{data.title}}
-          <el-tag class="tag" size="small">{{data.trade}}</el-tag>
-        </h1>
-        <div class="provider" v-if="cuser">
-          <img :src="'http://47.95.214.71' + cuser.image" alt="avatar" class="avatar">
-          <span class="name">{{cuser.nickname}}</span>
-          <el-button v-if="deleteIcon" type="text" size="large" @click.stop.native.prevent="deleteThis" class="delete">
-            <i class="el-icon-delete"></i>
-          </el-button>
-        </div>
-        <div class="price">{{data.money}} 元/人</div>
-        <div class="detail clearfix">
-          <span v-if="deadline > 0 && data.ocount > 0">
-            <span class="deadline">
-              {{deadline}}天后失效&nbsp;&nbsp;&nbsp;|
-            </span>
-            <span class="need-num">需{{data.ocount}}人</span>
+    <listCard :routerLink="`/NeedDetail/${data.oid}`" :corderData="data" :cuser="cuser" :deleteIcon="deleteIcon" :onDelete="deleteThis">
+      <div slot="price">{{data.money}} 元/人</div>
+      <div slot="detail">
+        <span v-if="deadline > 0 && data.ocount > 0">
+          <span class="deadline">
+            {{deadline}}天后失效&nbsp;&nbsp;&nbsp;|
           </span>
-          <span v-else>
-            <span class="deadline">
-              <el-tag type="info" size="small">已失效</el-tag>
-            </span>
+          <span class="need-num">需{{data.ocount}}人</span>
+        </span>
+        <span v-else>
+          <span class="deadline">
+            <el-tag type="info" size="small">已失效</el-tag>
           </span>
-          <span class="location">
-            <i class="icon icon-location-arrow"></i>{{data.address}}
-          </span>
-        </div>
-      </el-card>
-    </router-link>
+        </span>
+      </div>
+    </listCard>
   </div>
 </template>
 
 <script>
-import router from '@/router'
+import ListCard from 'components/ListCard'
 export default {
-  name: 'needListCard',
+  name: 'NeedListCard',
   props: {
     data: {
       type: Object
@@ -53,9 +38,6 @@ export default {
     }
   },
   methods: {
-    goBack() {
-      router.go(-1)
-    },
     deleteThis() {
       this.$emit('deleteCorder', this.deleteObj)
     }
@@ -83,6 +65,9 @@ export default {
         oid: this.data.oid
       }
     }
+  },
+  components: {
+    ListCard
   }
 }
 </script>
@@ -94,80 +79,15 @@ export default {
   padding: 0 10px;
   margin: 10px 0;
 
-  .title {
-    font-size: 24px;
-    text-align: left;
-
-    .tag {
-      margin-left: 10px;
-      vertical-align: top;
-    }
+  .deadline {
+    float: left;
+    font-size: 14px;
   }
 
-  .provider {
-    font-size: 0;
-
-    .avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-    }
-
-    .name {
-      margin-left: 10px;
-      font-size: 18px;
-      font-weight: 200;
-      line-height: 50px;
-      vertical-align: top;
-    }
-
-    .delete {
-      display: inline-blcok;
-      font-size: 28px;
-      line-height: 50px;
-      vertical-align: top;
-      float: right;
-      color: #FF4949;
-    }
-  }
-
-  .price {
-    margin: 10px 0;
-    font-size: 20px;
-    color: #FF6F00;
-  }
-
-  .detail {
-    width: 100%;
-    color: #8492A6;
-    line-height: 24px;
-
-    .deadline {
-      float: left;
-      font-size: 14px;
-    }
-
-    .need-num {
-      float: left;
-      padding-left: 10px;
-      font-size: 14px;
-    }
-
-    .location {
-      float: right;
-      max-width: 193px;
-      text-align: right;
-      font-size: 14px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-
-      .icon {
-        font-size: 20px;
-        margin-right: 10px;
-        vertical-align: sub;
-      }
-    }
+  .need-num {
+    float: left;
+    padding-left: 10px;
+    font-size: 14px;
   }
 }
 </style>
