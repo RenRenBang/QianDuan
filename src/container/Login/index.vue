@@ -44,34 +44,37 @@ export default {
   methods: {
     onSubmit() {
       console.log(this.loginForm)
-      this.$http.post('http://47.95.214.71:8080/api/to_login', qs.stringify(this.loginForm), {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).then((response) => {
-        if (response.data.statusCode === '200') {
+      this.$http
+        .post('http://47.95.214.71:8080/api/to_login', qs.stringify(this.loginForm), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+        .then(response => {
+          if (response.data.statusCode === '200') {
+            this.$message({
+              message: '欢迎回来',
+              type: 'success',
+              duration: 1500
+            })
+            store.commit('login', response.data.data[0].uid)
+            console.log(response.data)
+            router.replace('/home/list')
+          } else {
+            this.$message({
+              message: '用户名或密码错误',
+              type: 'error',
+              duration: 2000
+            })
+          }
+        })
+        .catch(err => {
           this.$message({
-            message: '欢迎回来',
-            type: 'success',
-            duration: 1500
-          })
-          store.commit('login', response.data.data[0].uid)
-          console.log(response.data)
-          router.replace('/home/list')
-        } else {
-          this.$message({
-            message: '用户名或密码错误',
+            message: err,
             type: 'error',
             duration: 2000
           })
-        }
-      }).catch((err) => {
-        this.$message({
-          message: err,
-          type: 'error',
-          duration: 2000
         })
-      })
     }
   }
 }
@@ -83,6 +86,7 @@ export default {
   top: 0;
   bottom: 0;
   padding: 30px;
+  min-height: 580px;
   text-align: center;
 
   .logo {
