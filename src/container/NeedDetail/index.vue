@@ -226,11 +226,16 @@ export default {
     background: #fff;
 
     .icon {
+      display: inline-block;
+      float: left;
+      width: 10%;
       font-size: 24px;
       vertical-align: middle;
     }
 
     .name {
+      display: inline-block;
+      width: 90%;
       font-size: 18px;
       font-weight: 200;
       vertical-align: middle;
