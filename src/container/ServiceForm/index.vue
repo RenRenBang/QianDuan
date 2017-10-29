@@ -23,7 +23,12 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="我的位置" prop="address">
-          <el-autocomplete v-model="ruleForm.address" :fetch-suggestions="querySearchAsync" placeholder="请输入您的位置" @select="handleSelect" style="width: 100%"></el-autocomplete>
+          <el-autocomplete popper-class="location-popper" v-model="ruleForm.address" :fetch-suggestions="querySearchAsync" placeholder="请输入您的位置" @select="handleSelect" style="width:100%">
+            <template slot-scope="props">
+              <div class="name">{{ props.item.name }}</div>
+              <span class="addr">{{ props.item.district }}</span>
+            </template>
+          </el-autocomplete>
         </el-form-item>
         <el-form-item label="出价（元）" prop="money">
           <el-input-number v-model="ruleForm.money" :min="0" :max="999" style="width:100%"></el-input-number>
@@ -44,7 +49,7 @@ import store from '@/store'
 import router from '@/router'
 import headerPage from 'components/HeaderPage'
 export default {
-  name: 'serviceForm',
+  name: 'ServiceForm',
   data() {
     return {
       uploadBtnDisable: false,
@@ -85,7 +90,7 @@ export default {
       this.$refs[formName].resetFields()
     },
     handleSelect(item) {
-      console.log(item)
+      this.ruleForm.address = item.name
     },
     querySearchAsync(queryString, cb) {
       this.$http
@@ -176,7 +181,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="stylus">
+<style lang="stylus" scoped>
 .service-form {
   padding: 10px 12px 0 12px;
 
@@ -188,6 +193,29 @@ export default {
         margin: 5px 0;
         width: 100%;
       }
+    }
+  }
+}
+
+.location-popper {
+  width: 100%;
+
+  li {
+    line-height: normal;
+    padding: 7px;
+
+    .name {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .addr {
+      font-size: 12px;
+      color: #b4b4b4;
+    }
+
+    .highlighted .addr {
+      color: #ddd;
     }
   }
 }

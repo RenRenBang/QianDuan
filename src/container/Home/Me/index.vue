@@ -90,7 +90,7 @@
 <script>
 import store from '@/store'
 export default {
-  name: 'me',
+  name: 'Me',
   data() {
     return {
       cuser: undefined,

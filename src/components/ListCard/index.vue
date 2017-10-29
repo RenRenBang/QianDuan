@@ -16,7 +16,7 @@
           <slot name="price"></slot>
         </div>
         <div class="detail clearfix">
-          <slot name="detail"></slot>
+          <slot name="detail" class="detail-info"></slot>
           <span class="location">
             <i class="icon icon-location-arrow"></i>{{corderData.address}}
           </span>
@@ -50,8 +50,7 @@ export default {
   data() {
     return {}
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>
 
@@ -106,9 +105,13 @@ export default {
     color: #8492A6;
     line-height: 24px;
 
+    .detail-info {
+      width: 30%;
+    }
+
     .location {
       float: right;
-      max-width: 223px;
+      max-width: 65%;
       text-align: right;
       font-size: 14px;
       text-overflow: ellipsis;
@@ -117,7 +120,7 @@ export default {
 
       .icon {
         font-size: 20px;
-        margin-right: 10px;
+        margin-right: 5px;
         vertical-align: sub;
       }
     }

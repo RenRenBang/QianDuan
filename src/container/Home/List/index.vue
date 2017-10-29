@@ -125,7 +125,7 @@ export default {
     },
     _initSortScroll() {
       if (!this.sortScroll) {
-        this.sortScroll = new BScroll(this.$refs['sort-wrapper'], { scrollX: true, click: true })
+        this.sortScroll = new BScroll(this.$refs['sort-wrapper'], { scrollX: true, click: true, scrollY: false, bounce: false })
       } else {
         this.sortScroll.refresh()
       }
