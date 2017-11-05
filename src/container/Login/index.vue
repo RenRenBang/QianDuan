@@ -29,8 +29,6 @@
 
 <script>
 import qs from 'qs'
-import router from '@/router'
-import store from '@/store'
 export default {
   name: 'login',
   data() {
@@ -57,9 +55,12 @@ export default {
               type: 'success',
               duration: 1500
             })
-            store.commit('login', response.data.data[0].uid)
+            this.$store.dispatch({
+              type: 'login',
+              newID: response.data.data[0].uid
+            })
             console.log(response.data)
-            router.replace('/home/list')
+            this.$router.replace('/home/list')
           } else {
             this.$message({
               message: '用户名或密码错误',
@@ -69,11 +70,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$message({
-            message: err,
-            type: 'error',
-            duration: 2000
-          })
+          console.log(err)
         })
     }
   }

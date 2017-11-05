@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     logout() {
-      store.commit('logout')
+      this.$store.dispatch('logout')
     },
     helpYes() {
       this.$message({

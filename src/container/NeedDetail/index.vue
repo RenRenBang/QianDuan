@@ -57,8 +57,6 @@
 </template>
 
 <script>
-import store from '@/store'
-import router from '@/router'
 import headerPage from 'components/HeaderPage'
 export default {
   name: 'needDetail',
@@ -69,9 +67,6 @@ export default {
     }
   },
   methods: {
-    goBack() {
-      router.go(-1)
-    },
     submitOrder() {
       this.$http
         .get(`http://47.95.214.71:8080/api/addTransaction?uid=${this.uid}&oid=${this.$route.params.id}`)
@@ -83,7 +78,7 @@ export default {
             type: 'success',
             duration: 1500
           })
-          router.push('/home/list')
+          this.$router.push('/home/list')
         })
         .catch(err => {
           this.$message({
@@ -110,7 +105,7 @@ export default {
   },
   computed: {
     uid() {
-      return store.state.uID
+      return this.$store.state.uID
     },
     deadline() {
       if (!this.data.endTime) {

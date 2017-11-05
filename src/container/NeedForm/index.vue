@@ -52,8 +52,7 @@
 
 <script>
 import qs from 'qs'
-import store from '@/store'
-import router from '@/router'
+import { mapState } from 'vuex'
 import headerPage from 'components/HeaderPage'
 export default {
   name: 'needForm',
@@ -136,7 +135,7 @@ export default {
         type: 'success',
         duration: 1500
       })
-      router.go(-1)
+      this.$router.go(-1)
     },
     submitNoUpload() {
       this.$http
@@ -153,7 +152,7 @@ export default {
             type: 'success',
             duration: 1500
           })
-          router.go(-1)
+          this.$router.go(-1)
         })
         .catch(err => {
           this.$message({
@@ -171,12 +170,10 @@ export default {
     headerPage
   },
   computed: {
-    uid() {
-      return store.state.uID
-    },
-    MAP_KEY() {
-      return store.state.MAP_KEY
-    },
+    ...mapState({
+      uid: 'uID',
+      MAP_KEY: 'MAP_KEY'
+    }),
     uploadFileExData() {
       return {
         type: 'n',

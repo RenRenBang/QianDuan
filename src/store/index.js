@@ -1,21 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as types from './mutationTypes'
+import * as actions from './actions'
+import list from './modules/list'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     MAP_KEY: 'bd94f49741fa7aa8090ebace2e7cc3fe',
-    uID: '',
-    listMode: ''
+    uID: ''
   },
   mutations: {
-    login: (state, newID) => {
+    [types.LOGIN]: (state, newID) => {
       state.uID = newID
     },
-    logout: (state) => {
+    [types.LOGOUT]: state => {
       state.uID = ''
-    },
-    changeListMode: (state, newMode) => {
-      state.listMode = newMode
     }
-  }
+  },
+  modules: {
+    list
+  },
+  actions
 })

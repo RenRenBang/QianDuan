@@ -74,7 +74,7 @@
 
 <script>
 import Vue from 'vue'
-import store from '@/store'
+import { mapState } from 'vuex'
 import BScroll from 'better-scroll'
 import Scroll from 'components/scroll/scroll'
 import serviceListCard from 'components/ServiceListCard'
@@ -121,7 +121,10 @@ export default {
     },
     handleSelect() {
       this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
-      store.commit('changeListMode', this.selectMode)
+      this.$store.dispatch({
+        type: 'changeListMode',
+        newMode: this.selectMode
+      })
     },
     _initSortScroll() {
       if (!this.sortScroll) {
@@ -237,7 +240,10 @@ export default {
     if (this.listMode) {
       this.selectMode = this.listMode
     } else {
-      store.commit('changeListMode', '2')
+      this.$store.dispatch({
+        type: 'changeListMode',
+        newMode: '2'
+      })
     }
     this.getNeedList()
     this.getServiceList()
@@ -317,9 +323,9 @@ export default {
           return 'ERR'
       }
     },
-    listMode() {
-      return store.state.listMode
-    }
+    ...mapState({
+      listMode: state => state.list.listMode
+    })
   }
 }
 </script>
