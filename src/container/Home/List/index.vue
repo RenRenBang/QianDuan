@@ -1,11 +1,12 @@
 <template>
   <div class="list">
     <div class="head-bar shadow">
-      <el-input placeholder="请输入内容" v-model="searchWd" icon="search" :on-icon-click="handleSearch">
+      <el-input placeholder="请输入内容" v-model="searchWd">
         <el-select v-model="selectMode" slot="prepend" placeholder="请选择" class="select" @change="handleSelect">
           <el-option label="需求" value="2"></el-option>
           <el-option label="服务" value="1"></el-option>
         </el-select>
+        <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
       </el-input>
     </div>
     <transition name="fade" mode="in-out">
@@ -124,7 +125,7 @@ export default {
     },
     _initSortScroll() {
       if (!this.sortScroll) {
-        this.sortScroll = new BScroll(this.$refs['sort-wrapper'], { scrollX: true, click: true })
+        this.sortScroll = new BScroll(this.$refs['sort-wrapper'], { scrollX: true, click: true, scrollY: false, bounce: false })
       } else {
         this.sortScroll.refresh()
       }

@@ -4,7 +4,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import store from './store'
@@ -12,6 +12,8 @@ import store from './store'
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 Vue.use(Vuex)
+
+Vue.prototype.$ELEMENT = { size: 'large' }
 Vue.use(ElementUI)
 
 router.push('/login')

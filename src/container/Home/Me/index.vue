@@ -63,21 +63,23 @@
         </li>
       </router-link>
     </ul>
-    <el-dialog title="帮助与反馈" :visible.sync="helpDialogVisible" size="large">
-      <el-form>
-        <el-form-item label="您遇到什么麻烦了？">
-          <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" placeholder="请输入内容" v-model="helpText">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
+    <el-dialog title="帮助与反馈" class="help-dialog" :visible.sync="helpDialogVisible" width="90%">
+      <div class="body">
+        <el-form>
+          <el-form-item label="您遇到什么麻烦了？">
+            <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 4}" placeholder="请输入内容" v-model="helpText">
+            </el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div slot="footer" class="footer">
         <el-button @click="helpDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="helpYes">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="版本信息" class="version-dialog" :visible.sync="CodeVerDialogVisible" size="large">
-      Version: 1.0 palevioletred
-      <span class="color" style="background: palevioletred"></span>
+    <el-dialog title="版本信息" class="version-dialog" :visible.sync="CodeVerDialogVisible" width="90%">
+      Version: 2.0 Mintcream
+      <span class="color"></span>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="CodeVerDialogVisible = false">确 定</el-button>
       </div>
@@ -88,7 +90,7 @@
 <script>
 import store from '@/store'
 export default {
-  name: 'me',
+  name: 'Me',
   data() {
     return {
       cuser: undefined,
@@ -284,8 +286,22 @@ export default {
   .version-dialog {
     .color {
       display: inline-block;
+      margin-left: 10px;
+      border: 1px solid #D8DCE5;
       height: 2em;
       width: 2em;
+      vertical-align: middle;
+      background: mintcream;
+    }
+  }
+
+  .help-dialog {
+    .body {
+      margin-top: -30px;
+    }
+
+    .footer {
+      margin-top: -30px;
     }
   }
 }

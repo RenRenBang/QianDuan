@@ -24,7 +24,7 @@
         </el-tab-pane>
       </el-tabs>
     </headerPage>
-    <el-dialog class="dialog" title="删除自己发布的订单" :visible.sync="deleteDialogVisible" size="large">
+    <el-dialog class="dialog" title="删除自己发布的订单" :visible.sync="deleteDialogVisible" width="90%">
       <p class="content">
         <i class="icon el-icon-warning"></i>您确定要永久删除此订单吗？
       </p>

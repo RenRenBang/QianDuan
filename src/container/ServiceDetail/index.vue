@@ -3,7 +3,7 @@
     <headerPage title="服务详情" v-if="data">
       <div class="brief-info">
         <div class="title">{{data.title}}
-          <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
+          <el-tag class="tag" size="small">{{data.trade}}</el-tag>
         </div>
         <div class="price">
           <div v-if="data.money === 0">
@@ -74,7 +74,8 @@ export default {
     return {
       popoverVisible: false,
       isCollect: false,
-      data: undefined
+      data: undefined,
+      cid: null
     }
   },
   methods: {
@@ -92,6 +93,7 @@ export default {
           })
           .then(response => {
             console.log(response.data)
+            this.cid = response.data.tagCode
             this.$notify({
               title: '成功',
               message: '成功收藏',
@@ -164,7 +166,7 @@ export default {
     this.$http
       .get(`http://47.95.214.71:8080/api/findCidByUidOid?uid=${this.uid}&oid=${this.$route.params.id}`)
       .then(response => {
-        console.log('HERE', response.data)
+        console.log('findCidByUidOid', response.data)
         if (response.data.tagCode !== 'null') {
           this.isCollect = true
           this.cid = response.data.tagCode
@@ -274,11 +276,16 @@ export default {
     background: #fff;
 
     .icon {
+      display: inline-block;
+      float: left;
+      width: 10%;
       font-size: 24px;
       vertical-align: middle;
     }
 
     .name {
+      display: inline-block;
+      width: 90%;
       font-size: 18px;
       font-weight: 200;
       vertical-align: middle;

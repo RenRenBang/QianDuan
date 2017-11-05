@@ -3,7 +3,7 @@
     <headerPage title="需求详情" v-if="data">
       <div class="brief-info clearfix">
         <div class="title">{{data.title}}
-          <el-tag type="primary" class="tag">{{data.trade}}</el-tag>
+          <el-tag class="tag" size="small">{{data.trade}}</el-tag>
         </div>
         <div v-if="deadline > 0 && data.ocount > 0">
           <div class="need-people">还需{{data.ocount}}人&nbsp;&nbsp;|</div>
@@ -12,7 +12,7 @@
         </div>
         <div v-else>
           <span class="deadline">
-            <el-tag type="gray">已失效</el-tag>
+            <el-tag type="info" size="small">已失效</el-tag>
           </span>
         </div>
       </div>
@@ -226,11 +226,16 @@ export default {
     background: #fff;
 
     .icon {
+      display: inline-block;
+      float: left;
+      width: 10%;
       font-size: 24px;
       vertical-align: middle;
     }
 
     .name {
+      display: inline-block;
+      width: 90%;
       font-size: 18px;
       font-weight: 200;
       vertical-align: middle;

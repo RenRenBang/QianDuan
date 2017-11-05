@@ -1,8 +1,13 @@
 <template>
   <div class="signin">
     <headerPage title="用户注册">
+      <el-steps class="step-bar" :active="step" finish-status="success" align-center>
+        <el-step title="填写个人信息" icon="el-icon-edit"></el-step>
+        <el-step title="上传身份证照" icon="el-icon-picture"></el-step>
+      </el-steps>
+
       <el-form :model="ruleForm" class="form" label-position="top" :rules="rules" ref="ruleForm">
-        <template v-if="step === 1">
+        <template v-if="step === 0">
           <el-form-item label="昵称" prop="nickname">
             <el-input size="large" v-model="ruleForm.nickname"></el-input>
           </el-form-item>
@@ -28,22 +33,24 @@
           </el-form-item>
         </template>
         <template v-else>
-          <el-form-item class="upload" label="身份证照正面">
-            <el-upload name="file" ref="upload-front" action="http://47.95.214.71:8080/api/threeFile" :data="uploadFileExDataFront" :on-remove="handleRemoveFileFront" :file-list="fileListFront" list-type="picture" :on-change="handleUploadChangeFront" :auto-upload="false" accept="image/*" :multiple="false">
-              <el-button size="small" type="primary" :disabled="uploadBtnDisableFront">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          <div class="upload">
+            <el-upload class="avatar-uploader" name="file" ref="upload-front" action="http://47.95.214.71:8080/api/threeFile" :data="uploadFileExDataFront" :on-change="handleUploadFrontChange" :file-list="fileListFront" list-type="picture" :auto-upload="false" accept="image/*" :show-file-list="false">
+              <img v-if="IDFrontUrl" :src="IDFrontUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon">
+                <span class="describe">身份证照正面</span>
+              </i>
             </el-upload>
-          </el-form-item>
-          <el-form-item class="upload" label="身份证照反面">
-            <el-upload name="file" ref="upload-back" action="http://47.95.214.71:8080/api/threeFile" :data="uploadFileExDataBack" :on-remove="handleRemoveFileBack" :file-list="fileListBack" list-type="picture" :on-change="handleUploadChangeBack" :auto-upload="false" accept="image/*" :multiple="false" :on-success="handleSuccess">
-              <el-button size="small" type="primary" :disabled="uploadBtnDisableBack">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <el-upload class="avatar-uploader" name="file" ref="upload-back" action="http://47.95.214.71:8080/api/threeFile" :data="uploadFileExDataBack" :on-change="handleUploadBackChange" :file-list="fileListBack" list-type="picture" :auto-upload="false" accept="image/*" :on-success="handleSuccess" :show-file-list="false">
+              <img v-if="IDBackUrl" :src="IDBackUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon">
+                <span class="describe">身份证照反面</span>
+              </i>
             </el-upload>
-          </el-form-item>
+          </div>
         </template>
         <div class="btn-group">
-          <el-button size="large" class="signin-btn" type="primary" @click="submitForm('ruleForm')" v-if="step === 1">下一步</el-button>
-          <el-button size="large" class="signin-btn" type="primary" @click="submitUpload" v-if="step === 2">完成注册</el-button>
+          <el-button size="large" class="signin-btn" type="primary" @click="submitForm('ruleForm')" v-if="step === 0">下一步</el-button>
+          <el-button size="large" class="signin-btn" type="primary" @click="submitUpload" v-if="step === 1">完成注册</el-button>
           <br>
           <el-button size="large" class="signin-btn" @click="resetForm('ruleForm')">重置</el-button>
         </div>
@@ -135,10 +142,10 @@ export default {
       }
     }
     return {
-      step: 1,
+      IDFrontUrl: undefined,
+      IDBackUrl: undefined,
+      step: 0,
       uid: '',
-      uploadBtnDisableFront: false,
-      uploadBtnDisableBack: false,
       fileListFront: [],
       fileListBack: [],
       sendCodeText: '发送验证码',
@@ -179,7 +186,7 @@ export default {
               console.log(response.data)
               if (response.data.statusCode === '200') {
                 this.uid = response.data.data[0].uid
-                this.step = 2
+                this.step = 1
                 this.$message({
                   message: '恭喜，注册成功',
                   type: 'success',
@@ -253,21 +260,15 @@ export default {
           })
         })
     },
-    handleUploadChangeFront(file, fileList) {
-      this.uploadBtnDisableFront = true
-    },
-    handleRemoveFileFront(file, fileList) {
-      this.uploadBtnDisableFront = false
-    },
-    handleUploadChangeBack(file, fileList) {
-      this.uploadBtnDisableBack = true
-    },
-    handleRemoveFileBack(file, fileList) {
-      this.uploadBtnDisableBack = false
-    },
     submitUpload() {
       this.$refs['upload-front'].submit()
       this.$refs['upload-back'].submit()
+    },
+    handleUploadFrontChange(file, fileList) {
+      this.IDFrontUrl = URL.createObjectURL(file.raw)
+    },
+    handleUploadBackChange(file, fileList) {
+      this.IDBackUrl = URL.createObjectURL(file.raw)
     },
     handleSuccess() {
       router.go(-1)
@@ -308,8 +309,16 @@ export default {
 
 <!-- Add 'scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
+ID-height = 178px;
+ID-width = 100%;
+
 .signin {
   padding: 10px 12px 0 12px;
+
+  .step-bar {
+    width: 100%;
+    background: #fff;
+  }
 
   .form {
     .btn-group {
@@ -322,6 +331,48 @@ export default {
     }
 
     .upload {
+      text-align: center;
+
+      .avatar-uploader {
+        margin: 20px 10px;
+        border: 1px dashed #d9d9d9;
+        height: ID-height;
+        font-size: 0;
+
+        .el-upload--picture {
+          position: relative;
+          width: 100%;
+          height: ID-height;
+          overflow: hidden;
+          cursor: pointer;
+
+          .avatar {
+            display: inline-block;
+            width: ID-width;
+            height: ID-height;
+            line-height: 100%;
+          }
+
+          .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: ID-width;
+            height: ID-height;
+            line-height: ID-height;
+            text-align: center;
+
+            .describe {
+              margin-left: 10px;
+              font-size: 18px;
+              vertical-align: middle;
+            }
+          }
+        }
+
+        &:hover {
+          border-color: #409EFF;
+        }
+      }
     }
   }
 }
