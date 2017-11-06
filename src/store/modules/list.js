@@ -1,25 +1,62 @@
 import * as types from '../mutationTypes'
-
 // initial state
 // shape: [{ id, quantity }]
 const state = {
-  listMode: ''
+  alreadyInit: false,
+  listMode: 'n',
+  currentSort: '',
+  needList: [],
+  serviceList: []
 }
 
 // getters
-const getters = {}
+const getters = {
+  currentList: (state, getters) => (type, trade, title) => {
+    let list = type === 's' ? state.serviceList : state.needList
+    return list.filter(item => {
+      return item.trade === trade && new RegExp(title).test(item.title)
+    })
+  }
+}
 
 // actions
 const actions = {
+  initList({ commit }) {
+    commit(types.INIT_LIST)
+  },
   changeListMode({ commit }, { newMode }) {
     commit(types.CHANGE_LISTMODE, newMode)
+  },
+  changeCurrentSort({ commit }, { currentSort }) {
+    commit(types.CHANGE_CURRENT_SORT, currentSort)
+  },
+  updateList({ commit }, { newList, listType }) {
+    if (listType === 's') {
+      commit(types.UPDATE_SERVICE_LIST, newList)
+    } else if (listType === 'n') {
+      commit(types.UPDATE_NEED_LIST, newList)
+    } else {
+      console.log('BAD_IN_UPDATE_LIST')
+    }
   }
 }
 
 // mutations
 const mutations = {
+  [types.INIT_LIST]: state => {
+    state.alreadyInit = true
+  },
   [types.CHANGE_LISTMODE]: (state, newMode) => {
     state.listMode = newMode
+  },
+  [types.CHANGE_CURRENT_SORT]: (state, currentSort) => {
+    state.currentSort = currentSort
+  },
+  [types.UPDATE_NEED_LIST]: (state, list) => {
+    state.needList = list
+  },
+  [types.UPDATE_SERVICE_LIST]: (state, list) => {
+    state.serviceList = list
   }
 }
 

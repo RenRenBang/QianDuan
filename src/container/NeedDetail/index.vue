@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import headerPage from 'components/HeaderPage'
 export default {
   name: 'needDetail',
@@ -104,9 +105,9 @@ export default {
       })
   },
   computed: {
-    uid() {
-      return this.$store.state.uID
-    },
+    ...mapState({
+      uid: 'uID'
+    }),
     deadline() {
       if (!this.data.endTime) {
         return 'err'

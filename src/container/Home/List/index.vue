@@ -3,8 +3,8 @@
     <div class="head-bar shadow">
       <el-input placeholder="请输入内容" v-model="searchWd">
         <el-select v-model="selectMode" slot="prepend" placeholder="请选择" class="select" @change="handleSelect">
-          <el-option label="需求" value="2"></el-option>
-          <el-option label="服务" value="1"></el-option>
+          <el-option label="需求" value="n"></el-option>
+          <el-option label="服务" value="s"></el-option>
         </el-select>
         <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
       </el-input>
@@ -44,7 +44,7 @@
       </div>
     </transition>
     <transition-group name="fade" mode="in-out" v-loading.fullscreen.lock="!(serviceList && needList)" element-loading-text="拼命加载中">
-      <div v-if="selectMode === '1'" key="service" class="list-group">
+      <div v-if="selectMode === 's'" key="service" class="list-group">
         <scroll ref="scroll" v-if="serviceList && (serviceList.length > 0)" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="serviceList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
           <ul class="service-list list">
             <li v-for="(item, index) in serviceList" :key="index">
@@ -56,7 +56,7 @@
           <h1 class="no-content">这里空空如也～</h1>
         </div>
       </div>
-      <div v-if="selectMode === '2'" key="need" class="list-group">
+      <div v-if="selectMode == 'n'" key="need" class="list-group">
         <scroll ref="scroll" v-if="needList && (needList.length > 0)" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="needList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
           <ul class="need-list list">
             <li v-for="(item, index) in needList" :key="index">
@@ -77,18 +77,16 @@ import Vue from 'vue'
 import { mapState } from 'vuex'
 import BScroll from 'better-scroll'
 import Scroll from 'components/scroll/scroll'
-import serviceListCard from 'components/ServiceListCard'
-import needListCard from 'components/NeedListCard'
+import ServiceListCard from 'components/ServiceListCard'
+import NeedListCard from 'components/NeedListCard'
 import { ease } from 'assets/js/ease.js'
 export default {
   name: 'list',
   data() {
     return {
       offset: 10,
-      needList: null,
-      serviceList: null,
       searchWd: '',
-      selectMode: '2',
+      selectMode: 'n',
       activeSort: 'all',
       sortBoxVisiable: true,
       scrollbar: true,
@@ -116,11 +114,15 @@ export default {
     },
     sortActive(v) {
       this.activeSort = v
-      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
+      this.$store.dispatch({
+        type: 'changeCurrentSort',
+        currentSort: this.queryType
+      })
+      this.selectMode === 's' ? this.getServiceList() : this.getNeedList()
       this.clearFocus()
     },
     handleSelect() {
-      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
+      this.selectMode === 's' ? this.getServiceList() : this.getNeedList()
       this.$store.dispatch({
         type: 'changeListMode',
         newMode: this.selectMode
@@ -135,7 +137,7 @@ export default {
     },
     handleSearch() {
       console.log(this.searchWd)
-      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
+      this.selectMode === 's' ? this.getServiceList() : this.getNeedList()
     },
     scrollTo() {
       this.$refs.scroll.scrollTo(this.scrollToX, this.scrollToY, this.scrollToTime, ease[this.scrollToEasing])
@@ -143,12 +145,12 @@ export default {
     onPullingDown() {
       // 模拟更新数据
       console.log('pulling down and load data')
-      this.selectMode === '1' ? this.getServiceList() : this.getNeedList()
+      this.selectMode === 's' ? this.getServiceList() : this.getNeedList()
     },
     onPullingUp() {
       // 更新数据
       console.log('pulling up and load data')
-      if (this.selectMode === '1') {
+      if (this.selectMode === 's') {
         this.$http
           .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=${this.offset}`)
           .then(response => {
@@ -209,7 +211,11 @@ export default {
         .get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=0`)
         .then(response => {
           if (response.data.data) {
-            this.needList = response.data.data
+            this.$store.dispatch({
+              type: 'updateList',
+              listType: 'n',
+              newList: response.data.data
+            })
           } else {
             this.needList = []
           }
@@ -225,7 +231,11 @@ export default {
         .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=0`)
         .then(response => {
           if (response.data.data) {
-            this.serviceList = response.data.data
+            this.$store.dispatch({
+              type: 'updateList',
+              listType: 's',
+              newList: response.data.data
+            })
           } else {
             this.serviceList = []
           }
@@ -237,14 +247,6 @@ export default {
     }
   },
   created() {
-    if (this.listMode) {
-      this.selectMode = this.listMode
-    } else {
-      this.$store.dispatch({
-        type: 'changeListMode',
-        newMode: '2'
-      })
-    }
     this.getNeedList()
     this.getServiceList()
   },
@@ -255,8 +257,8 @@ export default {
   },
   components: {
     Scroll,
-    serviceListCard,
-    needListCard
+    ServiceListCard,
+    NeedListCard
   },
   watch: {
     scrollbarObj: {
@@ -282,6 +284,11 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      listMode: state => state.list.listMode,
+      serviceList: state => state.list.serviceList,
+      needList: state => state.list.needList
+    }),
     scrollbarObj: function() {
       return this.scrollbar ? { fade: this.scrollbarFade } : false
     },
@@ -322,10 +329,7 @@ export default {
         default:
           return 'ERR'
       }
-    },
-    ...mapState({
-      listMode: state => state.list.listMode
-    })
+    }
   }
 }
 </script>

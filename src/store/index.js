@@ -15,6 +15,7 @@ export default new Vuex.Store({
     },
     [types.LOGOUT]: state => {
       state.uID = ''
+      state.list.alreadyInit = false
     }
   },
   modules: {

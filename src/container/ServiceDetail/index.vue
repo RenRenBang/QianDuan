@@ -65,8 +65,7 @@
 
 <script>
 import qs from 'qs'
-import store from '@/store'
-import router from '@/router'
+import { mapState } from 'vuex'
 import headerPage from 'components/HeaderPage'
 export default {
   name: 'serviceDetail',
@@ -79,9 +78,6 @@ export default {
     }
   },
   methods: {
-    goBack() {
-      router.go(-1)
-    },
     collect() {
       this.isCollect = !this.isCollect
       if (this.isCollect) {
@@ -140,7 +136,7 @@ export default {
             type: 'success',
             duration: 1500
           })
-          router.push('/home/list')
+          this.$router.push('/home/list')
         })
         .catch(err => {
           this.$message({
@@ -177,9 +173,9 @@ export default {
       })
   },
   computed: {
-    uid() {
-      return store.state.uID
-    },
+    ...mapState({
+      uid: 'uID'
+    }),
     postObj() {
       return {
         uid: this.uid,
