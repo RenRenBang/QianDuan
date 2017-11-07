@@ -12,31 +12,31 @@
     <transition name="fade" mode="in-out">
       <div ref="sort-wrapper" class="sort-wrapper" v-show="sortBoxVisiable">
         <ul class="sort-box">
-          <li class="sort-item" :class="{'active shadow' : activeSort === 'all'}" @click="sortActive('all')">
+          <li class="sort-item" :class="{'active shadow' : activeSort === ''}" @click="sortActive('')">
             <i class="icon icon-th-large"></i><br>
             <span class="tag">全部</span>
           </li>
-          <li class="sort-item" :class="{'active shadow' : activeSort === 'home'}" @click="sortActive('home')">
+          <li class="sort-item" :class="{'active shadow' : activeSort === '家政'}" @click="sortActive('家政')">
             <i class="icon icon-home"></i><br>
             <span class="tag">家政</span>
           </li>
-          <li class="sort-item" :class="{'active shadow' : activeSort === 'edu'}" @click="sortActive('edu')">
+          <li class="sort-item" :class="{'active shadow' : activeSort === '教育'}" @click="sortActive('教育')">
             <i class="icon icon-graduation-cap"></i><br>
             <span class="tag">教育</span>
           </li>
-          <li class="sort-item" :class="{'active shadow' : activeSort === 'net'}" @click="sortActive('net')">
+          <li class="sort-item" :class="{'active shadow' : activeSort === '互联网'}" @click="sortActive('互联网')">
             <i class="icon icon-globe"></i><br>
             <span class="tag">互联网</span>
           </li>
-          <li class="sort-item" :class="{'active shadow' : activeSort === 'life'}" @click="sortActive('life')">
+          <li class="sort-item" :class="{'active shadow' : activeSort === '生活'}" @click="sortActive('生活')">
             <i class="icon icon-coffee"></i><br>
             <span class="tag">生活</span>
           </li>
-          <li class="sort-item" :class="{'active shadow' : activeSort === 'design'}" @click="sortActive('design')">
+          <li class="sort-item" :class="{'active shadow' : activeSort === '设计'}" @click="sortActive('设计')">
             <i class="icon icon-pencil"></i><br>
             <span class="tag">设计</span>
           </li>
-          <li class="sort-item" :class="{'active' : activeSort === 'other'}" @click="sortActive('other')">
+          <li class="sort-item" :class="{'active' : activeSort === '其他'}" @click="sortActive('其他')">
             <i class="icon icon-certificate"></i><br>
             <span class="tag">其他</span>
           </li>
@@ -87,7 +87,7 @@ export default {
       offset: 10,
       searchWd: '',
       selectMode: 'n',
-      activeSort: 'all',
+      activeSort: '',
       sortBoxVisiable: true,
       scrollbar: true,
       scrollbarFade: true,
@@ -110,13 +110,14 @@ export default {
   },
   methods: {
     clearFocus() {
+      // 用于清除可恶的软键盘
       document.activeElement.blur()
     },
     sortActive(v) {
       this.activeSort = v
       this.$store.dispatch({
         type: 'changeCurrentSort',
-        currentSort: this.queryType
+        currentSort: this.activeSort
       })
       this.selectMode === 's' ? this.getServiceList() : this.getNeedList()
       this.clearFocus()
@@ -152,14 +153,15 @@ export default {
       console.log('pulling up and load data')
       if (this.selectMode === 's') {
         this.$http
-          .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=${this.offset}`)
+          .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.activeSort}&title=${this.searchWd}&offset=${this.offset}`)
           .then(response => {
             if (response.data.statusCode === '200') {
-              let list = []
-              for (let i of response.data.data) {
-                list.push(i)
-              }
-              this.serviceList = this.serviceList.concat(list)
+              let list = response.data.data
+              this.$store.dispatch({
+                type: 'updateList',
+                listType: 's',
+                newList: this.serviceList.concat(list)
+              })
               console.log(this.serviceList)
               this.offset += 10
             } else {
@@ -172,14 +174,15 @@ export default {
           })
       } else {
         this.$http
-          .get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=${this.offset}`)
+          .get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.activeSort}&title=${this.searchWd}&offset=${this.offset}`)
           .then(response => {
             if (response.data.statusCode === '200') {
-              let list = []
-              for (let i of response.data.data) {
-                list.push(i)
-              }
-              this.needList = this.needList.concat(list)
+              let list = response.data.data
+              this.$store.dispatch({
+                type: 'updateList',
+                listType: 's',
+                newList: this.needList.concat(list)
+              })
               console.log(this.needList)
               this.offset += 10
             } else {
@@ -208,7 +211,7 @@ export default {
     getNeedList() {
       this.offset = 0
       this.$http
-        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.queryType}&title=${this.searchWd}&offset=0`)
+        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.activeSort}&title=${this.searchWd}&offset=0`)
         .then(response => {
           if (response.data.data) {
             this.$store.dispatch({
@@ -228,7 +231,7 @@ export default {
     getServiceList() {
       this.offset = 0
       this.$http
-        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.queryType}&title=${this.searchWd}&offset=0`)
+        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.activeSort}&title=${this.searchWd}&offset=0`)
         .then(response => {
           if (response.data.data) {
             this.$store.dispatch({
@@ -247,8 +250,18 @@ export default {
     }
   },
   created() {
-    this.getNeedList()
-    this.getServiceList()
+    let that = this
+    // 为了增强性能，只有第一次create才会重新请求列表数据
+    let initList = async function() {
+      await that.getNeedList()
+      await that.getServiceList()
+      that.$store.dispatch({
+        type: 'initList'
+      })
+    }
+    if (!this.alreadyInit) {
+      initList()
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -285,6 +298,7 @@ export default {
   },
   computed: {
     ...mapState({
+      alreadyInit: state => state.list.alreadyInit,
       listMode: state => state.list.listMode,
       serviceList: state => state.list.serviceList,
       needList: state => state.list.needList
@@ -309,26 +323,6 @@ export default {
             txt: { more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt }
           }
         : false
-    },
-    queryType() {
-      switch (this.activeSort) {
-        case 'all':
-          return ''
-        case 'home':
-          return '家政'
-        case 'edu':
-          return '教育'
-        case 'net':
-          return '互联网'
-        case 'life':
-          return '生活'
-        case 'design':
-          return '设计'
-        case 'other':
-          return '其他'
-        default:
-          return 'ERR'
-      }
     }
   }
 }
