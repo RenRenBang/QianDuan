@@ -2,7 +2,7 @@
   <div class="list">
     <div class="head-bar shadow">
       <el-input placeholder="请输入内容" v-model="searchWd">
-        <el-select v-model="selectMode" slot="prepend" placeholder="请选择" class="select" @change="handleSelect">
+        <el-select :value="listMode" slot="prepend" placeholder="请选择" class="select" @change="handleSelect">
           <el-option label="需求" value="n"></el-option>
           <el-option label="服务" value="s"></el-option>
         </el-select>
@@ -45,22 +45,22 @@
     </transition>
 
     <div key="list" class="list-group" v-loading.fullscreen.lock="!currentList" element-loading-text="拼命加载中">
-      <scroll ref="scroll" v-if="currentList && (currentList.length > 0)" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="currentList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
-        <transition name="el-fade-in-linear">
-          <ul class="service-list list" v-if="selectMode === 's'">
+      <transition-group name="el-fade-in-linear" v-if="currentList && (currentList.length > 0)">
+        <scroll ref="scroll" v-if="listMode === 's'" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="currentList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll" key="s">
+          <ul class="service-list list">
             <li v-for="(item, index) in currentList" :key="index">
               <serviceListCard :data="item"></serviceListCard>
             </li>
           </ul>
-        </transition>
-        <transition name="el-fade-in-linear">
-          <ul class="need-list list" v-if="selectMode === 'n'">
+        </scroll>
+        <scroll ref="scroll" v-if="listMode === 'n'" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="currentList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll" key="n">
+          <ul class="need-list list">
             <li v-for="(item, index) in currentList" :key="index">
               <needListCard :data="item"></needListCard>
             </li>
           </ul>
-        </transition>
-      </scroll>
+        </scroll>
+      </transition-group>
       <div v-else>
         <h1 class="no-content">这里空空如也～</h1>
       </div>
@@ -81,7 +81,6 @@ export default {
   data() {
     return {
       searchWd: '',
-      selectMode: 'n',
       activeSort: '',
       sortBoxVisiable: true,
       scrollbar: true,
@@ -113,14 +112,16 @@ export default {
       this.refreshCurrentList()
       this.clearFocus()
     },
-    handleSelect() {
-      this.refreshCurrentList()
-      this.scrollTo()
-      this.rebuildScroll()
-      this.$store.dispatch({
-        type: 'changeListMode',
-        newMode: this.selectMode
-      })
+    handleSelect(v) {
+      let that = this
+      let asyncUpdateData = async function() {
+        await that.$store.dispatch({
+          type: 'changeListMode',
+          newMode: v
+        })
+        that.refreshCurrentList()
+      }
+      asyncUpdateData()
     },
     _initSortScroll() {
       if (!this.sortScroll) {
@@ -161,49 +162,49 @@ export default {
     },
     refreshCurrentList() {
       this.$http
-        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=${this.selectMode}&trade=${this.activeSort}&title=${this.searchWd}&offset=0`)
+        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=${this.listMode}&trade=${this.activeSort}&title=${this.searchWd}&offset=0`)
         .then(response => {
           if (response.data.data) {
             this.$store.dispatch({
               type: 'updateList',
-              listType: this.selectMode,
+              listType: this.listMode,
               newList: response.data.data
             })
           } else {
             this.$store.dispatch({
               type: 'updateList',
-              listType: this.selectMode,
+              listType: this.listMode,
               newList: []
             })
-            console.log('BAD_UPDATE_LIST_', this.selectMode, 'BECAUSE_NO_MORE_DATA')
+            console.log('BAD_UPDATE_LIST_', this.listMode, 'BECAUSE_NO_MORE_DATA')
           }
           console.log(response.data.data)
         })
         .catch(() => {
-          console.log('BAD_UPDATE_LIST_', this.selectMode)
+          console.log('BAD_UPDATE_LIST_', this.listMode)
         })
     },
     updateCurrentList() {
-      let currentList = this.selectMode === 's' ? this.serviceList : this.needList
+      let currentList = this.listMode === 's' ? this.serviceList : this.needList
       let offset = currentList.length
       this.$http
-        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=${this.selectMode}&trade=${this.activeSort}&title=${this.searchWd}&offset=${offset}`)
+        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=${this.listMode}&trade=${this.activeSort}&title=${this.searchWd}&offset=${offset}`)
         .then(response => {
           if (response.data.statusCode === '200') {
             this.$store.dispatch({
               type: 'updateList',
-              listType: this.selectMode,
+              listType: this.listMode,
               newList: currentList.concat(response.data.data)
             })
           } else {
             // 如果没有新数据
             this.$refs.scroll.forceUpdate()
-            console.log('BAD_UPDATE_LIST_', this.selectMode, 'BECAUSE_NO_MORE_DATA')
+            console.log('BAD_UPDATE_LIST_', this.listMode, 'BECAUSE_NO_MORE_DATA')
           }
-          console.log(this.selectMode === 's' ? this.serviceList : this.needList)
+          console.log(this.listMode === 's' ? this.serviceList : this.needList)
         })
         .catch(() => {
-          console.log('BAD_UPDATE_LIST_', this.selectMode)
+          console.log('BAD_UPDATE_LIST_', this.listMode)
         })
     }
   },
