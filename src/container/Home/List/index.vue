@@ -119,11 +119,11 @@ export default {
         type: 'changeCurrentSort',
         currentSort: this.activeSort
       })
-      this.selectMode === 's' ? this.getServiceList() : this.getNeedList()
+      this.refreshCurrentList()
       this.clearFocus()
     },
     handleSelect() {
-      this.selectMode === 's' ? this.getServiceList() : this.getNeedList()
+      this.refreshCurrentList()
       this.$store.dispatch({
         type: 'changeListMode',
         newMode: this.selectMode
@@ -138,62 +138,20 @@ export default {
     },
     handleSearch() {
       console.log(this.searchWd)
-      this.selectMode === 's' ? this.getServiceList() : this.getNeedList()
+      this.refreshCurrentList()
     },
     scrollTo() {
       this.$refs.scroll.scrollTo(this.scrollToX, this.scrollToY, this.scrollToTime, ease[this.scrollToEasing])
     },
     onPullingDown() {
-      // 模拟更新数据
+      // 下拉更新数据
       console.log('pulling down and load data')
-      this.selectMode === 's' ? this.getServiceList() : this.getNeedList()
+      this.refreshCurrentList()
     },
     onPullingUp() {
-      // 更新数据
+      // 上拉加载数据
       console.log('pulling up and load data')
-      if (this.selectMode === 's') {
-        this.$http
-          .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.activeSort}&title=${this.searchWd}&offset=${this.offset}`)
-          .then(response => {
-            if (response.data.statusCode === '200') {
-              let list = response.data.data
-              this.$store.dispatch({
-                type: 'updateList',
-                listType: 's',
-                newList: this.serviceList.concat(list)
-              })
-              console.log(this.serviceList)
-              this.offset += 10
-            } else {
-              // 如果没有新数据
-              this.$refs.scroll.forceUpdate()
-            }
-          })
-          .catch(() => {
-            console.log('service err')
-          })
-      } else {
-        this.$http
-          .get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.activeSort}&title=${this.searchWd}&offset=${this.offset}`)
-          .then(response => {
-            if (response.data.statusCode === '200') {
-              let list = response.data.data
-              this.$store.dispatch({
-                type: 'updateList',
-                listType: 's',
-                newList: this.needList.concat(list)
-              })
-              console.log(this.needList)
-              this.offset += 10
-            } else {
-              // 如果没有新数据
-              this.$refs.scroll.forceUpdate()
-            }
-          })
-          .catch(() => {
-            console.log('need err')
-          })
-      }
+      this.updateCurrentList()
     },
     listenScroll(pos) {
       if (pos.y >= -100) {
@@ -208,44 +166,46 @@ export default {
         this.$refs.scroll.initScroll()
       })
     },
-    getNeedList() {
-      this.offset = 0
+    refreshCurrentList() {
       this.$http
-        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=n&trade=${this.activeSort}&title=${this.searchWd}&offset=0`)
+        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=${this.selectMode}&trade=${this.activeSort}&title=${this.searchWd}&offset=0`)
         .then(response => {
           if (response.data.data) {
             this.$store.dispatch({
               type: 'updateList',
-              listType: 'n',
+              listType: this.selectMode,
               newList: response.data.data
             })
           } else {
-            this.needList = []
+            console.log('BAD_UPDATE_LIST_', this.selectMode, 'BECAUSE_NO_MORE_DATA')
           }
-          console.log(this.needList)
+          console.log(response.data.data)
         })
         .catch(() => {
-          console.log('need err')
+          console.log('BAD_UPDATE_LIST_', this.selectMode)
         })
     },
-    getServiceList() {
-      this.offset = 0
+    updateCurrentList() {
+      let currentList = this.selectMode === 's' ? this.serviceList : this.needList
+      let offset = currentList.length
       this.$http
-        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=s&trade=${this.activeSort}&title=${this.searchWd}&offset=0`)
+        .get(`http://47.95.214.71:8080/api/queryCorderBy?type=${this.selectMode}&trade=${this.activeSort}&title=${this.searchWd}&offset=${offset}`)
         .then(response => {
-          if (response.data.data) {
+          if (response.data.statusCode === '200') {
             this.$store.dispatch({
               type: 'updateList',
-              listType: 's',
-              newList: response.data.data
+              listType: this.selectMode,
+              newList: currentList.concat(response.data.data)
             })
           } else {
-            this.serviceList = []
+            // 如果没有新数据
+            this.$refs.scroll.forceUpdate()
+            console.log('BAD_UPDATE_LIST_', this.selectMode, 'BECAUSE_NO_MORE_DATA')
           }
-          console.log(this.serviceList)
+          console.log(this.selectMode === 's' ? this.serviceList : this.needList)
         })
         .catch(() => {
-          console.log('service err')
+          console.log('BAD_UPDATE_LIST_', this.selectMode)
         })
     }
   },
@@ -253,8 +213,7 @@ export default {
     let that = this
     // 为了增强性能，只有第一次create才会重新请求列表数据
     let initList = async function() {
-      await that.getNeedList()
-      await that.getServiceList()
+      await that.refreshCurrentList()
       that.$store.dispatch({
         type: 'initList'
       })
