@@ -43,38 +43,34 @@
         </ul>
       </div>
     </transition>
-    <transition-group name="fade" mode="in-out" v-loading.fullscreen.lock="!(serviceList && needList)" element-loading-text="拼命加载中">
-      <div v-if="selectMode === 's'" key="service" class="list-group">
-        <scroll ref="scroll" v-if="serviceList && (serviceList.length > 0)" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="serviceList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
-          <ul class="service-list list">
-            <li v-for="(item, index) in serviceList" :key="index">
+
+    <div key="list" class="list-group" v-loading.fullscreen.lock="!currentList" element-loading-text="拼命加载中">
+      <scroll ref="scroll" v-if="currentList && (currentList.length > 0)" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="currentList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
+        <transition name="el-fade-in-linear">
+          <ul class="service-list list" v-if="selectMode === 's'">
+            <li v-for="(item, index) in currentList" :key="index">
               <serviceListCard :data="item"></serviceListCard>
             </li>
           </ul>
-        </scroll>
-        <div v-else>
-          <h1 class="no-content">这里空空如也～</h1>
-        </div>
-      </div>
-      <div v-if="selectMode == 'n'" key="need" class="list-group">
-        <scroll ref="scroll" v-if="needList && (needList.length > 0)" class="list-scroller" :class="{'long-mode': !sortBoxVisiable}" :data="needList" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj" :listenScroll="true" :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp" @scroll="listenScroll">
-          <ul class="need-list list">
-            <li v-for="(item, index) in needList" :key="index">
+        </transition>
+        <transition name="el-fade-in-linear">
+          <ul class="need-list list" v-if="selectMode === 'n'">
+            <li v-for="(item, index) in currentList" :key="index">
               <needListCard :data="item"></needListCard>
             </li>
           </ul>
-        </scroll>
-        <div v-else>
-          <h1 class="no-content">这里空空如也～</h1>
-        </div>
+        </transition>
+      </scroll>
+      <div v-else>
+        <h1 class="no-content">这里空空如也～</h1>
       </div>
-    </transition-group>
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import BScroll from 'better-scroll'
 import Scroll from 'components/scroll/scroll'
 import ServiceListCard from 'components/ServiceListCard'
@@ -84,7 +80,6 @@ export default {
   name: 'list',
   data() {
     return {
-      offset: 10,
       searchWd: '',
       selectMode: 'n',
       activeSort: '',
@@ -100,10 +95,6 @@ export default {
       pullUpLoadMoreTxt: '上拉加载更多',
       pullUpLoadNoMoreTxt: '没有新数据了',
       startY: 0,
-      scrollToX: 0,
-      scrollToY: -200,
-      scrollToTime: 700,
-      scrollToEasing: 'bounce',
       scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
       itemIndex: 0
     }
@@ -124,6 +115,8 @@ export default {
     },
     handleSelect() {
       this.refreshCurrentList()
+      this.scrollTo()
+      this.rebuildScroll()
       this.$store.dispatch({
         type: 'changeListMode',
         newMode: this.selectMode
@@ -141,7 +134,7 @@ export default {
       this.refreshCurrentList()
     },
     scrollTo() {
-      this.$refs.scroll.scrollTo(this.scrollToX, this.scrollToY, this.scrollToTime, ease[this.scrollToEasing])
+      this.$refs.scroll.scrollTo(0, 0, 700, ease['bounce'])
     },
     onPullingDown() {
       // 下拉更新数据
@@ -177,6 +170,11 @@ export default {
               newList: response.data.data
             })
           } else {
+            this.$store.dispatch({
+              type: 'updateList',
+              listType: this.selectMode,
+              newList: []
+            })
             console.log('BAD_UPDATE_LIST_', this.selectMode, 'BECAUSE_NO_MORE_DATA')
           }
           console.log(response.data.data)
@@ -262,6 +260,7 @@ export default {
       serviceList: state => state.list.serviceList,
       needList: state => state.list.needList
     }),
+    ...mapGetters(['currentList']),
     scrollbarObj: function() {
       return this.scrollbar ? { fade: this.scrollbarFade } : false
     },

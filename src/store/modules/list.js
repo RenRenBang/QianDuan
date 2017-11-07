@@ -11,11 +11,9 @@ const state = {
 
 // getters
 const getters = {
-  currentList: (state, getters) => (type, trade, title) => {
-    let list = type === 's' ? state.serviceList : state.needList
-    return list.filter(item => {
-      return item.trade === trade && new RegExp(title).test(item.title)
-    })
+  currentList: (state, getters) => {
+    let list = state.listMode === 's' ? state.serviceList : state.needList
+    return list
   }
 }
 
