@@ -78,7 +78,7 @@
       </div>
     </el-dialog>
     <el-dialog title="版本信息" class="version-dialog" :visible.sync="CodeVerDialogVisible" width="90%">
-      Version: 2.0 Mintcream
+      Version: 3.0.0 Amber
       <span class="color"></span>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="CodeVerDialogVisible = false">确 定</el-button>
@@ -291,7 +291,7 @@ export default {
       height: 2em;
       width: 2em;
       vertical-align: middle;
-      background: mintcream;
+      background: #FFC107;
     }
   }
 
