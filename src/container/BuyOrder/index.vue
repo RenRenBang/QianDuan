@@ -114,11 +114,13 @@ export default {
 
     .el-tabs__content {
       .service-tab {
-        padding: 0;
+        padding: 1px 0;
+        background: #ededed;
       }
 
       .need-tab {
-        height: 100%;
+        padding: 1px 0;
+        background: #ededed;
       }
     }
 
