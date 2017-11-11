@@ -1,5 +1,5 @@
 <template>
-  <div class="buy-order">
+  <div class="purchased-order">
     <headerPage title="已购买订单">
       <el-tabs v-model="activeName" @tab-click="handleClick" class="tabs">
         <el-tab-pane label="服务" name="service" class="service-tab">
@@ -34,7 +34,7 @@ import headerPage from 'components/HeaderPage'
 import serviceListCard from 'components/ServiceListCard'
 import needListCard from 'components/NeedListCard'
 export default {
-  name: 'buyOrder',
+  name: 'PurchasedOrder',
   data() {
     return {
       activeName: 'service',
@@ -92,7 +92,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
-.buy-order {
+.purchased-order {
   top: 0;
   bottom: 0;
   background: #ededed;

@@ -1,5 +1,5 @@
 <template>
-  <div class="sell-order">
+  <div class="published-order">
     <headerPage title="已发布订单">
       <el-tabs v-model="activeName" @tab-click="handleClick" class="tabs">
         <el-tab-pane label="服务" name="service" class="service-tab">
@@ -44,7 +44,7 @@ import headerPage from 'components/HeaderPage'
 import serviceListCard from 'components/ServiceListCard'
 import needListCard from 'components/NeedListCard'
 export default {
-  name: 'sellOrder',
+  name: 'PublishedOrder',
   data() {
     return {
       deleteDialogVisible: false,
@@ -141,7 +141,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus">
-.sell-order {
+.published-order {
   top: 0;
   bottom: 0;
   background: #ededed;

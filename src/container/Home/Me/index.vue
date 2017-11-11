@@ -16,13 +16,13 @@
       </el-row>
     </div>
     <div class="order">
-      <router-link to="/buyOrder">
+      <router-link to="/PurchasedOrder">
         <div class="buy-order-btn">
           <i class="icon icon-sign-in"></i>
           <span class="tag">已购买订单</span>
         </div>
       </router-link>
-      <router-link to="/sellOrder">
+      <router-link to="/PublishedOrder">
         <div class="sell-order-btn">
           <i class="icon icon-sign-out"></i>
           <span class="tag">已发布订单</span>
