@@ -14,7 +14,7 @@ npm run dev
 npm run build
 ```
 
- 这里是 [线上demo](http://app.lee2me.xyz/) or [这里](http://47.95.214.71/)  
+ 这里是 ~[线上demo](http://app.lee2me.xyz/) or [这里](https://www.#.com)~  **已失效**
 
 ## 简介
 
